@@ -1,0 +1,9 @@
+{
+  "name": "game_on",
+  "description": "",
+  "logo": "",
+  "image": "heroku/python",
+  "repository": "",
+  "keywords": ["python", "django" ],
+  "addons": [ "heroku-postgresql" ]
+}
