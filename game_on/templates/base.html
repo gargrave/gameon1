@@ -9,12 +9,15 @@
   <link rel="stylesheet" href="{% static 'css/main.css' %}">
 </head>
 <body ng-app="gameon">
+
 {% block content %}
 {% endblock %}
+
 <script src="{% static 'libs/js/lodash.min.js' %}"></script>
 <script src="{% static 'libs/js/jquery.min.js' %}"></script>
+<script src="{% static 'libs/js/bootstrap.min.js' %}"></script>
 <script src="{% static 'libs/js/angular.min.js' %}"></script>
-<script src="{% static 'libs/js/angular-route.min.js' %}"></script>
+<script src="{% static 'libs/js/angular-ui-router.min.js' %}"></script>
 
 <script src="{% static 'app/app.js' %}"></script>
 <script src="{% static 'app/games.ctrl.js' %}"></script>

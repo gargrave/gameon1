@@ -2,22 +2,24 @@ var App;
 (function (App) {
     var Config;
     (function (Config) {
-        angular.module('gameon', ['' +
-                'ngRoute'
+        angular.module('gameon', [
+            'ui.router'
         ])
             .config([
             '$interpolateProvider', '$httpProvider',
-            '$routeProvider',
-            function ($interpolateProvider, $httpProvider, $routeProvider) {
-                $routeProvider
-                    .when('/', {
+            '$stateProvider', '$urlRouterProvider',
+            function ($interpolateProvider, $httpProvider, $stateProvider, $urlRouterProvider) {
+                $stateProvider
+                    .state('home', {
+                    url: '/',
                     templateUrl: '/static/views/home.html'
                 })
-                    .when('/games', {
+                    .state('games', {
+                    url: '/games',
                     templateUrl: '/static/views/games/list.html',
                     controller: 'GamesCtrl as ctrl'
-                })
-                    .otherwise('/games');
+                });
+                $urlRouterProvider.otherwise('/');
                 $interpolateProvider.startSymbol('{A');
                 $interpolateProvider.endSymbol('A}');
                 $httpProvider.defaults.xsrfCookieName = 'csrftoken';

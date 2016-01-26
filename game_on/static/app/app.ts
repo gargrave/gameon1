@@ -1,28 +1,30 @@
 /// <reference path="../../../typings/tsd.d.ts" />
 module App.Config {
-  angular.module('gameon', ['' +
-    'ngRoute'
+  angular.module('gameon', [
+      'ui.router'
     ])
 
     .config([
       '$interpolateProvider', '$httpProvider',
-      '$routeProvider',
+      '$stateProvider', '$urlRouterProvider',
 
       function($interpolateProvider, $httpProvider,
-               $routeProvider) {
+               $stateProvider, $urlRouterProvider) {
         /*==============================================
          = ngRoute config
          ==============================================*/
 
-        $routeProvider
-          .when('/', {
+        $stateProvider
+          .state('home', {
+            url: '/',
             templateUrl: '/static/views/home.html'
           })
-          .when('/games', {
+          .state('games', {
+            url: '/games',
             templateUrl: '/static/views/games/list.html',
             controller: 'GamesCtrl as ctrl'
-          })
-          .otherwise('/games');
+          });
+        $urlRouterProvider.otherwise('/');
 
         /*==============================================
          = set up custom interpolation handlebars, so that
