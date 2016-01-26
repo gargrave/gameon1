@@ -1,4 +1,15 @@
-<div>
-  <h3>State: games-list</h3>
-  <p>This is <strong>'/static/views/games/list.html'.</strong></p>
+<div class="row" ng-init="ctrl.find()">
+  <div class="col-md-10 col-md-offset-1">
+
+    <h3>Games</h3>
+    <hr>
+
+    <div class="list-group">
+      <button type="button" class="list-group-item"
+              ng-repeat="g in ctrl.games">
+        <strong ng-bind="g.name"></strong>
+      </button>
+    </div>
+
+  </div>
 </div>
