@@ -14,17 +14,36 @@ module App.Config {
          = ngRoute config
          ==============================================*/
 
+        $urlRouterProvider.otherwise('/');
         $stateProvider
           .state('home', {
             url: '/',
             templateUrl: '/static/views/home.html'
           })
-          .state('games', {
+          /*=============================================
+           = games states
+           =============================================*/
+          .state('games-list', {
             url: '/games',
             templateUrl: '/static/views/games/list.html',
             controller: 'GamesCtrl as ctrl'
+          })
+          .state('games-create', {
+            url: '/games/add',
+            templateUrl: '/static/views/games/create.html',
+            controller: 'GamesCtrl as ctrl'
+          })
+          /*=============================================
+           = platforms states
+           =============================================*/
+          .state('platforms-list', {
+            url: '/platforms',
+            templateUrl: '/static/views/platforms/list.html'
+          })
+          .state('platforms-create', {
+            url: '/platforms/add',
+            templateUrl: '/static/views/platforms/create.html'
           });
-        $urlRouterProvider.otherwise('/');
 
         /*==============================================
          = set up custom interpolation handlebars, so that

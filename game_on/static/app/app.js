@@ -9,17 +9,30 @@ var App;
             '$interpolateProvider', '$httpProvider',
             '$stateProvider', '$urlRouterProvider',
             function ($interpolateProvider, $httpProvider, $stateProvider, $urlRouterProvider) {
+                $urlRouterProvider.otherwise('/');
                 $stateProvider
                     .state('home', {
                     url: '/',
                     templateUrl: '/static/views/home.html'
                 })
-                    .state('games', {
+                    .state('games-list', {
                     url: '/games',
                     templateUrl: '/static/views/games/list.html',
                     controller: 'GamesCtrl as ctrl'
+                })
+                    .state('games-create', {
+                    url: '/games/add',
+                    templateUrl: '/static/views/games/create.html',
+                    controller: 'GamesCtrl as ctrl'
+                })
+                    .state('platforms-list', {
+                    url: '/platforms',
+                    templateUrl: '/static/views/platforms/list.html'
+                })
+                    .state('platforms-create', {
+                    url: '/platforms/add',
+                    templateUrl: '/static/views/platforms/create.html'
                 });
-                $urlRouterProvider.otherwise('/');
                 $interpolateProvider.startSymbol('{A');
                 $interpolateProvider.endSymbol('A}');
                 $httpProvider.defaults.xsrfCookieName = 'csrftoken';
