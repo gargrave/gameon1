@@ -23,4 +23,14 @@ def games_list(request):
 
 
 def platforms_list(request):
-    return HttpResponse('platforms')
+    """
+    Returns a list of all platforms
+    :param request: HttpRequest
+    """
+    all_platforms = Platform.objects.all()
+    platforms = []
+    for platform in all_platforms:
+        platforms.append({
+            'name': platform.name
+        })
+    return JsonResponse({'platforms': platforms})

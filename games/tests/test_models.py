@@ -5,7 +5,8 @@ from games.models import Platform, Game
 
 
 class PlatformModelTest(TestCase):
-    def setUp(self):
+    @classmethod
+    def setUpTestData(self):
         self.xbox = 'Xbox One'
         self.pc = 'PC (Windows)'
 
@@ -48,7 +49,3 @@ class PlatformModelTest(TestCase):
         xbox_games = Platform.objects.get(name=self.xbox).game_set.all()
         self.assertEquals(len(xbox_games), 2)
 
-
-class GameModelTest(TestCase):
-    def setUp(self):
-        pass
