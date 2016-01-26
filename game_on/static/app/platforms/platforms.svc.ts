@@ -7,19 +7,13 @@ module App.Platforms {
       const vm = this;
 
       vm.query = function() {
-        let fakeres = {
-          data: [
-            {name: 'Xbox One'},
-            {name: 'PS3'}
-          ]
-        };
         let deferred = $q.defer();
-        //$http.get('/api/platforms')
-        //  .then(function(res) {
-        //    deferred.resolve(fakeres);
-        //  });
-        deferred.resolve(fakeres);
+        $http.get('/api/platforms')
+          .then(function(res) {
+            deferred.resolve(res.data);
+          });
         return deferred.promise;
       };
-    }]);
+    }
+  ]);
 }

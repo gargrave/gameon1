@@ -12,7 +12,7 @@ var App;
                     vm.working = true;
                     platformsSvc.query()
                         .then(function (res) {
-                        vm.platforms = res.data;
+                        vm.platforms = res.platforms;
                         vm.working = false;
                     });
                 };
