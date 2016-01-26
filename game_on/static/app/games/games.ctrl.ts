@@ -14,7 +14,7 @@ module App.Games {
         vm.working = true;
         gamesSvc.query()
           .then(function(res) {
-            vm.games = res.data;
+            vm.games = res.games;
             vm.working = false;
           });
       };
