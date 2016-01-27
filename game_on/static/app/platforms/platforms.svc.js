@@ -1,44 +1,21 @@
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 var App;
 (function (App) {
     var Platforms;
     (function (Platforms) {
-        var PlatformsSvc = (function () {
+        var PlatformsSvc = (function (_super) {
+            __extends(PlatformsSvc, _super);
             function PlatformsSvc($http, $q) {
+                _super.call(this, $http, $q, 'platform');
                 this.$http = $http;
                 this.$q = $q;
             }
-            PlatformsSvc.prototype.query = function () {
-                var self = this;
-                var deferred = self.$q.defer();
-                if (self.platforms) {
-                    deferred.resolve(self.platforms);
-                }
-                else {
-                    self.$http.get('/api/platforms')
-                        .then(function (res) {
-                        self.platforms = res.data.entries;
-                        deferred.resolve(self.platforms);
-                    }, function (err) {
-                        deferred.reject(err.data);
-                    });
-                }
-                return deferred.promise;
-            };
-            ;
-            PlatformsSvc.prototype.save = function (data) {
-                var self = this;
-                var deferred = self.$q.defer();
-                self.$http.post('/api/platforms/create', data)
-                    .then(function (res) {
-                    deferred.resolve(res.data.entries[0]);
-                }, function (err) {
-                    deferred.reject(err);
-                });
-                return deferred.promise;
-            };
-            ;
             return PlatformsSvc;
-        })();
+        })(App.Common.GenericService);
         Platforms.PlatformsSvc = PlatformsSvc;
         angular.module('platforms').service('platformsSvc', [
             '$http', '$q',
