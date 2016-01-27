@@ -2,38 +2,46 @@ var App;
 (function (App) {
     var Platforms;
     (function (Platforms) {
+        var PlatformsSvc = (function () {
+            function PlatformsSvc($http, $q) {
+                this.$http = $http;
+                this.$q = $q;
+            }
+            PlatformsSvc.prototype.query = function () {
+                var self = this;
+                var deferred = self.$q.defer();
+                if (self.platforms) {
+                    deferred.resolve(self.platforms);
+                }
+                else {
+                    self.$http.get('/api/platforms')
+                        .then(function (res) {
+                        self.platforms = res.data.platforms;
+                        deferred.resolve(self.platforms);
+                    }, function (err) {
+                        deferred.reject(err.data);
+                    });
+                }
+                return deferred.promise;
+            };
+            ;
+            PlatformsSvc.prototype.save = function (data) {
+                var self = this;
+                var deferred = self.$q.defer();
+                self.$http.post('/api/platforms/add', data)
+                    .then(function (res) {
+                    deferred.resolve(res.data.platform[0]);
+                }, function (err) {
+                    deferred.reject(err);
+                });
+                return deferred.promise;
+            };
+            ;
+            return PlatformsSvc;
+        })();
+        Platforms.PlatformsSvc = PlatformsSvc;
         angular.module('gameon').service('platformsSvc', [
             '$http', '$q',
-            function ($http, $q) {
-                var vm = this;
-                var platforms;
-                vm.query = function () {
-                    var deferred = $q.defer();
-                    if (platforms) {
-                        deferred.resolve(platforms);
-                    }
-                    else {
-                        $http.get('/api/platforms')
-                            .then(function (res) {
-                            platforms = res.data.platforms;
-                            deferred.resolve(platforms);
-                        }, function (err) {
-                            deferred.reject(err.data);
-                        });
-                    }
-                    return deferred.promise;
-                };
-                vm.save = function (data) {
-                    var deferred = $q.defer();
-                    $http.post('/api/platforms/add', data)
-                        .then(function (res) {
-                        deferred.resolve(res.data.platform[0]);
-                    }, function (err) {
-                        deferred.reject(err);
-                    });
-                    return deferred.promise;
-                };
-            }
-        ]);
+            PlatformsSvc]);
     })(Platforms = App.Platforms || (App.Platforms = {}));
 })(App || (App = {}));
