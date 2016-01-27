@@ -1,29 +1,43 @@
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 var App;
 (function (App) {
     var Games;
     (function (Games) {
-        angular.module('gameon').controller('GamesCtrl', [
-            'gamesSvc',
-            function (gamesSvc) {
-                var vm = this;
-                vm.working = false;
-                vm.games = [];
-                vm.newGame = {};
-                vm.error = '';
-                vm.find = function () {
-                    vm.error = '';
-                    vm.working = true;
-                    gamesSvc.query()
-                        .then(function (res) {
-                        vm.games = res;
-                    }, function (err) {
-                        vm.error = err.statusText;
-                    })
-                        .finally(function () {
-                        vm.working = false;
-                    });
-                };
+        var GamesCtrl = (function (_super) {
+            __extends(GamesCtrl, _super);
+            function GamesCtrl($state, dataSvc) {
+                _super.call(this, $state, dataSvc, 'game');
             }
-        ]);
+            GamesCtrl.prototype.defaultEntry = function () {
+                return {
+                    name: '',
+                    platform: '',
+                    startDate: '',
+                    endDate: '',
+                    finished: false
+                };
+            };
+            GamesCtrl.prototype.preValidate = function () {
+                var self = this;
+                var existing = _.find(self.entries, function (g) {
+                    var game = g;
+                    return game.name === self.newEntry.name &&
+                        game.startDate === self.newEntry.startDate;
+                });
+                if (existing) {
+                    self.error = 'A game with an identical name and start-date already exists.';
+                }
+                return existing === undefined;
+            };
+            return GamesCtrl;
+        })(App.Common.GenericController);
+        Games.GamesCtrl = GamesCtrl;
+        angular.module('games').controller('GamesCtrl', [
+            '$state', 'gamesSvc',
+            GamesCtrl]);
     })(Games = App.Games || (App.Games = {}));
 })(App || (App = {}));

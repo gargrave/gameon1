@@ -3,39 +3,131 @@ var App;
     var Tests;
     (function (Tests) {
         describe('GamesCtrl', function () {
-            var sampleGameData = [
+            var moduleName = 'games';
+            var emptyEntry = {
+                name: '',
+                platform: '',
+                startDate: '',
+                endDate: '',
+                finished: false
+            };
+            var nonEmptyEntry = {
+                name: 'Name',
+                platform: 'Platform',
+                startDate: '2016-01-01',
+                endDate: '2016-01-31',
+                finished: true
+            };
+            var testResponse = [
                 {
                     name: 'Lords of the Fallen',
                     platform: 'Xbox One',
-                    start_date: '2014-10-31',
-                    end_date: '2014-11-15',
+                    startDate: '2014-10-31',
+                    endDate: '2014-11-15',
                     finished: true
                 },
                 {
                     name: 'Kingdom Hearts 1.5 HD',
                     platform: 'PS3',
-                    start_date: '2014-7-22',
-                    end_date: '2014-2-31',
+                    startDate: '2014-7-22',
+                    endDate: '2014-7-31',
                     finished: true
                 }
             ];
             var ctrl;
-            var scope;
             var $httpBackend;
+            var $location;
             beforeEach(angular.mock.module('gameon'));
-            beforeEach(inject(function ($controller, $rootScope, _$httpBackend_) {
+            beforeEach(inject(function ($controller, _$httpBackend_, _$location_) {
                 ctrl = $controller('GamesCtrl');
-                scope = $rootScope.$new();
                 $httpBackend = _$httpBackend_;
+                $location = _$location_;
             }));
-            it('should load the list of games', function () {
-                $httpBackend.expectGET('/api/games').respond({ entries: sampleGameData });
+            afterEach(function () {
+                $httpBackend.verifyNoOutstandingExpectation();
+                $httpBackend.verifyNoOutstandingRequest();
+            });
+            it('find() should load the list of entries', function () {
+                $httpBackend.when('GET', '/static/views/home.html').respond(200);
+                $httpBackend.expectGET("/api/" + moduleName)
+                    .respond({ entries: testResponse });
                 ctrl.find();
                 expect(ctrl.working).toBeTruthy();
                 $httpBackend.flush();
-                expect(ctrl.games.length).toBeGreaterThan(0);
-                expect(ctrl.games).toEqual(sampleGameData);
+                expect(ctrl.entries.length).toBeGreaterThan(0);
+                expect(ctrl.entries).toEqual(testResponse);
                 expect(ctrl.working).toBeFalsy();
+            });
+            it('initCreateView() should initialize the new object ' +
+                'and pre-populate the existing entries list', function () {
+                $httpBackend.when('GET', '/static/views/home.html').respond(200);
+                $httpBackend.expectGET("/api/" + moduleName)
+                    .respond({ entries: testResponse });
+                ctrl.newEntry = nonEmptyEntry;
+                ctrl.initCreateView();
+                expect(ctrl.working).toBeTruthy();
+                $httpBackend.flush();
+                expect(ctrl.newEntry).toEqual(emptyEntry);
+                expect(ctrl.working).toBeFalsy();
+            });
+            it('create() should successfully save a new platform object', function () {
+                var origLength = ctrl.entries.length;
+                var testPostData = JSON.stringify({
+                    name: 'Test Platform'
+                });
+                var testPostResponse = JSON.stringify({
+                    entries: [{
+                            id: 10,
+                            name: 'Test Platform'
+                        }]
+                });
+                $httpBackend.when('GET', '/static/views/home.html').respond(200);
+                $httpBackend.expectPOST("/api/" + moduleName + "/create", testPostData)
+                    .respond(201, testPostResponse);
+                $httpBackend.expectGET("/static/views/" + moduleName + "/list.html").respond(200);
+                ctrl.newEntry = testPostData;
+                ctrl.create();
+                expect(ctrl.working).toBeTruthy();
+                $httpBackend.flush();
+                expect($location.url()).toBe("/" + moduleName);
+                expect(ctrl.newEntry).toEqual(emptyEntry);
+                expect(ctrl.working).toBeFalsy();
+                expect(ctrl.entries.length).toBe(origLength + 1);
+            });
+            it('create() should log an error if a similar object exists', function () {
+                var testPostData = JSON.stringify({
+                    name: 'Test Platform'
+                });
+                $httpBackend.when('GET', '/static/views/home.html').respond(200);
+                ctrl.entries.push(testPostData);
+                ctrl.newEntry = testPostData;
+                ctrl.create();
+                $httpBackend.flush();
+                expect(ctrl.working).toBeFalsy();
+                expect(ctrl.entries.length).toBe(1);
+                expect(ctrl.error.length).toBeGreaterThan(0);
+            });
+            it('create() should handle error responses properly', function () {
+                var origLength = ctrl.entries.length;
+                var testPostData = JSON.stringify({
+                    name: 'Test Platform'
+                });
+                var testError = {
+                    statusText: 'Test error message'
+                };
+                $httpBackend.when('GET', '/static/views/home.html').respond(200);
+                $httpBackend.expectPOST("/api/" + moduleName + "/create", testPostData)
+                    .respond(function () {
+                    return [400, '', {}, 'Test error message'];
+                });
+                ctrl.newEntry = testPostData;
+                ctrl.create();
+                expect(ctrl.working).toBeTruthy();
+                expect(ctrl.error).toBe('');
+                $httpBackend.flush();
+                expect(ctrl.working).toBeFalsy();
+                expect(ctrl.entries.length).toBe(origLength);
+                expect(ctrl.error).toBe(testError.statusText);
             });
         });
     })(Tests = App.Tests || (App.Tests = {}));

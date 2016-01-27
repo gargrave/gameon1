@@ -2,21 +2,27 @@
 module App.Tests {
   describe('PlatformsCtrl', function() {
 
-    const moduleName = 'platform';
-    let emptyPlatformData = {name: ''};
+    const moduleName = 'platforms';
 
-    let samplePlatformData = [
+    const emptyEntry = {
+      name: ''
+    };
+
+    const nonEmptyEntry = {
+      name: 'Name'
+    };
+
+    const testResponse = [
       {name: 'Xbox One'},
       {name: 'PS3'}
     ];
 
-    let ctrl;
-    let $httpBackend;
-    let $location;
-
     /*=============================================
      = set up methods
      =============================================*/
+    let ctrl;
+    let $httpBackend;
+    let $location;
 
     beforeEach(angular.mock.module('gameon'));
     beforeEach(inject(function($controller, _$httpBackend_,
@@ -34,37 +40,35 @@ module App.Tests {
     /*=============================================
      = query all test
      =============================================*/
-
     it('find() should load the list of entries', function() {
       $httpBackend.when('GET', '/static/views/home.html').respond(200);
-      $httpBackend.expectGET(`/api/${moduleName}s`)
-        .respond({entries: samplePlatformData});
+      $httpBackend.expectGET(`/api/${moduleName}`)
+        .respond({entries: testResponse});
       ctrl.find();
       expect(ctrl.working).toBeTruthy();
       $httpBackend.flush();
 
       expect(ctrl.entries.length).toBeGreaterThan(0);
-      expect(ctrl.entries).toEqual(samplePlatformData);
+      expect(ctrl.entries).toEqual(testResponse);
       expect(ctrl.working).toBeFalsy();
     });
 
     /*=============================================
      = creation test
      =============================================*/
-
     it('initCreateView() should initialize the new object ' +
       'and pre-populate the existing entries list', function() {
       $httpBackend.when('GET', '/static/views/home.html').respond(200);
-      $httpBackend.expectGET(`/api/${moduleName}s`)
-        .respond({entries: samplePlatformData});
-      ctrl.newEntry.name = 'Not an empty name';
+      $httpBackend.expectGET(`/api/${moduleName}`)
+        .respond({entries: testResponse});
+      ctrl.newEntry = nonEmptyEntry;
       ctrl.initCreateView();
       // ctrl should be working
       expect(ctrl.working).toBeTruthy();
       $httpBackend.flush();
 
       // ctrl.newEntry should be empty now
-      expect(ctrl.newEntry).toEqual(emptyPlatformData);
+      expect(ctrl.newEntry).toEqual(emptyEntry);
       // ctrl.working should be false
       expect(ctrl.working).toBeFalsy();
     });
@@ -82,9 +86,9 @@ module App.Tests {
       });
 
       $httpBackend.when('GET', '/static/views/home.html').respond(200);
-      $httpBackend.expectPOST(`/api/${moduleName}s/create`, testPostData)
+      $httpBackend.expectPOST(`/api/${moduleName}/create`, testPostData)
         .respond(201, testPostResponse);
-      $httpBackend.expectGET(`/static/views/${moduleName}s/list.html`).respond(200);
+      $httpBackend.expectGET(`/static/views/${moduleName}/list.html`).respond(200);
       ctrl.newEntry = testPostData;
       ctrl.create();
       // ctrl should be working
@@ -92,9 +96,9 @@ module App.Tests {
       $httpBackend.flush();
 
       // we should be back on the list page
-      expect($location.url()).toBe(`/${moduleName}s`);
+      expect($location.url()).toBe(`/${moduleName}`);
       // ctrl.newEntry should be empty now
-      expect(ctrl.newEntry).toEqual(emptyPlatformData);
+      expect(ctrl.newEntry).toEqual(emptyEntry);
       // ctrl.working should be false
       expect(ctrl.working).toBeFalsy();
       // ctrl.entries.length should be one
@@ -123,7 +127,6 @@ module App.Tests {
     /*=============================================
      = creation error test
      =============================================*/
-
     it('create() should handle error responses properly', function() {
       let origLength = ctrl.entries.length;
       let testPostData = JSON.stringify({
@@ -134,7 +137,7 @@ module App.Tests {
       };
 
       $httpBackend.when('GET', '/static/views/home.html').respond(200);
-      $httpBackend.expectPOST(`/api/${moduleName}s/create`, testPostData)
+      $httpBackend.expectPOST(`/api/${moduleName}/create`, testPostData)
         .respond(function() {
           return [400, '', {}, 'Test error message'];
         });

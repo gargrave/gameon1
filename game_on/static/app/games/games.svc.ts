@@ -1,12 +1,7 @@
 /// <reference path="../../../../typings/tsd.d.ts" />
 module App.Games {
 
-  /*=============================================
-   = interface definitions
-   =============================================*/
-  export interface IGame {
-    name: string;
-  }
+  import IGame = App.Games.IGame;
 
   /*=============================================
    = class implementation

@@ -3,9 +3,14 @@ var App;
     var Tests;
     (function (Tests) {
         describe('PlatformsCtrl', function () {
-            var moduleName = 'platform';
-            var emptyPlatformData = { name: '' };
-            var samplePlatformData = [
+            var moduleName = 'platforms';
+            var emptyEntry = {
+                name: ''
+            };
+            var nonEmptyEntry = {
+                name: 'Name'
+            };
+            var testResponse = [
                 { name: 'Xbox One' },
                 { name: 'PS3' }
             ];
@@ -24,25 +29,25 @@ var App;
             });
             it('find() should load the list of entries', function () {
                 $httpBackend.when('GET', '/static/views/home.html').respond(200);
-                $httpBackend.expectGET("/api/" + moduleName + "s")
-                    .respond({ entries: samplePlatformData });
+                $httpBackend.expectGET("/api/" + moduleName)
+                    .respond({ entries: testResponse });
                 ctrl.find();
                 expect(ctrl.working).toBeTruthy();
                 $httpBackend.flush();
                 expect(ctrl.entries.length).toBeGreaterThan(0);
-                expect(ctrl.entries).toEqual(samplePlatformData);
+                expect(ctrl.entries).toEqual(testResponse);
                 expect(ctrl.working).toBeFalsy();
             });
             it('initCreateView() should initialize the new object ' +
                 'and pre-populate the existing entries list', function () {
                 $httpBackend.when('GET', '/static/views/home.html').respond(200);
-                $httpBackend.expectGET("/api/" + moduleName + "s")
-                    .respond({ entries: samplePlatformData });
-                ctrl.newEntry.name = 'Not an empty name';
+                $httpBackend.expectGET("/api/" + moduleName)
+                    .respond({ entries: testResponse });
+                ctrl.newEntry = nonEmptyEntry;
                 ctrl.initCreateView();
                 expect(ctrl.working).toBeTruthy();
                 $httpBackend.flush();
-                expect(ctrl.newEntry).toEqual(emptyPlatformData);
+                expect(ctrl.newEntry).toEqual(emptyEntry);
                 expect(ctrl.working).toBeFalsy();
             });
             it('create() should successfully save a new platform object', function () {
@@ -57,15 +62,15 @@ var App;
                         }]
                 });
                 $httpBackend.when('GET', '/static/views/home.html').respond(200);
-                $httpBackend.expectPOST("/api/" + moduleName + "s/create", testPostData)
+                $httpBackend.expectPOST("/api/" + moduleName + "/create", testPostData)
                     .respond(201, testPostResponse);
-                $httpBackend.expectGET("/static/views/" + moduleName + "s/list.html").respond(200);
+                $httpBackend.expectGET("/static/views/" + moduleName + "/list.html").respond(200);
                 ctrl.newEntry = testPostData;
                 ctrl.create();
                 expect(ctrl.working).toBeTruthy();
                 $httpBackend.flush();
-                expect($location.url()).toBe("/" + moduleName + "s");
-                expect(ctrl.newEntry).toEqual(emptyPlatformData);
+                expect($location.url()).toBe("/" + moduleName);
+                expect(ctrl.newEntry).toEqual(emptyEntry);
                 expect(ctrl.working).toBeFalsy();
                 expect(ctrl.entries.length).toBe(origLength + 1);
             });
@@ -91,7 +96,7 @@ var App;
                     statusText: 'Test error message'
                 };
                 $httpBackend.when('GET', '/static/views/home.html').respond(200);
-                $httpBackend.expectPOST("/api/" + moduleName + "s/create", testPostData)
+                $httpBackend.expectPOST("/api/" + moduleName + "/create", testPostData)
                     .respond(function () {
                     return [400, '', {}, 'Test error message'];
                 });

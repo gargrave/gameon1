@@ -1,35 +1,50 @@
 /// <reference path="../../../../typings/tsd.d.ts" />
 module App.Games {
-  angular.module('gameon').controller('GamesCtrl', [
-    'gamesSvc',
 
-    function(gamesSvc) {
-      const vm = this;
-      // whether we are currently working
-      vm.working = false;
-      // the list of entries on the server
-      vm.games = [];
-      // the data for a new platform being created
-      vm.newGame = {};
-      // any error messages to display
-      vm.error = '';
+  /*=============================================
+   = interface definitions
+   =============================================*/
+  export interface IGame {
+    name: string;
+    platform: string;
+    startDate: string;
+    endDate: string;
+    finished: boolean;
+  }
 
-      /**
-       * Queries the service for all current games
-       */
-      vm.find = function() {
-        vm.error = '';
-        vm.working = true;
-        gamesSvc.query()
-          .then(function(res) {
-            vm.games = res;
-          }, function(err) {
-            vm.error = err.statusText;
-          })
-          .finally(function() {
-            vm.working = false;
-          });
+  export class GamesCtrl extends App.Common.GenericController<IGame> {
+    constructor($state,
+                dataSvc: App.Games.GamesSvc) {
+      super($state, dataSvc, 'game');
+    }
+
+    protected defaultEntry(): IGame {
+      return {
+        name: '',
+        platform: '',
+        startDate: '',
+        endDate: '',
+        finished: false
       };
     }
-  ]);
+
+    protected preValidate(): boolean {
+      const self = this;
+
+      // check for existing entries with this name
+      let existing = _.find(self.entries, function(g) {
+        let game: IGame = <IGame>g;
+        return game.name === self.newEntry.name &&
+          game.startDate === self.newEntry.startDate;
+      });
+      if (existing) {
+        self.error = 'A game with an identical name and start-date already exists.';
+      }
+      return existing === undefined;
+    }
+  }
+
+  angular.module('games').controller('GamesCtrl', [
+    '$state', 'gamesSvc',
+    GamesCtrl]);
 }
