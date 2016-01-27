@@ -47,17 +47,26 @@ module App.Platforms {
       expect(ctrl.working).toBeFalsy();
     });
 
-    it('initCreateView() should initialize the new object', function() {
-      $httpBackend.when('GET', '/static/views/home.html').respond(200);
-      ctrl.newPlatform.name = 'Not an empty name';
-      ctrl.initCreateView();
-      $httpBackend.flush();
-      expect(ctrl.newPlatform.name).toBe('');
-    });
-
     /*=============================================
      = creation test
      =============================================*/
+
+    it('initCreateView() should initialize the new object ' +
+      'and pre-populate the existing platforms list', function() {
+      $httpBackend.when('GET', '/static/views/home.html').respond(200);
+      $httpBackend.expectGET('/api/platforms')
+        .respond({platforms: samplePlatformData});
+      ctrl.newPlatform.name = 'Not an empty name';
+      ctrl.initCreateView();
+      // ctrl should be working
+      expect(ctrl.working).toBeTruthy();
+      $httpBackend.flush();
+
+      // ctrl.newPlatform should be empty now
+      expect(ctrl.newPlatform).toEqual(emptyPlatformData);
+      // ctrl.working should be false
+      expect(ctrl.working).toBeFalsy();
+    });
 
     it('create() should successfully save a new platform object', function() {
       let origLength = ctrl.platforms.length;
@@ -65,8 +74,10 @@ module App.Platforms {
         name: 'Test Platform'
       });
       let testPostResponse = JSON.stringify({
-        id: 10,
-        name: 'Test Platform'
+        platform: [{
+          id: 10,
+          name: 'Test Platform'
+        }]
       });
 
       $httpBackend.when('GET', '/static/views/home.html').respond(200);
@@ -75,6 +86,7 @@ module App.Platforms {
       $httpBackend.expectGET('/static/views/platforms/list.html').respond(200);
       ctrl.newPlatform = testPostData;
       ctrl.create();
+      // ctrl should be working
       expect(ctrl.working).toBeTruthy();
       $httpBackend.flush();
 
@@ -97,11 +109,15 @@ module App.Platforms {
       let testPostData = JSON.stringify({
         name: 'Test Platform'
       });
-      let testError = 'Test error message';
+      let testError = {
+        statusText: 'Test error message'
+      };
 
       $httpBackend.when('GET', '/static/views/home.html').respond(200);
       $httpBackend.expectPOST('/api/platforms/add', testPostData)
-        .respond(400, testError);
+        .respond(function() {
+          return [400, '', {}, 'Test error message'];
+        });
       ctrl.newPlatform = testPostData;
       ctrl.create();
       // should have no errors and not be working yet
@@ -114,7 +130,7 @@ module App.Platforms {
       // ctrl.platforms.length should be the same as before
       expect(ctrl.platforms.length).toBe(origLength);
       // the error message should not be empty
-      expect(ctrl.error).toBe(testError);
+      expect(ctrl.error).toBe(testError.statusText);
     });
   });
 }

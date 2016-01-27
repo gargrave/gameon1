@@ -15,9 +15,9 @@ var App;
                     vm.working = true;
                     platformsSvc.query()
                         .then(function (res) {
-                        vm.platforms = res.platforms;
+                        vm.platforms = res;
                     }, function (err) {
-                        vm.error = err;
+                        vm.error = err.statusText;
                     })
                         .finally(function () {
                         vm.working = false;
@@ -32,13 +32,16 @@ var App;
                         vm.initCreateView();
                         $state.go('platforms-list');
                     }, function (err) {
-                        vm.error = err;
+                        vm.error = err.statusText;
                     })
                         .finally(function () {
                         vm.working = false;
                     });
                 };
                 vm.initCreateView = function () {
+                    if (vm.platforms.length === 0) {
+                        vm.find();
+                    }
                     vm.newPlatform = {
                         name: ''
                     };

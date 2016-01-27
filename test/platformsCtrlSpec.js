@@ -32,12 +32,17 @@ var App;
                 expect(ctrl.platforms).toEqual(samplePlatformData);
                 expect(ctrl.working).toBeFalsy();
             });
-            it('initCreateView() should initialize the new object', function () {
+            it('initCreateView() should initialize the new object ' +
+                'and pre-populate the existing platforms list', function () {
                 $httpBackend.when('GET', '/static/views/home.html').respond(200);
+                $httpBackend.expectGET('/api/platforms')
+                    .respond({ platforms: samplePlatformData });
                 ctrl.newPlatform.name = 'Not an empty name';
                 ctrl.initCreateView();
+                expect(ctrl.working).toBeTruthy();
                 $httpBackend.flush();
-                expect(ctrl.newPlatform.name).toBe('');
+                expect(ctrl.newPlatform).toEqual(emptyPlatformData);
+                expect(ctrl.working).toBeFalsy();
             });
             it('create() should successfully save a new platform object', function () {
                 var origLength = ctrl.platforms.length;
@@ -45,8 +50,10 @@ var App;
                     name: 'Test Platform'
                 });
                 var testPostResponse = JSON.stringify({
-                    id: 10,
-                    name: 'Test Platform'
+                    platform: [{
+                            id: 10,
+                            name: 'Test Platform'
+                        }]
                 });
                 $httpBackend.when('GET', '/static/views/home.html').respond(200);
                 $httpBackend.expectPOST('/api/platforms/add', testPostData)
@@ -66,10 +73,14 @@ var App;
                 var testPostData = JSON.stringify({
                     name: 'Test Platform'
                 });
-                var testError = 'Test error message';
+                var testError = {
+                    statusText: 'Test error message'
+                };
                 $httpBackend.when('GET', '/static/views/home.html').respond(200);
                 $httpBackend.expectPOST('/api/platforms/add', testPostData)
-                    .respond(400, testError);
+                    .respond(function () {
+                    return [400, '', {}, 'Test error message'];
+                });
                 ctrl.newPlatform = testPostData;
                 ctrl.create();
                 expect(ctrl.working).toBeTruthy();
@@ -77,7 +88,7 @@ var App;
                 $httpBackend.flush();
                 expect(ctrl.working).toBeFalsy();
                 expect(ctrl.platforms.length).toBe(origLength);
-                expect(ctrl.error).toBe(testError);
+                expect(ctrl.error).toBe(testError.statusText);
             });
         });
     })(Platforms = App.Platforms || (App.Platforms = {}));

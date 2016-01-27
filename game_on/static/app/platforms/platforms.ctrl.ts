@@ -22,9 +22,9 @@ module App.Games {
         vm.working = true;
         platformsSvc.query()
           .then(function(res) {
-            vm.platforms = res.platforms;
+            vm.platforms = res;
           }, function(err) {
-            vm.error = err;
+            vm.error = err.statusText;
           })
           .finally(function() {
             vm.working = false;
@@ -44,7 +44,7 @@ module App.Games {
             vm.initCreateView();
             $state.go('platforms-list');
           }, function(err) {
-            vm.error = err;
+            vm.error = err.statusText;
           })
           .finally(function() {
             vm.working = false;
@@ -55,6 +55,10 @@ module App.Games {
        * Resets the 'new platform' data to default/empty state
        */
       vm.initCreateView = function() {
+        // make sure the platforms list has been filled
+        if (vm.platforms.length === 0) {
+          vm.find();
+        }
         vm.newPlatform = {
           name: ''
         };
