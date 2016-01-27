@@ -4,8 +4,8 @@ from django.db import models
 class Platform(models.Model):
     name = models.CharField(max_length=100, unique=True)
 
-    created = models.DateField(auto_now_add=True)
-    modified = models.DateField(auto_now=True)
+    created = models.DateTimeField(auto_now_add=True)
+    modified = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ('name',)
@@ -21,8 +21,8 @@ class Game(models.Model):
     end_date = models.DateField()
     finished = models.BooleanField(default=False)
 
-    created = models.DateField(auto_now_add=True)
-    modified = models.DateField(auto_now=True)
+    created = models.DateTimeField(auto_now_add=True)
+    modified = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ('platform', 'name',)
