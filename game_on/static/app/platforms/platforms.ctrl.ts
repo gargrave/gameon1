@@ -1,11 +1,9 @@
 /// <reference path="../../../../typings/tsd.d.ts" />
-module App.Games {
+module App.Platforms {
 
-  export interface IPlatform {
-    name: string;
-  }
+  import IPlatform = App.Platforms.IPlatform;
 
-  angular.module('gameon').controller('PlatformsCtrl', [
+  angular.module('platforms').controller('PlatformsCtrl', [
     '$state', 'platformsSvc',
 
     function($state, platformsSvc) {

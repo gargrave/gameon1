@@ -1,5 +1,5 @@
 /// <reference path="../typings/tsd.d.ts" />
-module App.Platforms {
+module App.Tests {
   describe('PlatformsCtrl', function() {
 
     let emptyPlatformData = {name: ''};
@@ -74,7 +74,7 @@ module App.Platforms {
         name: 'Test Platform'
       });
       let testPostResponse = JSON.stringify({
-        platform: [{
+        platforms: [{
           id: 10,
           name: 'Test Platform'
         }]
@@ -101,15 +101,8 @@ module App.Platforms {
     });
 
     it('create() should log an error if a similar object exists', function() {
-      let origLength = ctrl.platforms.length;
       let testPostData = JSON.stringify({
         name: 'Test Platform'
-      });
-      let testPostResponse = JSON.stringify({
-        platform: [{
-          id: 10,
-          name: 'Test Platform'
-        }]
       });
 
       $httpBackend.when('GET', '/static/views/home.html').respond(200);

@@ -1,8 +1,8 @@
 var App;
 (function (App) {
-    var Games;
-    (function (Games) {
-        angular.module('gameon').controller('PlatformsCtrl', [
+    var Platforms;
+    (function (Platforms) {
+        angular.module('platforms').controller('PlatformsCtrl', [
             '$state', 'platformsSvc',
             function ($state, platformsSvc) {
                 var vm = this;
@@ -60,5 +60,5 @@ var App;
                 }
             }
         ]);
-    })(Games = App.Games || (App.Games = {}));
+    })(Platforms = App.Platforms || (App.Platforms = {}));
 })(App || (App = {}));

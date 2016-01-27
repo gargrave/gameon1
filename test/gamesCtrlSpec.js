@@ -1,7 +1,7 @@
 var App;
 (function (App) {
-    var Games;
-    (function (Games) {
+    var Tests;
+    (function (Tests) {
         describe('GamesCtrl', function () {
             var sampleGameData = [
                 {
@@ -38,5 +38,5 @@ var App;
                 expect(ctrl.working).toBeFalsy();
             });
         });
-    })(Games = App.Games || (App.Games = {}));
+    })(Tests = App.Tests || (App.Tests = {}));
 })(App || (App = {}));

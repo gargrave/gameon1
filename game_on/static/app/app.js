@@ -3,13 +3,13 @@ var App;
     var Config;
     (function (Config) {
         angular.module('gameon', [
-            'ui.router'
+            'ui.router',
+            'platforms'
         ])
             .config([
             '$interpolateProvider', '$httpProvider',
             '$stateProvider', '$urlRouterProvider',
             function ($interpolateProvider, $httpProvider, $stateProvider, $urlRouterProvider) {
-                $urlRouterProvider.otherwise('/');
                 $stateProvider
                     .state('home', {
                     url: '/',
@@ -24,17 +24,8 @@ var App;
                     url: '/games/add',
                     templateUrl: '/static/views/games/create.html',
                     controller: 'GamesCtrl as ctrl'
-                })
-                    .state('platforms-list', {
-                    url: '/platforms',
-                    templateUrl: '/static/views/platforms/list.html',
-                    controller: 'PlatformsCtrl as ctrl'
-                })
-                    .state('platforms-create', {
-                    url: '/platforms/add',
-                    templateUrl: '/static/views/platforms/create.html',
-                    controller: 'PlatformsCtrl as ctrl'
                 });
+                $urlRouterProvider.otherwise('/');
                 $interpolateProvider.startSymbol('{A');
                 $interpolateProvider.endSymbol('A}');
                 $httpProvider.defaults.xsrfCookieName = 'csrftoken';

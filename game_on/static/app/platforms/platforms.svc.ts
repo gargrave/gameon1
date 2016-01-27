@@ -1,22 +1,40 @@
 /// <reference path="../../../../typings/tsd.d.ts" />
 module App.Platforms {
+
+  /*=============================================
+   = interface definitions
+   =============================================*/
+
+  export interface IPlatform {
+    name: string;
+  }
+
+  export interface IPlatformData {
+    platforms: any;
+  }
+
+  /*=============================================
+   = class implementation
+   =============================================*/
+
   export class PlatformsSvc {
 
-    private platforms;
+    private platforms: IPlatform[];
 
-    constructor(protected $http, protected $q) {
+    constructor(protected $http: ng.IHttpService,
+                protected $q: ng.IQService) {
     }
 
-    query() {
+    query(): ng.IPromise<IPlatform[]> {
       const self = this;
-      let deferred = self.$q.defer();
+      let deferred: ng.IDeferred<IPlatform[]> = self.$q.defer();
 
       if (self.platforms) {
         deferred.resolve(self.platforms);
       } else {
         self.$http.get('/api/platforms')
           .then(function(res) {
-            self.platforms = res.data.platforms;
+            self.platforms = (<IPlatformData>res.data).platforms;
             deferred.resolve(self.platforms);
           }, function(err) {
             deferred.reject(err.data);
@@ -25,13 +43,13 @@ module App.Platforms {
       return deferred.promise;
     };
 
-    save(data) {
+    save(data): ng.IPromise<IPlatform> {
       const self = this;
-      let deferred = self.$q.defer();
+      let deferred: ng.IDeferred<IPlatform> = self.$q.defer();
 
       self.$http.post('/api/platforms/add', data)
         .then(function(res) {
-          deferred.resolve(res.data.platform[0]);
+          deferred.resolve((<IPlatformData>res.data).platforms[0]);
         }, function(err) {
           deferred.reject(err);
         });
@@ -39,7 +57,7 @@ module App.Platforms {
     };
   }
 
-  angular.module('gameon').service('platformsSvc', [
+  angular.module('platforms').service('platformsSvc', [
     '$http', '$q',
     PlatformsSvc]);
 }

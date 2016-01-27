@@ -30,7 +30,7 @@ var App;
                 var deferred = self.$q.defer();
                 self.$http.post('/api/platforms/add', data)
                     .then(function (res) {
-                    deferred.resolve(res.data.platform[0]);
+                    deferred.resolve(res.data.platforms[0]);
                 }, function (err) {
                     deferred.reject(err);
                 });
@@ -40,7 +40,7 @@ var App;
             return PlatformsSvc;
         })();
         Platforms.PlatformsSvc = PlatformsSvc;
-        angular.module('gameon').service('platformsSvc', [
+        angular.module('platforms').service('platformsSvc', [
             '$http', '$q',
             PlatformsSvc]);
     })(Platforms = App.Platforms || (App.Platforms = {}));

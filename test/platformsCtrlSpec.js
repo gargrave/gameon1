@@ -1,7 +1,7 @@
 var App;
 (function (App) {
-    var Platforms;
-    (function (Platforms) {
+    var Tests;
+    (function (Tests) {
         describe('PlatformsCtrl', function () {
             var emptyPlatformData = { name: '' };
             var samplePlatformData = [
@@ -50,7 +50,7 @@ var App;
                     name: 'Test Platform'
                 });
                 var testPostResponse = JSON.stringify({
-                    platform: [{
+                    platforms: [{
                             id: 10,
                             name: 'Test Platform'
                         }]
@@ -69,15 +69,8 @@ var App;
                 expect(ctrl.platforms.length).toBe(origLength + 1);
             });
             it('create() should log an error if a similar object exists', function () {
-                var origLength = ctrl.platforms.length;
                 var testPostData = JSON.stringify({
                     name: 'Test Platform'
-                });
-                var testPostResponse = JSON.stringify({
-                    platform: [{
-                            id: 10,
-                            name: 'Test Platform'
-                        }]
                 });
                 $httpBackend.when('GET', '/static/views/home.html').respond(200);
                 ctrl.platforms.push(testPostData);
@@ -111,5 +104,5 @@ var App;
                 expect(ctrl.error).toBe(testError.statusText);
             });
         });
-    })(Platforms = App.Platforms || (App.Platforms = {}));
+    })(Tests = App.Tests || (App.Tests = {}));
 })(App || (App = {}));

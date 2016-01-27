@@ -1,7 +1,8 @@
 /// <reference path="../../../typings/tsd.d.ts" />
 module App.Config {
   angular.module('gameon', [
-      'ui.router'
+      'ui.router',
+      'platforms'
     ])
 
     .config([
@@ -13,8 +14,6 @@ module App.Config {
         /*==============================================
          = ngRoute config
          ==============================================*/
-
-        $urlRouterProvider.otherwise('/');
         $stateProvider
           .state('home', {
             url: '/',
@@ -32,33 +31,19 @@ module App.Config {
             url: '/games/add',
             templateUrl: '/static/views/games/create.html',
             controller: 'GamesCtrl as ctrl'
-          })
-          /*=============================================
-           = platforms states
-           =============================================*/
-          .state('platforms-list', {
-            url: '/platforms',
-            templateUrl: '/static/views/platforms/list.html',
-            controller: 'PlatformsCtrl as ctrl'
-          })
-          .state('platforms-create', {
-            url: '/platforms/add',
-            templateUrl: '/static/views/platforms/create.html',
-            controller: 'PlatformsCtrl as ctrl'
           });
+        $urlRouterProvider.otherwise('/');
 
         /*==============================================
          = set up custom interpolation handlebars, so that
          = NG can work together with Django templates
          ==============================================*/
-
         $interpolateProvider.startSymbol('{A');
         $interpolateProvider.endSymbol('A}');
 
         /*==============================================
          = set up Django CSRF token for NG's AJAX calls
          ==============================================*/
-
         $httpProvider.defaults.xsrfCookieName = 'csrftoken';
         $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
         // Use x-www-form-urlencoded Content-Type

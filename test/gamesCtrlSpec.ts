@@ -1,5 +1,5 @@
 /// <reference path="../typings/tsd.d.ts" />
-module App.Games {
+module App.Tests {
   describe('GamesCtrl', function() {
 
     let sampleGameData = [

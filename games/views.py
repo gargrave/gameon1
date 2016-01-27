@@ -53,4 +53,4 @@ def platform_create(request):
         platform = Platform(name=request.POST.get('name'))
         platform.save()
         res_data = [{'name': platform.name}]
-        return JsonResponse({'platform': res_data})
+        return JsonResponse({'platforms': res_data})
