@@ -7,7 +7,7 @@ module App.Games {
       const vm = this;
       // whether we are currently working
       vm.working = false;
-      // the list of platforms on the server
+      // the list of entries on the server
       vm.games = [];
       // the data for a new platform being created
       vm.newGame = {};

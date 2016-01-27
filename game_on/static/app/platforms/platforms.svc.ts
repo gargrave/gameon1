@@ -1,12 +1,7 @@
 /// <reference path="../../../../typings/tsd.d.ts" />
 module App.Platforms {
 
-  /*=============================================
-   = interface definitions
-   =============================================*/
-  export interface IPlatform {
-    name: string;
-  }
+  import IPlatform = App.Platforms.IPlatform;
 
   /*=============================================
    = class implementation

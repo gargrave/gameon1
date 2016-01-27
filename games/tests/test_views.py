@@ -22,18 +22,18 @@ class GamesViewsTest(TestCase):
         self.assertEqual(res.status_code, 200)
         self.assertEqual(type(res), JsonResponse)
         json_data = json.loads(str(res.content, encoding='utf8'))
-        self.assertIn('games', json_data)
+        self.assertIn('entries', json_data)
 
     def test_platforms_list_view(self):
         """
         The 'platforms_list' view should return a JsonResponse with
-        an array of platform data names 'platforms'.
+        an array of platform data names 'entries'.
         """
         res = self.client.get(reverse('api:platforms_list'))
         self.assertEqual(res.status_code, 200)
         self.assertEqual(type(res), JsonResponse)
         json_data = json.loads(str(res.content, encoding='utf8'))
-        self.assertIn('platforms', json_data)
+        self.assertIn('entries', json_data)
 
     def test_platform_create_view(self):
         url = reverse('api:platform_create')

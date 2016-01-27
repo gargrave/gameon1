@@ -2,21 +2,22 @@ var App;
 (function (App) {
     var Platforms;
     (function (Platforms) {
-        angular.module('platforms', [
+        var moduleName = "platforms";
+        angular.module("" + moduleName, [
             'ui.router'
         ])
             .config(['$stateProvider',
             function ($stateProvider) {
                 $stateProvider
-                    .state('platforms-list', {
-                    url: '/platforms',
-                    templateUrl: '/static/views/platforms/list.html',
-                    controller: 'PlatformsCtrl as ctrl'
+                    .state(moduleName + "-list", {
+                    url: "/" + moduleName,
+                    templateUrl: "/static/views/" + moduleName + "/list.html",
+                    controller: "PlatformsCtrl as ctrl"
                 })
-                    .state('platforms-create', {
-                    url: '/platforms/create',
-                    templateUrl: '/static/views/platforms/create.html',
-                    controller: 'PlatformsCtrl as ctrl'
+                    .state(moduleName + "-create", {
+                    url: "/" + moduleName + "/create",
+                    templateUrl: "/static/views/" + moduleName + "/create.html",
+                    controller: "PlatformsCtrl as ctrl"
                 });
             }
         ]);

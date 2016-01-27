@@ -27,7 +27,7 @@ def games_list(request):
 
 def platforms_list(request):
     """
-    Returns a list of all platforms
+    Returns a list of all entries
     :param request: HttpRequest
     """
     all_platforms = Platform.objects.all()

@@ -1,64 +1,38 @@
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 var App;
 (function (App) {
     var Platforms;
     (function (Platforms) {
+        var PlatformsCtrl = (function (_super) {
+            __extends(PlatformsCtrl, _super);
+            function PlatformsCtrl($state, dataSvc) {
+                _super.call(this, $state, dataSvc, 'platform');
+            }
+            PlatformsCtrl.prototype.defaultEntry = function () {
+                return {
+                    name: ''
+                };
+            };
+            PlatformsCtrl.prototype.preValidate = function () {
+                var self = this;
+                var existing = _.find(self.entries, function (p) {
+                    var plat = p;
+                    return plat.name === self.newEntry.name;
+                });
+                if (existing) {
+                    self.error = 'A platform with an identical name already exists.';
+                }
+                return existing === undefined;
+            };
+            return PlatformsCtrl;
+        })(App.Common.GenericController);
+        Platforms.PlatformsCtrl = PlatformsCtrl;
         angular.module('platforms').controller('PlatformsCtrl', [
             '$state', 'platformsSvc',
-            function ($state, platformsSvc) {
-                var vm = this;
-                vm.working = false;
-                vm.platforms = [];
-                vm.newPlatform = {};
-                vm.error = '';
-                vm.find = function () {
-                    vm.error = '';
-                    vm.working = true;
-                    platformsSvc.query()
-                        .then(function (res) {
-                        vm.platforms = res;
-                    }, function (err) {
-                        vm.error = err.statusText;
-                    })
-                        .finally(function () {
-                        vm.working = false;
-                    });
-                };
-                vm.create = function () {
-                    vm.error = '';
-                    if (preValidate()) {
-                        vm.working = true;
-                        platformsSvc.save(vm.newPlatform)
-                            .then(function (res) {
-                            vm.platforms.push(res);
-                            vm.initCreateView();
-                            $state.go('platforms-list');
-                        }, function (err) {
-                            vm.error = err.statusText;
-                        })
-                            .finally(function () {
-                            vm.working = false;
-                        });
-                    }
-                };
-                vm.initCreateView = function () {
-                    if (vm.platforms.length === 0) {
-                        vm.find();
-                    }
-                    vm.newPlatform = {
-                        name: ''
-                    };
-                };
-                function preValidate() {
-                    var existing = _.find(vm.platforms, function (p) {
-                        var plat = p;
-                        return plat.name === vm.newPlatform.name;
-                    });
-                    if (existing) {
-                        vm.error = 'A platform with an identical name already exists.';
-                    }
-                    return existing === undefined;
-                }
-            }
-        ]);
+            PlatformsCtrl]);
     })(Platforms = App.Platforms || (App.Platforms = {}));
 })(App || (App = {}));

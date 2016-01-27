@@ -19,7 +19,7 @@ module App.Config {
           .state('home', {
             url: '/',
             templateUrl: '/static/views/home.html'
-          })
+          });
         $urlRouterProvider.otherwise('/');
 
         /*==============================================

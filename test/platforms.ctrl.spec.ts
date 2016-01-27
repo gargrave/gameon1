@@ -2,6 +2,7 @@
 module App.Tests {
   describe('PlatformsCtrl', function() {
 
+    const moduleName = 'platform';
     let emptyPlatformData = {name: ''};
 
     let samplePlatformData = [
@@ -34,16 +35,16 @@ module App.Tests {
      = query all test
      =============================================*/
 
-    it('find() should load the list of platforms', function() {
+    it('find() should load the list of entries', function() {
       $httpBackend.when('GET', '/static/views/home.html').respond(200);
-      $httpBackend.expectGET('/api/platforms')
+      $httpBackend.expectGET(`/api/${moduleName}s`)
         .respond({entries: samplePlatformData});
       ctrl.find();
       expect(ctrl.working).toBeTruthy();
       $httpBackend.flush();
 
-      expect(ctrl.platforms.length).toBeGreaterThan(0);
-      expect(ctrl.platforms).toEqual(samplePlatformData);
+      expect(ctrl.entries.length).toBeGreaterThan(0);
+      expect(ctrl.entries).toEqual(samplePlatformData);
       expect(ctrl.working).toBeFalsy();
     });
 
@@ -52,24 +53,24 @@ module App.Tests {
      =============================================*/
 
     it('initCreateView() should initialize the new object ' +
-      'and pre-populate the existing platforms list', function() {
+      'and pre-populate the existing entries list', function() {
       $httpBackend.when('GET', '/static/views/home.html').respond(200);
-      $httpBackend.expectGET('/api/platforms')
+      $httpBackend.expectGET(`/api/${moduleName}s`)
         .respond({entries: samplePlatformData});
-      ctrl.newPlatform.name = 'Not an empty name';
+      ctrl.newEntry.name = 'Not an empty name';
       ctrl.initCreateView();
       // ctrl should be working
       expect(ctrl.working).toBeTruthy();
       $httpBackend.flush();
 
-      // ctrl.newPlatform should be empty now
-      expect(ctrl.newPlatform).toEqual(emptyPlatformData);
+      // ctrl.newEntry should be empty now
+      expect(ctrl.newEntry).toEqual(emptyPlatformData);
       // ctrl.working should be false
       expect(ctrl.working).toBeFalsy();
     });
 
     it('create() should successfully save a new platform object', function() {
-      let origLength = ctrl.platforms.length;
+      let origLength = ctrl.entries.length;
       let testPostData = JSON.stringify({
         name: 'Test Platform'
       });
@@ -81,23 +82,23 @@ module App.Tests {
       });
 
       $httpBackend.when('GET', '/static/views/home.html').respond(200);
-      $httpBackend.expectPOST('/api/platforms/create', testPostData)
+      $httpBackend.expectPOST(`/api/${moduleName}s/create`, testPostData)
         .respond(201, testPostResponse);
-      $httpBackend.expectGET('/static/views/platforms/list.html').respond(200);
-      ctrl.newPlatform = testPostData;
+      $httpBackend.expectGET(`/static/views/${moduleName}s/list.html`).respond(200);
+      ctrl.newEntry = testPostData;
       ctrl.create();
       // ctrl should be working
       expect(ctrl.working).toBeTruthy();
       $httpBackend.flush();
 
       // we should be back on the list page
-      expect($location.url()).toBe('/platforms');
-      // ctrl.newPlatform should be empty now
-      expect(ctrl.newPlatform).toEqual(emptyPlatformData);
+      expect($location.url()).toBe(`/${moduleName}s`);
+      // ctrl.newEntry should be empty now
+      expect(ctrl.newEntry).toEqual(emptyPlatformData);
       // ctrl.working should be false
       expect(ctrl.working).toBeFalsy();
-      // ctrl.platforms.length should be one
-      expect(ctrl.platforms.length).toBe(origLength + 1);
+      // ctrl.entries.length should be one
+      expect(ctrl.entries.length).toBe(origLength + 1);
     });
 
     it('create() should log an error if a similar object exists', function() {
@@ -106,15 +107,15 @@ module App.Tests {
       });
 
       $httpBackend.when('GET', '/static/views/home.html').respond(200);
-      ctrl.platforms.push(testPostData);
-      ctrl.newPlatform = testPostData;
+      ctrl.entries.push(testPostData);
+      ctrl.newEntry = testPostData;
       ctrl.create();
       $httpBackend.flush();
 
       // ctrl.working should be false
       expect(ctrl.working).toBeFalsy();
-      // ctrl.platforms.length should be unchanged
-      expect(ctrl.platforms.length).toBe(1);
+      // ctrl.entries.length should be unchanged
+      expect(ctrl.entries.length).toBe(1);
       // should now have an error message
       expect(ctrl.error.length).toBeGreaterThan(0);
     });
@@ -124,7 +125,7 @@ module App.Tests {
      =============================================*/
 
     it('create() should handle error responses properly', function() {
-      let origLength = ctrl.platforms.length;
+      let origLength = ctrl.entries.length;
       let testPostData = JSON.stringify({
         name: 'Test Platform'
       });
@@ -133,11 +134,11 @@ module App.Tests {
       };
 
       $httpBackend.when('GET', '/static/views/home.html').respond(200);
-      $httpBackend.expectPOST('/api/platforms/create', testPostData)
+      $httpBackend.expectPOST(`/api/${moduleName}s/create`, testPostData)
         .respond(function() {
           return [400, '', {}, 'Test error message'];
         });
-      ctrl.newPlatform = testPostData;
+      ctrl.newEntry = testPostData;
       ctrl.create();
       // should have no errors and not be working yet
       expect(ctrl.working).toBeTruthy();
@@ -146,8 +147,8 @@ module App.Tests {
 
       // ctrl.working should be false
       expect(ctrl.working).toBeFalsy();
-      // ctrl.platforms.length should be the same as before
-      expect(ctrl.platforms.length).toBe(origLength);
+      // ctrl.entries.length should be the same as before
+      expect(ctrl.entries.length).toBe(origLength);
       // the error message should not be empty
       expect(ctrl.error).toBe(testError.statusText);
     });

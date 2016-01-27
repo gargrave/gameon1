@@ -3,6 +3,7 @@ var App;
     var Tests;
     (function (Tests) {
         describe('PlatformsCtrl', function () {
+            var moduleName = 'platform';
             var emptyPlatformData = { name: '' };
             var samplePlatformData = [
                 { name: 'Xbox One' },
@@ -21,31 +22,31 @@ var App;
                 $httpBackend.verifyNoOutstandingExpectation();
                 $httpBackend.verifyNoOutstandingRequest();
             });
-            it('find() should load the list of platforms', function () {
+            it('find() should load the list of entries', function () {
                 $httpBackend.when('GET', '/static/views/home.html').respond(200);
-                $httpBackend.expectGET('/api/platforms')
+                $httpBackend.expectGET("/api/" + moduleName + "s")
                     .respond({ entries: samplePlatformData });
                 ctrl.find();
                 expect(ctrl.working).toBeTruthy();
                 $httpBackend.flush();
-                expect(ctrl.platforms.length).toBeGreaterThan(0);
-                expect(ctrl.platforms).toEqual(samplePlatformData);
+                expect(ctrl.entries.length).toBeGreaterThan(0);
+                expect(ctrl.entries).toEqual(samplePlatformData);
                 expect(ctrl.working).toBeFalsy();
             });
             it('initCreateView() should initialize the new object ' +
-                'and pre-populate the existing platforms list', function () {
+                'and pre-populate the existing entries list', function () {
                 $httpBackend.when('GET', '/static/views/home.html').respond(200);
-                $httpBackend.expectGET('/api/platforms')
+                $httpBackend.expectGET("/api/" + moduleName + "s")
                     .respond({ entries: samplePlatformData });
-                ctrl.newPlatform.name = 'Not an empty name';
+                ctrl.newEntry.name = 'Not an empty name';
                 ctrl.initCreateView();
                 expect(ctrl.working).toBeTruthy();
                 $httpBackend.flush();
-                expect(ctrl.newPlatform).toEqual(emptyPlatformData);
+                expect(ctrl.newEntry).toEqual(emptyPlatformData);
                 expect(ctrl.working).toBeFalsy();
             });
             it('create() should successfully save a new platform object', function () {
-                var origLength = ctrl.platforms.length;
+                var origLength = ctrl.entries.length;
                 var testPostData = JSON.stringify({
                     name: 'Test Platform'
                 });
@@ -56,33 +57,33 @@ var App;
                         }]
                 });
                 $httpBackend.when('GET', '/static/views/home.html').respond(200);
-                $httpBackend.expectPOST('/api/platforms/create', testPostData)
+                $httpBackend.expectPOST("/api/" + moduleName + "s/create", testPostData)
                     .respond(201, testPostResponse);
-                $httpBackend.expectGET('/static/views/platforms/list.html').respond(200);
-                ctrl.newPlatform = testPostData;
+                $httpBackend.expectGET("/static/views/" + moduleName + "s/list.html").respond(200);
+                ctrl.newEntry = testPostData;
                 ctrl.create();
                 expect(ctrl.working).toBeTruthy();
                 $httpBackend.flush();
-                expect($location.url()).toBe('/platforms');
-                expect(ctrl.newPlatform).toEqual(emptyPlatformData);
+                expect($location.url()).toBe("/" + moduleName + "s");
+                expect(ctrl.newEntry).toEqual(emptyPlatformData);
                 expect(ctrl.working).toBeFalsy();
-                expect(ctrl.platforms.length).toBe(origLength + 1);
+                expect(ctrl.entries.length).toBe(origLength + 1);
             });
             it('create() should log an error if a similar object exists', function () {
                 var testPostData = JSON.stringify({
                     name: 'Test Platform'
                 });
                 $httpBackend.when('GET', '/static/views/home.html').respond(200);
-                ctrl.platforms.push(testPostData);
-                ctrl.newPlatform = testPostData;
+                ctrl.entries.push(testPostData);
+                ctrl.newEntry = testPostData;
                 ctrl.create();
                 $httpBackend.flush();
                 expect(ctrl.working).toBeFalsy();
-                expect(ctrl.platforms.length).toBe(1);
+                expect(ctrl.entries.length).toBe(1);
                 expect(ctrl.error.length).toBeGreaterThan(0);
             });
             it('create() should handle error responses properly', function () {
-                var origLength = ctrl.platforms.length;
+                var origLength = ctrl.entries.length;
                 var testPostData = JSON.stringify({
                     name: 'Test Platform'
                 });
@@ -90,17 +91,17 @@ var App;
                     statusText: 'Test error message'
                 };
                 $httpBackend.when('GET', '/static/views/home.html').respond(200);
-                $httpBackend.expectPOST('/api/platforms/create', testPostData)
+                $httpBackend.expectPOST("/api/" + moduleName + "s/create", testPostData)
                     .respond(function () {
                     return [400, '', {}, 'Test error message'];
                 });
-                ctrl.newPlatform = testPostData;
+                ctrl.newEntry = testPostData;
                 ctrl.create();
                 expect(ctrl.working).toBeTruthy();
                 expect(ctrl.error).toBe('');
                 $httpBackend.flush();
                 expect(ctrl.working).toBeFalsy();
-                expect(ctrl.platforms.length).toBe(origLength);
+                expect(ctrl.entries.length).toBe(origLength);
                 expect(ctrl.error).toBe(testError.statusText);
             });
         });
