@@ -1,9 +1,9 @@
 /// <reference path="../../../../typings/tsd.d.ts" />
 module App.Games {
   angular.module('gameon').controller('PlatformsCtrl', [
-    'platformsSvc',
+    '$state', 'platformsSvc',
 
-    function(platformsSvc) {
+    function($state, platformsSvc) {
       const vm = this;
       // whether we are currently working
       vm.working = false;
@@ -41,15 +41,19 @@ module App.Games {
           .then(function(res) {
             // add the new platform into the local list
             vm.platforms.push(res);
+            vm.initCreateView();
+            $state.go('platforms-list');
           }, function(err) {
             vm.error = err;
           })
           .finally(function() {
-            vm.initCreateView();
             vm.working = false;
           });
       };
 
+      /**
+       * Resets the 'new platform' data to default/empty state
+       */
       vm.initCreateView = function() {
         vm.newPlatform = {
           name: ''

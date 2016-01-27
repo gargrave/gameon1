@@ -19,7 +19,8 @@ var App;
                 $httpBackend.verifyNoOutstandingExpectation();
                 $httpBackend.verifyNoOutstandingRequest();
             });
-            it('should load the list of platforms', function () {
+            it('find() should load the list of platforms', function () {
+                $httpBackend.when('GET', '/static/views/home.html').respond(200);
                 $httpBackend.expectGET('/api/platforms')
                     .respond({ platforms: samplePlatformData });
                 ctrl.find();
@@ -29,9 +30,11 @@ var App;
                 expect(ctrl.platforms).toEqual(samplePlatformData);
                 expect(ctrl.working).toBeFalsy();
             });
-            it('should initialize the new object', function () {
+            it('initCreateView() should initialize the new object', function () {
+                $httpBackend.when('GET', '/static/views/home.html').respond(200);
                 ctrl.newPlatform.name = 'Not an empty name';
                 ctrl.initCreateView();
+                $httpBackend.flush();
                 expect(ctrl.newPlatform.name).toBe('');
             });
             it('create() should successfully save a new platform object', function () {
@@ -43,13 +46,15 @@ var App;
                     id: 10,
                     name: 'Test Platform'
                 });
+                $httpBackend.when('GET', '/static/views/home.html').respond(200);
                 $httpBackend.expectPOST('/api/platforms/add', testPostData)
                     .respond(201, testPostResponse);
+                $httpBackend.expectGET('/static/views/platforms/list.html').respond(200);
                 ctrl.newPlatform = testPostData;
                 ctrl.create();
                 expect(ctrl.working).toBeTruthy();
                 $httpBackend.flush();
-                expect(ctrl.newPlatform.name).toBe('');
+                expect(ctrl.newPlatform).toEqual(emptyPlatformData);
                 expect(ctrl.working).toBeFalsy();
                 expect(ctrl.platforms.length).toBe(origLength + 1);
             });
@@ -59,6 +64,7 @@ var App;
                     name: 'Test Platform'
                 });
                 var testError = 'Test error message';
+                $httpBackend.when('GET', '/static/views/home.html').respond(200);
                 $httpBackend.expectPOST('/api/platforms/add', testPostData)
                     .respond(400, testError);
                 ctrl.newPlatform = testPostData;
@@ -66,7 +72,6 @@ var App;
                 expect(ctrl.working).toBeTruthy();
                 expect(ctrl.error).toBe('');
                 $httpBackend.flush();
-                expect(ctrl.newPlatform).toEqual(emptyPlatformData);
                 expect(ctrl.working).toBeFalsy();
                 expect(ctrl.platforms.length).toBe(origLength);
                 expect(ctrl.error).toBe(testError);

@@ -3,8 +3,8 @@ var App;
     var Games;
     (function (Games) {
         angular.module('gameon').controller('PlatformsCtrl', [
-            'platformsSvc',
-            function (platformsSvc) {
+            '$state', 'platformsSvc',
+            function ($state, platformsSvc) {
                 var vm = this;
                 vm.working = false;
                 vm.platforms = [];
@@ -29,11 +29,12 @@ var App;
                     platformsSvc.save(vm.newPlatform)
                         .then(function (res) {
                         vm.platforms.push(res);
+                        vm.initCreateView();
+                        $state.go('platforms-list');
                     }, function (err) {
                         vm.error = err;
                     })
                         .finally(function () {
-                        vm.initCreateView();
                         vm.working = false;
                     });
                 };

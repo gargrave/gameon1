@@ -5,7 +5,13 @@
     <hr>
 
     <form method="POST">
-      <button class="btn btn-default">Submit</button>
+      <div class="form-group">
+        <label for="name">Name:</label>
+        <input class="form-control" type="text" id="name"
+               name="name" maxlength="100" placeholder="Platform"
+               ng-model="ctrl.newPlatform.name">
+      </div>
+      <button class="btn btn-default" ng-click="ctrl.create()">Submit</button>
     </form>
 
   </div>
