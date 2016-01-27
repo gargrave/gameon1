@@ -11,17 +11,28 @@ module App.Platforms {
 
     let ctrl;
     let $httpBackend;
+    let $location;
+
+    /*=============================================
+     = set up methods
+     =============================================*/
 
     beforeEach(angular.mock.module('gameon'));
-    beforeEach(inject(function($controller, _$httpBackend_) {
+    beforeEach(inject(function($controller, _$httpBackend_,
+                               _$location_) {
       ctrl = $controller('PlatformsCtrl');
       $httpBackend = _$httpBackend_;
+      $location = _$location_;
     }));
 
     afterEach(function() {
       $httpBackend.verifyNoOutstandingExpectation();
       $httpBackend.verifyNoOutstandingRequest();
     });
+
+    /*=============================================
+     = query all test
+     =============================================*/
 
     it('find() should load the list of platforms', function() {
       $httpBackend.when('GET', '/static/views/home.html').respond(200);
@@ -45,7 +56,7 @@ module App.Platforms {
     });
 
     /*=============================================
-     = creation tests
+     = creation test
      =============================================*/
 
     it('create() should successfully save a new platform object', function() {
@@ -67,6 +78,8 @@ module App.Platforms {
       expect(ctrl.working).toBeTruthy();
       $httpBackend.flush();
 
+      // we should be back on the list page
+      expect($location.url()).toBe('/platforms');
       // ctrl.newPlatform should be empty now
       expect(ctrl.newPlatform).toEqual(emptyPlatformData);
       // ctrl.working should be false
@@ -74,6 +87,10 @@ module App.Platforms {
       // ctrl.platforms.length should be one
       expect(ctrl.platforms.length).toBe(origLength + 1);
     });
+
+    /*=============================================
+     = creation error test
+     =============================================*/
 
     it('create() should handle error responses properly', function() {
       let origLength = ctrl.platforms.length;

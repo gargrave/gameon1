@@ -10,10 +10,12 @@ var App;
             ];
             var ctrl;
             var $httpBackend;
+            var $location;
             beforeEach(angular.mock.module('gameon'));
-            beforeEach(inject(function ($controller, _$httpBackend_) {
+            beforeEach(inject(function ($controller, _$httpBackend_, _$location_) {
                 ctrl = $controller('PlatformsCtrl');
                 $httpBackend = _$httpBackend_;
+                $location = _$location_;
             }));
             afterEach(function () {
                 $httpBackend.verifyNoOutstandingExpectation();
@@ -54,6 +56,7 @@ var App;
                 ctrl.create();
                 expect(ctrl.working).toBeTruthy();
                 $httpBackend.flush();
+                expect($location.url()).toBe('/platforms');
                 expect(ctrl.newPlatform).toEqual(emptyPlatformData);
                 expect(ctrl.working).toBeFalsy();
                 expect(ctrl.platforms.length).toBe(origLength + 1);
