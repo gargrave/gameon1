@@ -81,7 +81,7 @@ module App.Tests {
       });
 
       $httpBackend.when('GET', '/static/views/home.html').respond(200);
-      $httpBackend.expectPOST('/api/platforms/add', testPostData)
+      $httpBackend.expectPOST('/api/platforms/create', testPostData)
         .respond(201, testPostResponse);
       $httpBackend.expectGET('/static/views/platforms/list.html').respond(200);
       ctrl.newPlatform = testPostData;
@@ -133,7 +133,7 @@ module App.Tests {
       };
 
       $httpBackend.when('GET', '/static/views/home.html').respond(200);
-      $httpBackend.expectPOST('/api/platforms/add', testPostData)
+      $httpBackend.expectPOST('/api/platforms/create', testPostData)
         .respond(function() {
           return [400, '', {}, 'Test error message'];
         });

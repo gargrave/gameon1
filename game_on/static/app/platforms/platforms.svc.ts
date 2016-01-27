@@ -47,7 +47,7 @@ module App.Platforms {
       const self = this;
       let deferred: ng.IDeferred<IPlatform> = self.$q.defer();
 
-      self.$http.post('/api/platforms/add', data)
+      self.$http.post('/api/platforms/create', data)
         .then(function(res) {
           deferred.resolve((<IPlatformData>res.data).platforms[0]);
         }, function(err) {

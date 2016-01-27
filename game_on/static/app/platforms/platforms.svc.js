@@ -28,7 +28,7 @@ var App;
             PlatformsSvc.prototype.save = function (data) {
                 var self = this;
                 var deferred = self.$q.defer();
-                self.$http.post('/api/platforms/add', data)
+                self.$http.post('/api/platforms/create', data)
                     .then(function (res) {
                     deferred.resolve(res.data.platforms[0]);
                 }, function (err) {
