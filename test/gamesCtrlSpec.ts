@@ -23,7 +23,7 @@ module App.Games {
     let scope;
     let $httpBackend;
 
-    beforeEach(module('gameon'));
+    beforeEach(angular.mock.module('gameon'));
     beforeEach(inject(function($controller, $rootScope, _$httpBackend_) {
       ctrl = $controller('GamesCtrl');
       scope = $rootScope.$new();

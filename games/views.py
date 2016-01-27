@@ -13,6 +13,7 @@ def games_list(request):
     games = []
     for game in all_games:
         games.append({
+            'id': game.pk,
             'name': game.name,
             'platform': str(game.platform),
             'start_date': game.start_date,
@@ -31,6 +32,7 @@ def platforms_list(request):
     platforms = []
     for platform in all_platforms:
         platforms.append({
+            'id': platform.pk,
             'name': platform.name
         })
     return JsonResponse({'platforms': platforms})

@@ -11,6 +11,18 @@ var App;
                     $http.get('/api/platforms')
                         .then(function (res) {
                         deferred.resolve(res.data);
+                    }, function (err) {
+                        deferred.reject(err.data);
+                    });
+                    return deferred.promise;
+                };
+                vm.save = function (data) {
+                    var deferred = $q.defer();
+                    $http.post('/api/platforms/add', data)
+                        .then(function (res) {
+                        deferred.resolve(res.data);
+                    }, function (err) {
+                        deferred.reject(err.data);
                     });
                     return deferred.promise;
                 };
