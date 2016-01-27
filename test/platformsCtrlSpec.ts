@@ -100,6 +100,32 @@ module App.Platforms {
       expect(ctrl.platforms.length).toBe(origLength + 1);
     });
 
+    it('create() should log an error if a similar object exists', function() {
+      let origLength = ctrl.platforms.length;
+      let testPostData = JSON.stringify({
+        name: 'Test Platform'
+      });
+      let testPostResponse = JSON.stringify({
+        platform: [{
+          id: 10,
+          name: 'Test Platform'
+        }]
+      });
+
+      $httpBackend.when('GET', '/static/views/home.html').respond(200);
+      ctrl.platforms.push(testPostData);
+      ctrl.newPlatform = testPostData;
+      ctrl.create();
+      $httpBackend.flush();
+
+      // ctrl.working should be false
+      expect(ctrl.working).toBeFalsy();
+      // ctrl.platforms.length should be unchanged
+      expect(ctrl.platforms.length).toBe(1);
+      // should now have an error message
+      expect(ctrl.error.length).toBeGreaterThan(0);
+    });
+
     /*=============================================
      = creation error test
      =============================================*/

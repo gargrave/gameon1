@@ -1,5 +1,10 @@
 /// <reference path="../../../../typings/tsd.d.ts" />
 module App.Games {
+
+  export interface IPlatform {
+    name: string;
+  }
+
   angular.module('gameon').controller('PlatformsCtrl', [
     '$state', 'platformsSvc',
 
@@ -36,19 +41,21 @@ module App.Games {
        */
       vm.create = function() {
         vm.error = '';
-        vm.working = true;
-        platformsSvc.save(vm.newPlatform)
-          .then(function(res) {
-            // add the new platform into the local list
-            vm.platforms.push(res);
-            vm.initCreateView();
-            $state.go('platforms-list');
-          }, function(err) {
-            vm.error = err.statusText;
-          })
-          .finally(function() {
-            vm.working = false;
-          });
+        if (preValidate()) {
+          vm.working = true;
+          platformsSvc.save(vm.newPlatform)
+            .then(function(res) {
+              // add the new platform into the local list
+              vm.platforms.push(res);
+              vm.initCreateView();
+              $state.go('platforms-list');
+            }, function(err) {
+              vm.error = err.statusText;
+            })
+            .finally(function() {
+              vm.working = false;
+            });
+        }
       };
 
       /**
@@ -63,6 +70,18 @@ module App.Games {
           name: ''
         };
       };
+
+      function preValidate() {
+        // check for existing platforms with this name
+        let existing = _.find(vm.platforms, function(p) {
+          let plat: IPlatform = <IPlatform>p;
+          return plat.name === vm.newPlatform.name;
+        });
+        if (existing) {
+          vm.error = 'A platform with an identical name already exists.';
+        }
+        return existing === undefined;
+      }
     }
   ]);
 }

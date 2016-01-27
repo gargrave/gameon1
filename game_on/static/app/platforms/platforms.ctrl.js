@@ -25,18 +25,20 @@ var App;
                 };
                 vm.create = function () {
                     vm.error = '';
-                    vm.working = true;
-                    platformsSvc.save(vm.newPlatform)
-                        .then(function (res) {
-                        vm.platforms.push(res);
-                        vm.initCreateView();
-                        $state.go('platforms-list');
-                    }, function (err) {
-                        vm.error = err.statusText;
-                    })
-                        .finally(function () {
-                        vm.working = false;
-                    });
+                    if (preValidate()) {
+                        vm.working = true;
+                        platformsSvc.save(vm.newPlatform)
+                            .then(function (res) {
+                            vm.platforms.push(res);
+                            vm.initCreateView();
+                            $state.go('platforms-list');
+                        }, function (err) {
+                            vm.error = err.statusText;
+                        })
+                            .finally(function () {
+                            vm.working = false;
+                        });
+                    }
                 };
                 vm.initCreateView = function () {
                     if (vm.platforms.length === 0) {
@@ -46,6 +48,16 @@ var App;
                         name: ''
                     };
                 };
+                function preValidate() {
+                    var existing = _.find(vm.platforms, function (p) {
+                        var plat = p;
+                        return plat.name === vm.newPlatform.name;
+                    });
+                    if (existing) {
+                        vm.error = 'A platform with an identical name already exists.';
+                    }
+                    return existing === undefined;
+                }
             }
         ]);
     })(Games = App.Games || (App.Games = {}));
