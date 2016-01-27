@@ -15,7 +15,7 @@ class Platform(models.Model):
 
 
 class Game(models.Model):
-    name = models.CharField(max_length=100, unique=True)
+    name = models.CharField(max_length=100)
     platform = models.ForeignKey(Platform)
     start_date = models.DateField()
     end_date = models.DateField()

@@ -1,7 +1,8 @@
+from django.core.exceptions import ValidationError
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.http import require_POST
 
-from .forms import PlatformForm
+from .forms import GameForm, PlatformForm
 from .models import Game, Platform
 
 
@@ -23,6 +24,35 @@ def games_list(request):
             'finished': game.finished
         })
     return JsonResponse({'entries': games})
+
+
+@require_POST
+def game_create(request):
+    """
+    Creates a new Game and returns the new object
+    :param request:  HttpRequest
+    """
+    try:
+        data = request.POST
+        game = Game(
+            name=data.get('name'),
+            platform=Platform.objects.get(name=data.get('platform')),
+            start_date=data.get('startDate'),
+            end_date=data.get('endDate'),
+            finished=data.get('finished')
+        )
+        game.save()
+        res_data = [{
+            'id': game.pk,
+            'name': game.name,
+            'platform': str(game.platform),
+            'startDate': game.start_date,
+            'endDate': game.end_date,
+            'finished': game.finished
+        }]
+        return JsonResponse({'entries': res_data})
+    except ValidationError:
+        return HttpResponse('The data submitted could not be validated.', status=400)
 
 
 def platforms_list(request):
@@ -48,7 +78,7 @@ def platform_create(request):
     """
     form = PlatformForm(data=request.POST)
     if not form.is_valid():
-        return HttpResponse(status=400)
+        return HttpResponse('The data submitted could not be validated.', status=400)
     else:
         platform = Platform(name=request.POST.get('name'))
         platform.save()
