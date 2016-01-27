@@ -24,7 +24,7 @@ var App;
             it('find() should load the list of platforms', function () {
                 $httpBackend.when('GET', '/static/views/home.html').respond(200);
                 $httpBackend.expectGET('/api/platforms')
-                    .respond({ platforms: samplePlatformData });
+                    .respond({ entries: samplePlatformData });
                 ctrl.find();
                 expect(ctrl.working).toBeTruthy();
                 $httpBackend.flush();
@@ -36,7 +36,7 @@ var App;
                 'and pre-populate the existing platforms list', function () {
                 $httpBackend.when('GET', '/static/views/home.html').respond(200);
                 $httpBackend.expectGET('/api/platforms')
-                    .respond({ platforms: samplePlatformData });
+                    .respond({ entries: samplePlatformData });
                 ctrl.newPlatform.name = 'Not an empty name';
                 ctrl.initCreateView();
                 expect(ctrl.working).toBeTruthy();
@@ -50,7 +50,7 @@ var App;
                     name: 'Test Platform'
                 });
                 var testPostResponse = JSON.stringify({
-                    platforms: [{
+                    entries: [{
                             id: 10,
                             name: 'Test Platform'
                         }]

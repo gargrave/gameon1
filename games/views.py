@@ -37,7 +37,7 @@ def platforms_list(request):
             'id': platform.pk,
             'name': platform.name
         })
-    return JsonResponse({'platforms': platforms})
+    return JsonResponse({'entries': platforms})
 
 
 @require_POST
@@ -53,4 +53,4 @@ def platform_create(request):
         platform = Platform(name=request.POST.get('name'))
         platform.save()
         res_data = [{'name': platform.name}]
-        return JsonResponse({'platforms': res_data})
+        return JsonResponse({'entries': res_data})

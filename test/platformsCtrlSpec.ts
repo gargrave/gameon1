@@ -37,7 +37,7 @@ module App.Tests {
     it('find() should load the list of platforms', function() {
       $httpBackend.when('GET', '/static/views/home.html').respond(200);
       $httpBackend.expectGET('/api/platforms')
-        .respond({platforms: samplePlatformData});
+        .respond({entries: samplePlatformData});
       ctrl.find();
       expect(ctrl.working).toBeTruthy();
       $httpBackend.flush();
@@ -55,7 +55,7 @@ module App.Tests {
       'and pre-populate the existing platforms list', function() {
       $httpBackend.when('GET', '/static/views/home.html').respond(200);
       $httpBackend.expectGET('/api/platforms')
-        .respond({platforms: samplePlatformData});
+        .respond({entries: samplePlatformData});
       ctrl.newPlatform.name = 'Not an empty name';
       ctrl.initCreateView();
       // ctrl should be working
@@ -74,7 +74,7 @@ module App.Tests {
         name: 'Test Platform'
       });
       let testPostResponse = JSON.stringify({
-        platforms: [{
+        entries: [{
           id: 10,
           name: 'Test Platform'
         }]

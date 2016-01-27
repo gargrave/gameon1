@@ -16,7 +16,7 @@ var App;
                 else {
                     self.$http.get('/api/platforms')
                         .then(function (res) {
-                        self.platforms = res.data.platforms;
+                        self.platforms = res.data.entries;
                         deferred.resolve(self.platforms);
                     }, function (err) {
                         deferred.reject(err.data);
@@ -30,7 +30,7 @@ var App;
                 var deferred = self.$q.defer();
                 self.$http.post('/api/platforms/create', data)
                     .then(function (res) {
-                    deferred.resolve(res.data.platforms[0]);
+                    deferred.resolve(res.data.entries[0]);
                 }, function (err) {
                     deferred.reject(err);
                 });
