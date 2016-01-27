@@ -18,8 +18,8 @@ def games_list(request):
             'id': game.pk,
             'name': game.name,
             'platform': str(game.platform),
-            'start_date': game.start_date,
-            'end_date': game.end_date,
+            'startDate': game.start_date,
+            'endDate': game.end_date,
             'finished': game.finished
         })
     return JsonResponse({'entries': games})
