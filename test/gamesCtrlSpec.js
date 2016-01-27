@@ -29,7 +29,7 @@ var App;
                 $httpBackend = _$httpBackend_;
             }));
             it('should load the list of games', function () {
-                $httpBackend.expectGET('/api/games').respond({ games: sampleGameData });
+                $httpBackend.expectGET('/api/games').respond({ entries: sampleGameData });
                 ctrl.find();
                 expect(ctrl.working).toBeTruthy();
                 $httpBackend.flush();

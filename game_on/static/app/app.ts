@@ -2,7 +2,8 @@
 module App.Config {
   angular.module('gameon', [
       'ui.router',
-      'platforms'
+      'platforms',
+      'games'
     ])
 
     .config([
@@ -19,19 +20,6 @@ module App.Config {
             url: '/',
             templateUrl: '/static/views/home.html'
           })
-          /*=============================================
-           = games states
-           =============================================*/
-          .state('games-list', {
-            url: '/games',
-            templateUrl: '/static/views/games/list.html',
-            controller: 'GamesCtrl as ctrl'
-          })
-          .state('games-create', {
-            url: '/games/add',
-            templateUrl: '/static/views/games/create.html',
-            controller: 'GamesCtrl as ctrl'
-          });
         $urlRouterProvider.otherwise('/');
 
         /*==============================================

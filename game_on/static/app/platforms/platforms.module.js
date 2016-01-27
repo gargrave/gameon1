@@ -14,7 +14,7 @@ var App;
                     controller: 'PlatformsCtrl as ctrl'
                 })
                     .state('platforms-create', {
-                    url: '/platforms/add',
+                    url: '/platforms/create',
                     templateUrl: '/static/views/platforms/create.html',
                     controller: 'PlatformsCtrl as ctrl'
                 });

@@ -1,19 +1,25 @@
 /// <reference path="../../../../typings/tsd.d.ts" />
 module App.Games {
-  angular.module('gameon').service('gamesSvc', [
-    '$http', '$q',
 
-    function($http, $q) {
-      const vm = this;
+  /*=============================================
+   = interface definitions
+   =============================================*/
+  export interface IGame {
+    name: string;
+  }
 
-      vm.query = function() {
-        let deferred = $q.defer();
-        $http.get('/api/games')
-          .then(function(res) {
-            deferred.resolve(res.data);
-          });
-        return deferred.promise;
-      };
+  /*=============================================
+   = class implementation
+   =============================================*/
+  export class GamesSvc extends App.Common.GenericService<IGame> {
+
+    constructor(protected $http: ng.IHttpService,
+                protected $q: ng.IQService) {
+      super($http, $q, 'game');
     }
-  ]);
+  }
+
+  angular.module('games').service('gamesSvc', [
+    '$http', '$q',
+    GamesSvc]);
 }

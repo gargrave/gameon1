@@ -22,7 +22,7 @@ def games_list(request):
             'end_date': game.end_date,
             'finished': game.finished
         })
-    return JsonResponse({'games': games})
+    return JsonResponse({'entries': games})
 
 
 def platforms_list(request):
