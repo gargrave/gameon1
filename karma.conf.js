@@ -24,7 +24,7 @@ module.exports = function(config) {
       'game_on/static/app/**/*.ctrl.js',
       'game_on/static/app/**/*svc.js',
       // test files
-      'test/**/*Spec.js'
+      'test/**/*.spec.js'
     ],
 
     // list of files to exclude
