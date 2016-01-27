@@ -5,13 +5,14 @@ module App.Platforms {
    = interface definitions
    =============================================*/
 
+  export interface IApiResponse {
+    entries: any;
+  }
+
   export interface IPlatform {
     name: string;
   }
 
-  export interface IPlatformData {
-    platforms: any;
-  }
 
   /*=============================================
    = class implementation
@@ -34,7 +35,7 @@ module App.Platforms {
       } else {
         self.$http.get('/api/platforms')
           .then(function(res) {
-            self.platforms = (<IPlatformData>res.data).entries;
+            self.platforms = (<IApiResponse>res.data).entries;
             deferred.resolve(self.platforms);
           }, function(err) {
             deferred.reject(err.data);
@@ -49,7 +50,7 @@ module App.Platforms {
 
       self.$http.post('/api/platforms/create', data)
         .then(function(res) {
-          deferred.resolve((<IPlatformData>res.data).entries[0]);
+          deferred.resolve((<IApiResponse>res.data).entries[0]);
         }, function(err) {
           deferred.reject(err);
         });
