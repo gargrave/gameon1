@@ -1,4 +1,59 @@
-<div>
-  <h3>State: games-create</h3>
-  <p>This is <strong>'/static/views/games/create.html'.</strong></p>
+<div class="row" ng-init="ctrl.initCreateView()">
+  <div class="col-md-10 col-md-offset-1">
+
+    <h3>Add a Game</h3>
+    <hr>
+
+    <div class="alert alert-danger" role="alert" ng-show="ctrl.error" ng-cloak>
+      <span ng-bind="ctrl.error"></span>
+    </div>
+
+    <!-- TODO form should be disabled while working -->
+    <form method="POST">
+
+      <div class="form-group">
+        <label for="name">Title:</label>
+        <input class="form-control" type="text" id="name"
+               name="name" maxlength="100" placeholder="Title"
+               ng-model="ctrl.newEntry.name" required>
+      </div>
+
+      <div class="form-group">
+        <label for="platform">Platform:</label>
+        <select class="form-control" name="platform" id="platform"
+                ng-model="ctrl.newEntry.platform">
+          <option value="PC (Win)" selected="selected">PC (Win)</option>
+          <option value="PS3">PS3</option>
+          <option value="Wii U">Wii U</option>
+          <option value="Xbox 360">Xbox 360</option>
+          <option value="Xbox One">Xbox One</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <!-- TODO add datepickers -->
+        <label for="name">Start date:</label>
+        <input class="form-control" type="text" id="startDate"
+               name="startDate" maxlength="10" placeholder="YYYY-MM-DD"
+               ng-model="ctrl.newEntry.startDate" required>
+      </div>
+
+      <div class="form-group">
+        <!-- TODO add datepickers -->
+        <label for="name">End date:</label>
+        <input class="form-control" type="text" id="endDate"
+               name="endDate" maxlength="10" placeholder="YYYY-MM-DD"
+               ng-model="ctrl.newEntry.endDate" required>
+      </div>
+
+      <div class="form-group">
+        <input type="checkbox" id="finished" name="finished"
+               ng-model="ctrl.newEntry.finished">
+        <label for="finished">Finished?</label>
+      </div>
+
+      <button class="btn btn-default" ng-click="ctrl.create()">Submit</button>
+    </form>
+
+  </div>
 </div>
