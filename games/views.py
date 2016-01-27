@@ -1,5 +1,7 @@
 from django.http import HttpResponse, JsonResponse
+from django.views.decorators.http import require_POST
 
+from .forms import PlatformForm
 from .models import Game, Platform
 
 
@@ -36,3 +38,19 @@ def platforms_list(request):
             'name': platform.name
         })
     return JsonResponse({'platforms': platforms})
+
+
+@require_POST
+def platform_create(request):
+    """
+    Creates a new Platform and returns the new object
+    :param request:  HttpRequest
+    """
+    form = PlatformForm(data=request.POST)
+    if not form.is_valid():
+        return HttpResponse(status=400)
+    else:
+        platform = Platform(name=request.POST.get('name'))
+        platform.save()
+        res_data = [{'name': platform.name}]
+        return JsonResponse({'platforms': res_data})
