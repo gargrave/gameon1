@@ -35,24 +35,46 @@ def game_create(request):
     :param request:  HttpRequest
     """
     try:
-        data = request.POST
-        game = Game(
-            name=data.get('name'),
-            platform=Platform.objects.get(name=data.get('platform')),
-            start_date=data.get('startDate'),
-            end_date=data.get('endDate'),
-            finished=data.get('finished')
-        )
-        game.save()
-        res_data = [{
-            'id': game.pk,
-            'name': game.name,
-            'platform': str(game.platform),
-            'startDate': game.start_date,
-            'endDate': game.end_date,
-            'finished': game.finished
-        }]
-        return JsonResponse({'entries': res_data})
+        req = load_json_request(request)
+        if req:
+            game = Game(
+                name=req['name'],
+                platform=Platform.objects.get(pk=req['platform']),
+                start_date=req['startDate'],
+                end_date=req['endDate'],
+                finished=req['finished']
+            )
+            game.save()
+            res_data = [{
+                'id': game.pk,
+                'name': game.name,
+                'platform': str(game.platform),
+                'startDate': game.start_date,
+                'endDate': game.end_date,
+                'finished': game.finished
+            }]
+            return JsonResponse({'entries': res_data})
+        else:
+            return HttpResponse('The data submitted could not be validated.', status=400)
+
+        # data = request.POST
+        # game = Game(
+        #     name=data.get('name'),
+        #     platform=Platform.objects.get(pk=data.get('platform')),
+        #     start_date=data.get('startDate'),
+        #     end_date=data.get('endDate'),
+        #     finished=data.get('finished')
+        # )
+        # game.save()
+        # res_data = [{
+        #     'id': game.pk,
+        #     'name': game.name,
+        #     'platform': str(game.platform),
+        #     'startDate': game.start_date,
+        #     'endDate': game.end_date,
+        #     'finished': game.finished
+        # }]
+        # return JsonResponse({'entries': res_data})
     except ValidationError:
         return HttpResponse('The data submitted could not be validated.', status=400)
 

@@ -29,19 +29,28 @@ class GamesViewsTest(TestCase):
         self.assertIn('entries', json_data)
 
     def test_game_create_view(self):
+        """
+        Test that the games-create view creates a new game object and
+        then returns the newly-created instance.
+        """
         url = reverse('api:game_create')
         # should accept good submission,
         # and return that submission in JSON
         good_post = {
             'name': 'Good POST data',
-            'platform': self.test_plat.name,
+            'platform': self.test_plat.pk,
             'startDate': '2015-01-01',
             'endDate': '2015-02-01',
             'finished': False
         }
-        res = self.client.post(url, good_post)
+        res = self.client.post(url, json.dumps(good_post),
+                               content_type='application/json')
         self.assertEqual(res.status_code, 200)
         self.assertEqual(type(res), JsonResponse)
+        # ensure that the response has all of the expected data
+        res_data = json.loads(str(res.content, encoding='utf8'))['entries'][0]
+        for v in good_post:
+            self.assertIn(v, res_data)
         # fetch thte new game to make sure no error is thrown
         Game.objects.get(name=good_post['name'])
 
@@ -57,7 +66,7 @@ class GamesViewsTest(TestCase):
         # should reject malformed data
         bad_post = {
             'name': '',
-            'platform': self.test_plat.name,
+            'platform': self.test_plat.pk,
             'startDate': '',
             'endDate': '',
             'finished': False
@@ -82,11 +91,17 @@ class GamesViewsTest(TestCase):
         url = reverse('api:platform_create')
         # should accept good submission,
         # and return that submission in JSON
-        good_post = {'name': 'Good POST data'}
+        good_post = {
+            'name': 'Good POST data'
+        }
         res = self.client.post(url, json.dumps(good_post),
                                content_type='application/json')
         self.assertEqual(res.status_code, 200)
         self.assertEqual(type(res), JsonResponse)
+        # ensure that the response has all of the expected data
+        res_data = json.loads(str(res.content, encoding='utf8'))['entries'][0]
+        for v in good_post:
+            self.assertIn(v, res_data)
         # fetch thte new platform to make sure no error is thrown
         Platform.objects.get(name=good_post['name'])
 
