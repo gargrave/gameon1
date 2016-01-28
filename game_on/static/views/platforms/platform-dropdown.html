@@ -1,5 +1,5 @@
 <label for="platform">Platform:</label>
 <select class="form-control" name="platform" id="platform" ng-disabled="working"
-        ng-options="p as p.name for p in platforms track by p.name"
-        ng-model="selected">
+        ng-options="p.id as p.name for p in platforms track by p.id"
+        ng-model="ngModel" required>
 </select>

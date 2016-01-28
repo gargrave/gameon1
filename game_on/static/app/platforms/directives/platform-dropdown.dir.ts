@@ -5,7 +5,9 @@ module App.Platforms {
     function(platformsSvc: App.Platforms.PlatformsSvc) {
       return {
         restrict: 'AE',
-        scope: {},
+        scope: {
+          ngModel: '='
+        },
         templateUrl: 'static/views/platforms/platform-dropdown.html',
 
         link: function($scope) {
@@ -15,14 +17,12 @@ module App.Platforms {
             id: -1,
             name: 'Loading...'
           }];
-          $scope.selected = $scope.platforms[0];
 
           // initialization
           (function() {
             platformsSvc.query()
               .then(function(res) {
                 $scope.platforms = res;
-                $scope.selected = $scope.platforms[0];
                 $scope.working = false;
               });
           })();

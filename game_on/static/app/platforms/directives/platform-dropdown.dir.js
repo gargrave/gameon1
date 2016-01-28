@@ -7,7 +7,9 @@ var App;
             function (platformsSvc) {
                 return {
                     restrict: 'AE',
-                    scope: {},
+                    scope: {
+                        ngModel: '='
+                    },
                     templateUrl: 'static/views/platforms/platform-dropdown.html',
                     link: function ($scope) {
                         $scope.working = true;
@@ -15,12 +17,10 @@ var App;
                                 id: -1,
                                 name: 'Loading...'
                             }];
-                        $scope.selected = $scope.platforms[0];
                         (function () {
                             platformsSvc.query()
                                 .then(function (res) {
                                 $scope.platforms = res;
-                                $scope.selected = $scope.platforms[0];
                                 $scope.working = false;
                             });
                         })();
