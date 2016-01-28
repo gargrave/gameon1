@@ -15,7 +15,7 @@ var App;
             GamesCtrl.prototype.defaultEntry = function () {
                 return {
                     name: '',
-                    platform: '',
+                    platform: -1,
                     startDate: '',
                     endDate: '',
                     finished: false
@@ -23,6 +23,11 @@ var App;
             };
             GamesCtrl.prototype.preValidate = function () {
                 var self = this;
+                var platform = self.newEntry.platform;
+                if (typeof (platform) !== 'number' || platform < 0) {
+                    self.error = 'Invalid platform identifier.';
+                    return false;
+                }
                 var existing = _.find(self.entries, function (g) {
                     var game = g;
                     return game.name === self.newEntry.name &&
@@ -30,8 +35,9 @@ var App;
                 });
                 if (existing) {
                     self.error = 'A game with an identical name and start-date already exists.';
+                    return false;
                 }
-                return existing === undefined;
+                return true;
             };
             return GamesCtrl;
         })(App.Common.GenericController);
