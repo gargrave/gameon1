@@ -10,6 +10,10 @@ var App;
             var nonEmptyEntry = {
                 name: 'Name'
             };
+            var testPost = JSON.stringify({
+                name: 'Test Platform'
+            });
+            var testPostJSON = JSON.stringify(testPost);
             var testResponse = [
                 { name: 'Xbox One' },
                 { name: 'PS3' }
@@ -50,22 +54,19 @@ var App;
                 expect(ctrl.newEntry).toEqual(emptyEntry);
                 expect(ctrl.working).toBeFalsy();
             });
-            it('create() should successfully save a new platform object', function () {
+            it('create() should successfully save a new platform object and redirect', function () {
                 var origLength = ctrl.entries.length;
-                var testPostData = JSON.stringify({
-                    name: 'Test Platform'
-                });
                 var testPostResponse = JSON.stringify({
                     entries: [{
                             id: 10,
-                            name: 'Test Platform'
+                            name: testPost.name
                         }]
                 });
                 $httpBackend.when('GET', '/static/views/home.html').respond(200);
-                $httpBackend.expectPOST("/api/" + moduleName + "/create", testPostData)
+                $httpBackend.expectPOST("/api/" + moduleName + "/create", testPostJSON)
                     .respond(201, testPostResponse);
                 $httpBackend.expectGET("/static/views/" + moduleName + "/list.html").respond(200);
-                ctrl.newEntry = testPostData;
+                ctrl.newEntry = testPostJSON;
                 ctrl.create();
                 expect(ctrl.working).toBeTruthy();
                 $httpBackend.flush();
@@ -75,12 +76,9 @@ var App;
                 expect(ctrl.entries.length).toBe(origLength + 1);
             });
             it('create() should log an error if a similar object exists', function () {
-                var testPostData = JSON.stringify({
-                    name: 'Test Platform'
-                });
                 $httpBackend.when('GET', '/static/views/home.html').respond(200);
-                ctrl.entries.push(testPostData);
-                ctrl.newEntry = testPostData;
+                ctrl.entries.push(testPostJSON);
+                ctrl.newEntry = testPostJSON;
                 ctrl.create();
                 $httpBackend.flush();
                 expect(ctrl.working).toBeFalsy();
@@ -89,25 +87,20 @@ var App;
             });
             it('create() should handle error responses properly', function () {
                 var origLength = ctrl.entries.length;
-                var testPostData = JSON.stringify({
-                    name: 'Test Platform'
-                });
-                var testError = {
-                    statusText: 'Test error message'
-                };
+                var testError = 'Test error message';
                 $httpBackend.when('GET', '/static/views/home.html').respond(200);
-                $httpBackend.expectPOST("/api/" + moduleName + "/create", testPostData)
+                $httpBackend.expectPOST("/api/" + moduleName + "/create", testPostJSON)
                     .respond(function () {
-                    return [400, '', {}, 'Test error message'];
+                    return [400, '', {}, testError];
                 });
-                ctrl.newEntry = testPostData;
+                ctrl.newEntry = testPostJSON;
                 ctrl.create();
                 expect(ctrl.working).toBeTruthy();
                 expect(ctrl.error).toBe('');
                 $httpBackend.flush();
                 expect(ctrl.working).toBeFalsy();
                 expect(ctrl.entries.length).toBe(origLength);
-                expect(ctrl.error).toBe(testError.statusText);
+                expect(ctrl.error).toBe(testError);
             });
         });
     })(Tests = App.Tests || (App.Tests = {}));
