@@ -3,51 +3,14 @@ var App;
     var Menus;
     (function (Menus) {
         var MenusCtrl = (function () {
-            function MenusCtrl() {
-                this.menus = [
-                    {
-                        title: 'Arts',
-                        items: [
-                            {
-                                title: 'Art List',
-                                link: 'games-list'
-                            },
-                            {
-                                title: 'Add an Art',
-                                link: 'games-create'
-                            }
-                        ]
-                    },
-                    {
-                        title: 'Farts',
-                        items: [
-                            {
-                                title: 'Art List',
-                                link: 'games-list'
-                            },
-                            {
-                                title: 'Add an Art',
-                                link: 'games-create'
-                            }
-                        ]
-                    },
-                    {
-                        title: 'Crafts',
-                        items: [
-                            {
-                                title: 'Art List',
-                                link: 'games-list'
-                            },
-                            {
-                                title: 'Add an Art',
-                                link: 'games-create'
-                            }
-                        ]
-                    }
-                ];
+            function MenusCtrl(menusSvc) {
+                this.menus = menusSvc.getMenus();
             }
             return MenusCtrl;
         })();
-        angular.module('menus').controller('MenusCtrl', [MenusCtrl]);
+        angular.module('menus').controller('MenusCtrl', [
+            'menusSvc',
+            MenusCtrl
+        ]);
     })(Menus = App.Menus || (App.Menus = {}));
 })(App || (App = {}));

@@ -1,51 +1,15 @@
+/// <reference path="../../../../typings/tsd.d.ts" />
 module App.Menus {
   class MenusCtrl {
     menus;
 
-    constructor() {
-      this.menus = [
-        {
-          title: 'Arts',
-          items: [
-            {
-              title: 'Art List',
-              link: 'games-list'
-            },
-            {
-              title: 'Add an Art',
-              link: 'games-create'
-            }
-          ]
-        },
-        {
-          title: 'Farts',
-          items: [
-            {
-              title: 'Art List',
-              link: 'games-list'
-            },
-            {
-              title: 'Add an Art',
-              link: 'games-create'
-            }
-          ]
-        },
-        {
-          title: 'Crafts',
-          items: [
-            {
-              title: 'Art List',
-              link: 'games-list'
-            },
-            {
-              title: 'Add an Art',
-              link: 'games-create'
-            }
-          ]
-        }
-      ];
+    constructor(menusSvc) {
+      this.menus = menusSvc.getMenus();
     }
   }
 
-  angular.module('menus').controller('MenusCtrl', [MenusCtrl]);
+  angular.module('menus').controller('MenusCtrl', [
+    'menusSvc',
+    MenusCtrl
+  ]);
 }
