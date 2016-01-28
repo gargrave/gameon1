@@ -5,10 +5,13 @@
     <hr>
 
     <div class="list-group">
-      <button type="button" class="list-group-item"
-              ng-repeat="p in ctrl.entries">
-        <strong ng-bind="p.name"></strong>
-      </button>
+      <a class="list-group-item" ng-repeat="platform in ctrl.entries" ui-sref="platforms-list">
+        <strong class="list-group-item-heading" ng-bind="platform.name"></strong>
+        <small class="list-group-item-text text-muted">
+           added on
+          <span ng-bind="platform.created | date:'medium'"></span>
+        </small>
+      </a>
     </div>
 
   </div>

@@ -5,10 +5,14 @@
     <hr>
 
     <div class="list-group">
-      <button type="button" class="list-group-item"
-              ng-repeat="g in ctrl.entries">
-        <strong ng-bind="g.name"></strong>
-      </button>
+      <a class="list-group-item" ng-repeat="game in ctrl.entries" ui-sref="games-list">
+        <strong class="list-group-item-heading" ng-bind="game.name"></strong>
+        <br>
+        <small class="list-group-item-text">
+          Added on
+          <span ng-bind="game.created | date:'medium'"></span>
+        </small>
+      </a>
     </div>
 
   </div>
