@@ -5,6 +5,7 @@ module App.Platforms {
    = interface definitions
    =============================================*/
   export interface IPlatform {
+    id?: number;
     name: string;
   }
 
