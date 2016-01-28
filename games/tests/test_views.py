@@ -83,7 +83,8 @@ class GamesViewsTest(TestCase):
         # should accept good submission,
         # and return that submission in JSON
         good_post = {'name': 'Good POST data'}
-        res = self.client.post(url, good_post)
+        res = self.client.post(url, json.dumps(good_post),
+                               content_type='application/json')
         self.assertEqual(res.status_code, 200)
         self.assertEqual(type(res), JsonResponse)
         # fetch thte new platform to make sure no error is thrown

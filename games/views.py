@@ -5,6 +5,8 @@ from django.views.decorators.http import require_POST
 from .forms import GameForm, PlatformForm
 from .models import Game, Platform
 
+from game_on.utils import load_json_request
+
 
 def games_list(request):
     """
@@ -76,11 +78,14 @@ def platform_create(request):
     Creates a new Platform and returns the new object
     :param request:  HttpRequest
     """
-    form = PlatformForm(data=request.POST)
-    if not form.is_valid():
-        return HttpResponse('The data submitted could not be validated.', status=400)
-    else:
-        platform = Platform(name=request.POST.get('name'))
+    req = load_json_request(request)
+    if req:
+        platform = Platform(name=req['name'])
         platform.save()
-        res_data = [{'name': platform.name}]
+        res_data = [{
+            'id': platform.pk,
+            'name': platform.name
+        }]
         return JsonResponse({'entries': res_data})
+    else:
+        return HttpResponse('The data submitted could not be validated.', status=400)
