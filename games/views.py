@@ -23,7 +23,9 @@ def games_list(request):
             'platform': str(game.platform),
             'startDate': game.start_date,
             'endDate': game.end_date,
-            'finished': game.finished
+            'finished': game.finished,
+            'created': game.created,
+            'modified': game.modified
         })
     return JsonResponse({'entries': games})
 
@@ -51,7 +53,9 @@ def game_create(request):
                 'platform': str(game.platform),
                 'startDate': game.start_date,
                 'endDate': game.end_date,
-                'finished': game.finished
+                'finished': game.finished,
+                'created': game.created,
+                'modified': game.modified
             }]
             return JsonResponse({'entries': res_data})
         else:
@@ -70,7 +74,9 @@ def platforms_list(request):
     for platform in all_platforms:
         platforms.append({
             'id': platform.pk,
-            'name': platform.name
+            'name': platform.name,
+            'created': platform.created,
+            'modified': platform.modified
         })
     return JsonResponse({'entries': platforms})
 
@@ -87,7 +93,9 @@ def platform_create(request):
         platform.save()
         res_data = [{
             'id': platform.pk,
-            'name': platform.name
+            'name': platform.name,
+            'created': platform.created,
+            'modified': platform.modified
         }]
         return JsonResponse({'entries': res_data})
     else:
