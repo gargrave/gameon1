@@ -3,7 +3,24 @@ module App.Common {
 
   import GenericService = App.Common.GenericService;
 
-  export abstract class GenericController<T> {
+  /*=============================================
+   = interface details
+   =============================================*/
+  export interface IGenericController<T> {
+    working: boolean;
+    entries: T[];
+    newEntry: T;
+    error: string;
+
+    find(): void;
+    create(): void;
+    initCreateView(): void;
+  }
+
+  /*=============================================
+   = class implementation
+   =============================================*/
+  export abstract class GenericController<T> implements IGenericController<T> {
     // whether we are currently working
     working: boolean = false;
     // the list of entries on the server
@@ -27,7 +44,7 @@ module App.Common {
     /**
      * Queries the service for all current entries
      */
-    find() {
+    find(): void {
       const self = this;
       self.error = '';
       self.working = true;
@@ -46,7 +63,7 @@ module App.Common {
     /**
      * Sends the current 'new platform' data to the service to be saved
      */
-    create() {
+    create(): void {
       const self = this;
       self.error = '';
 
@@ -70,6 +87,10 @@ module App.Common {
     /*=============================================
      = initialization methods
      =============================================*/
+    /**
+     * Returns an initialized object of the sub-class generic type
+     * with default values.
+     */
     protected abstract defaultEntry(): T;
 
     /**
@@ -88,6 +109,15 @@ module App.Common {
     /*=============================================
      = validation methods
      =============================================*/
+    /**
+     * Performs any local validation necessary before sending the new
+     * object data to the server.
+     *
+     * Note that the default implementation simply returns true; any sub-class
+     * will need to provide its own implementation to have any actual functionality.
+     *
+     * @returns {boolean} - True if the data passes local validation
+     */
     protected preValidate(): boolean {
       return true;
     }
