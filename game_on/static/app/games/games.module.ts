@@ -1,10 +1,10 @@
 /// <reference path="../../../../typings/tsd.d.ts" />
-module App.Platforms {
+module App.Games {
   angular.module('games', [
       'ui.router'
     ])
-
-    .config(['$stateProvider',
+    .config([
+      '$stateProvider',
 
       function($stateProvider) {
         $stateProvider

@@ -1,11 +1,12 @@
 var App;
 (function (App) {
-    var Platforms;
-    (function (Platforms) {
+    var Games;
+    (function (Games) {
         angular.module('games', [
             'ui.router'
         ])
-            .config(['$stateProvider',
+            .config([
+            '$stateProvider',
             function ($stateProvider) {
                 $stateProvider
                     .state('games-list', {
@@ -20,5 +21,5 @@ var App;
                 });
             }
         ]);
-    })(Platforms = App.Platforms || (App.Platforms = {}));
+    })(Games = App.Games || (App.Games = {}));
 })(App || (App = {}));

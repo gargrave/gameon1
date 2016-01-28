@@ -1,23 +1,22 @@
 /// <reference path="../../../../typings/tsd.d.ts" />
 module App.Platforms {
-
-  const moduleName = `platforms`;
-
-  angular.module(`${moduleName}`, [
+  angular.module('platforms', [
       'ui.router'
     ])
-    .config(['$stateProvider',
+    .config([
+      '$stateProvider',
+
       function($stateProvider) {
         $stateProvider
-          .state(`${moduleName}-list`, {
-            url: `/${moduleName}`,
-            templateUrl: `/static/views/${moduleName}/list.html`,
-            controller: `PlatformsCtrl as ctrl`
+          .state('platforms-list', {
+            url: '/platforms',
+            templateUrl: '/static/views/platforms/list.html',
+            controller: 'PlatformsCtrl as ctrl'
           })
-          .state(`${moduleName}-create`, {
-            url: `/${moduleName}/create`,
-            templateUrl: `/static/views/${moduleName}/create.html`,
-            controller: `PlatformsCtrl as ctrl`
+          .state('platforms-create', {
+            url: '/platforms/create',
+            templateUrl: '/static/views/platforms/create.html',
+            controller: 'PlatformsCtrl as ctrl'
           });
       }
     ]);
