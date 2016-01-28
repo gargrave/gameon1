@@ -3,40 +3,36 @@ var App;
     var Tests;
     (function (Tests) {
         describe('GamesCtrl', function () {
-            var moduleName = 'games';
+            var invalidPlatform = { id: -1, name: 'Okay Name' };
+            var validPlatforms = [
+                { id: 1, name: 'Xbox One' },
+                { id: 2, name: 'PS3' }
+            ];
             var emptyEntry = {
                 name: '',
-                platform: '',
+                platform: invalidPlatform.id,
                 startDate: '',
                 endDate: '',
                 finished: false
             };
-            var nonEmptyEntry = {
-                name: 'Name',
-                platform: 'Platform',
-                startDate: '2016-01-01',
-                endDate: '2016-01-31',
-                finished: true
-            };
             var testPost = {
                 name: 'Name',
-                platform: 'Platform',
+                platform: validPlatforms[0].id,
                 startDate: '2015-01-01',
                 endDate: '2016-01-01',
                 finished: false
             };
-            var testPostJSON = JSON.stringify(testPost);
             var testResponse = [
                 {
                     name: 'Lords of the Fallen',
-                    platform: 'Xbox One',
+                    platform: validPlatforms[0].id,
                     startDate: '2014-10-31',
                     endDate: '2014-11-15',
                     finished: true
                 },
                 {
                     name: 'Kingdom Hearts 1.5 HD',
-                    platform: 'PS3',
+                    platform: validPlatforms[1].id,
                     startDate: '2014-7-22',
                     endDate: '2014-7-31',
                     finished: true
@@ -57,7 +53,7 @@ var App;
             });
             it('find() should load the list of entries', function () {
                 $httpBackend.when('GET', '/static/views/home.html').respond(200);
-                $httpBackend.expectGET("/api/" + moduleName)
+                $httpBackend.expectGET('/api/games')
                     .respond({ entries: testResponse });
                 ctrl.find();
                 expect(ctrl.working).toBeTruthy();
@@ -69,9 +65,9 @@ var App;
             it('initCreateView() should initialize the new object ' +
                 'and pre-populate the existing entries list', function () {
                 $httpBackend.when('GET', '/static/views/home.html').respond(200);
-                $httpBackend.expectGET("/api/" + moduleName)
+                $httpBackend.expectGET('/api/games')
                     .respond({ entries: testResponse });
-                ctrl.newEntry = nonEmptyEntry;
+                ctrl.newEntry = testPost;
                 ctrl.initCreateView();
                 expect(ctrl.working).toBeTruthy();
                 $httpBackend.flush();
@@ -80,7 +76,7 @@ var App;
             });
             it('create() should successfully save a new game object and redirect', function () {
                 var origLength = ctrl.entries.length;
-                var testPostResponse = JSON.stringify({
+                var testPostResponse = {
                     entries: [{
                             id: 10,
                             name: testPost.name,
@@ -89,39 +85,51 @@ var App;
                             endDate: testPost.endDate,
                             finished: testPost.finished
                         }]
-                });
+                };
                 $httpBackend.when('GET', '/static/views/home.html').respond(200);
-                $httpBackend.expectPOST("/api/" + moduleName + "/create", testPostJSON)
+                $httpBackend.expectPOST('/api/games/create', testPost)
                     .respond(201, testPostResponse);
-                $httpBackend.expectGET("/static/views/" + moduleName + "/list.html").respond(200);
-                ctrl.newEntry = testPostJSON;
+                $httpBackend.expectGET('/static/views/games/list.html').respond(200);
+                ctrl.newEntry = testPost;
                 ctrl.create();
                 expect(ctrl.working).toBeTruthy();
                 $httpBackend.flush();
-                expect($location.url()).toBe("/" + moduleName);
+                expect($location.url()).toBe('/games');
                 expect(ctrl.newEntry).toEqual(emptyEntry);
                 expect(ctrl.working).toBeFalsy();
                 expect(ctrl.entries.length).toBe(origLength + 1);
             });
-            it('create() should log an error if a similar object exists', function () {
+            it('create() should log an error if a similar object exists, ' +
+                'and should not attempt to save the entry', function () {
                 $httpBackend.when('GET', '/static/views/home.html').respond(200);
-                ctrl.entries.push(testPostJSON);
-                ctrl.newEntry = testPostJSON;
+                ctrl.entries.push(testPost);
+                ctrl.newEntry = testPost;
                 ctrl.create();
                 $httpBackend.flush();
                 expect(ctrl.working).toBeFalsy();
                 expect(ctrl.entries.length).toBe(1);
                 expect(ctrl.error.length).toBeGreaterThan(0);
             });
+            it('create() should log an error in the platform id is invalid, ' +
+                'and should not attempt to save the entry', function () {
+                $httpBackend.when('GET', '/static/views/home.html').respond(200);
+                ctrl.newEntry = angular.copy(testPost);
+                ctrl.newEntry.platform = invalidPlatform.id;
+                ctrl.create();
+                $httpBackend.flush();
+                expect(ctrl.working).toBeFalsy();
+                expect(ctrl.entries.length).toBe(0);
+                expect(ctrl.error.length).toBeGreaterThan(0);
+            });
             it('create() should handle error responses properly', function () {
                 var origLength = ctrl.entries.length;
                 var testError = 'Test error message';
                 $httpBackend.when('GET', '/static/views/home.html').respond(200);
-                $httpBackend.expectPOST("/api/" + moduleName + "/create", testPostJSON)
+                $httpBackend.expectPOST('/api/games/create', testPost)
                     .respond(function () {
                     return [400, '', {}, testError];
                 });
-                ctrl.newEntry = testPostJSON;
+                ctrl.newEntry = testPost;
                 ctrl.create();
                 expect(ctrl.working).toBeTruthy();
                 expect(ctrl.error).toBe('');
