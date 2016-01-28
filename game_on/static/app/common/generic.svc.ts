@@ -8,10 +8,15 @@ module App.Common {
     entries: any;
   }
 
+  export interface IGenericService<T> {
+    query(): ng.IPromise<T[]>;
+    save(data): ng.IPromise<T>;
+  }
+
   /*=============================================
    = class implementation
    =============================================*/
-  export abstract class GenericService<T> {
+  export abstract class GenericService<T> implements IGenericService<T> {
 
     private entries: T[];
 
