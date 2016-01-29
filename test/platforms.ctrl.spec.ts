@@ -5,6 +5,8 @@ module App.Tests {
 
   describe('PlatformsCtrl', function() {
 
+    const MODULE = 'platforms';
+
     const emptyEntry: IPlatform = {
       name: ''
     };
@@ -55,11 +57,11 @@ module App.Tests {
     });
 
     /*=============================================
-     = creation test
+     = 'creation' test
      =============================================*/
     it('initCreateView() should initialize the new object ' +
       'and pre-populate the existing entries list', function() {
-      $httpBackend.expectGET('/api/platforms').respond({entries: testResponse});
+      $httpBackend.expectGET(`/api/${MODULE}`).respond({entries: testResponse});
 
       ctrl.newEntry = testPost;
       ctrl.initCreateView();
@@ -82,9 +84,9 @@ module App.Tests {
         }]
       });
 
-      $httpBackend.expectPOST('/api/platforms/create', testPost)
+      $httpBackend.expectPOST(`/api/${MODULE}/create`, testPost)
         .respond(201, testPostResponse);
-      $httpBackend.expectGET('/static/views/platforms/list.html').respond(200);
+      $httpBackend.expectGET(`/static/views/${MODULE}/list.html`).respond(200);
 
       ctrl.newEntry = testPost;
       ctrl.create();
@@ -93,7 +95,7 @@ module App.Tests {
       $httpBackend.flush();
 
       // we should be back on the list page
-      expect($location.url()).toBe('/platforms');
+      expect($location.url()).toBe(`/${MODULE}`);
       // ctrl.newEntry should be empty now
       expect(ctrl.newEntry).toEqual(emptyEntry);
       // ctrl.working should be false
@@ -103,7 +105,7 @@ module App.Tests {
     });
 
     /*=============================================
-     = creation error test
+     = 'creation error' test
      =============================================*/
     it('create() should log an error if a similar object exists', function() {
       ctrl.entries.push(testPost);
@@ -122,7 +124,7 @@ module App.Tests {
     it('create() should handle error responses properly', function() {
       let origLength = ctrl.entries.length;
 
-      $httpBackend.expectPOST('/api/platforms/create', testPost)
+      $httpBackend.expectPOST(`/api/${MODULE}/create`, testPost)
         .respond(function() {
           return [400, '', {}, testError];
         });
@@ -143,10 +145,10 @@ module App.Tests {
     });
 
     /*=============================================
-     = query all test
+     = 'query all' test
      =============================================*/
     it('find() should load the list of entries', function() {
-      $httpBackend.expectGET('/api/platforms').respond({entries: testResponse});
+      $httpBackend.expectGET(`/api/${MODULE}`).respond({entries: testResponse});
 
       ctrl.find();
       expect(ctrl.working).toBeTruthy();
@@ -159,13 +161,13 @@ module App.Tests {
     });
 
     /*=============================================
-     = query one test
+     = 'query one' test
      =============================================*/
     it('findOne() should query and load the specified entry', function() {
       let res = {entries: testResponse[0]};
       let id = 123;
 
-      $httpBackend.expectGET(`/api/platforms/${id}`).respond(res);
+      $httpBackend.expectGET(`/api/${MODULE}/${id}`).respond(res);
 
       $stateParams.id = id;
       ctrl.findOne();
@@ -178,21 +180,29 @@ module App.Tests {
     });
 
     it('findOne() should display an error if the desired entry could not be found, ' +
-      'and redirect back to the platforms list page', function() {
+      'and redirect back to the list page', function() {
 
       $httpBackend.expectGET(/\/api\/platforms\/\d+/)
         .respond(function() {
           return [404, '', {}, testError];
         });
-      $httpBackend.expectGET('/static/views/platforms/list.html').respond(200);
+      $httpBackend.expectGET(`/static/views/${MODULE}/list.html`).respond(200);
 
       $stateParams.id = 123;
       ctrl.findOne();
       expect(ctrl.working).toBeTruthy();
       $httpBackend.flush();
 
-      expect($location.url()).toBe('/platforms');
+      expect($location.url()).toBe(`/${MODULE}`);
       expect(ctrl.working).toBeFalsy();
+    });
+
+    /*=============================================
+     = 'remove' tests
+     =============================================*/
+    it('remove() should successfully delete the currently active entry, ' +
+      'and redirect back to the list view', function() {
+      $httpBackend.flush();
     });
   });
 }

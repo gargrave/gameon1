@@ -3,6 +3,7 @@ var App;
     var Tests;
     (function (Tests) {
         describe('GamesCtrl', function () {
+            var MODULE = 'games';
             var invalidPlatform = { id: -1, name: 'Okay Name' };
             var validPlatforms = [
                 { id: 1, name: 'Xbox One' },
@@ -57,7 +58,7 @@ var App;
             });
             it('initCreateView() should initialize the new object ' +
                 'and pre-populate the existing entries list', function () {
-                $httpBackend.expectGET('/api/games')
+                $httpBackend.expectGET("/api/" + MODULE)
                     .respond({ entries: testResponse });
                 ctrl.newEntry = testPost;
                 ctrl.initCreateView();
@@ -78,14 +79,14 @@ var App;
                             finished: testPost.finished
                         }]
                 };
-                $httpBackend.expectPOST('/api/games/create', testPost)
+                $httpBackend.expectPOST("/api/" + MODULE + "/create", testPost)
                     .respond(201, testPostResponse);
-                $httpBackend.expectGET('/static/views/games/list.html').respond(200);
+                $httpBackend.expectGET("/static/views/" + MODULE + "/list.html").respond(200);
                 ctrl.newEntry = testPost;
                 ctrl.create();
                 expect(ctrl.working).toBeTruthy();
                 $httpBackend.flush();
-                expect($location.url()).toBe('/games');
+                expect($location.url()).toBe("/" + MODULE);
                 expect(ctrl.newEntry).toEqual(emptyEntry);
                 expect(ctrl.working).toBeFalsy();
                 expect(ctrl.entries.length).toBe(origLength + 1);
@@ -112,7 +113,7 @@ var App;
             });
             it('create() should handle error responses properly', function () {
                 var origLength = ctrl.entries.length;
-                $httpBackend.expectPOST('/api/games/create', testPost)
+                $httpBackend.expectPOST("/api/" + MODULE + "/create", testPost)
                     .respond(function () {
                     return [400, '', {}, testError];
                 });
@@ -128,7 +129,7 @@ var App;
             it('findOne() should query and load the specified entry', function () {
                 var res = { entries: testResponse[0] };
                 var id = 123;
-                $httpBackend.expectGET("/api/games/" + id).respond(res);
+                $httpBackend.expectGET("/api/" + MODULE + "/" + id).respond(res);
                 $stateParams.id = id;
                 ctrl.findOne();
                 expect(ctrl.working).toBeTruthy();
@@ -138,17 +139,17 @@ var App;
                 expect(ctrl.working).toBeFalsy();
             });
             it('findOne() should display an error if the desired entry could not be found, ' +
-                'and redirect back to the games list page', function () {
+                'and redirect back to the list page', function () {
                 $httpBackend.expectGET(/\/api\/games\/\d+/)
                     .respond(function () {
                     return [404, '', {}, testError];
                 });
-                $httpBackend.expectGET('/static/views/games/list.html').respond(200);
+                $httpBackend.expectGET("/static/views/" + MODULE + "/list.html").respond(200);
                 $stateParams.id = 123;
                 ctrl.findOne();
                 expect(ctrl.working).toBeTruthy();
                 $httpBackend.flush();
-                expect($location.url()).toBe('/games');
+                expect($location.url()).toBe("/" + MODULE);
                 expect(ctrl.working).toBeFalsy();
             });
         });
