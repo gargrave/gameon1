@@ -16,9 +16,10 @@ module App.Games {
   }
 
   export class GamesCtrl extends App.Common.GenericController<IGame> {
-    constructor($state,
+    constructor($stateParams: ng.ui.IStateParamsService,
+                $state: ng.ui.IStateService,
                 dataSvc: App.Games.GamesSvc) {
-      super($state, dataSvc, 'game');
+      super($stateParams, $state, dataSvc, 'game');
     }
 
     protected defaultEntry(): IGame {
@@ -56,6 +57,6 @@ module App.Games {
   }
 
   angular.module('games').controller('GamesCtrl', [
-    '$state', 'gamesSvc',
+    '$stateParams', '$state', 'gamesSvc',
     GamesCtrl]);
 }

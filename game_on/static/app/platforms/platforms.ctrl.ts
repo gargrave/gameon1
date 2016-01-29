@@ -12,9 +12,10 @@ module App.Platforms {
   }
 
   export class PlatformsCtrl extends App.Common.GenericController<IPlatform> {
-    constructor($state,
+    constructor($stateParams: ng.ui.IStateParamsService,
+                $state: ng.ui.IStateService,
                 dataSvc: App.Platforms.PlatformsSvc) {
-      super($state, dataSvc, 'platform');
+      super($stateParams, $state, dataSvc, 'platform');
     }
 
     protected defaultEntry(): IPlatform {
@@ -39,6 +40,6 @@ module App.Platforms {
   }
 
   angular.module('platforms').controller('PlatformsCtrl', [
-    '$state', 'platformsSvc',
+    '$stateParams', '$state', 'platformsSvc',
     PlatformsCtrl]);
 }
