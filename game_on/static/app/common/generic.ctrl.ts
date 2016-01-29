@@ -9,11 +9,13 @@ module App.Common {
   export interface IGenericController<T> {
     working: boolean;
     entries: T[];
+    activeEntry: T;
     newEntry: T;
     error: string;
 
-    find(): void;
     create(): void;
+    find(): void;
+    findOne(): void;
     initCreateView(): void;
   }
 
@@ -25,12 +27,15 @@ module App.Common {
     working: boolean = false;
     // the list of entries on the server
     entries: T[];
+    // the entry we are viewing/editing/etc.
+    activeEntry: T;
     // the data for a new entry being created
     newEntry: T;
     // any error messages to display
     error: string = '';
 
-    constructor(protected $state,
+    constructor(protected $stateParams: ng.ui.IStateParamsService,
+                protected $state: ng.ui.IStateService,
                 protected dataSvc: GenericService<T>,
                 protected moduleName: string) {
       const self = this;
@@ -41,25 +46,6 @@ module App.Common {
     /*=============================================
      = CRUD methods
      =============================================*/
-    /**
-     * Queries the service for all current entries
-     */
-    find(): void {
-      const self = this;
-      self.error = '';
-      self.working = true;
-
-      self.dataSvc.query()
-        .then(function(res) {
-          self.entries = res;
-        }, function(err) {
-          self.error = err.statusText;
-        })
-        .finally(function() {
-          self.working = false;
-        });
-    };
-
     /**
      * Sends the current 'new platform' data to the service to be saved
      */
@@ -83,6 +69,51 @@ module App.Common {
           });
       }
     };
+
+    /**
+     * Queries the service for all current entries
+     */
+    find(): void {
+      const self = this;
+      self.error = '';
+      self.working = true;
+
+      self.dataSvc.query()
+        .then(function(res) {
+          self.entries = res;
+        }, function(err) {
+          self.error = err.statusText;
+        })
+        .finally(function() {
+          self.working = false;
+        });
+    };
+
+    /**
+     * Queries the service for a single entry with the specified id.
+     *
+     * ID should be passed in as part of the URL, e.g.:
+     * /api/[module]/12345
+     */
+    findOne(): void {
+      const self = this;
+      self.error = '';
+      self.working = true;
+
+      let id = self.$stateParams['id'];
+
+      self.dataSvc.get(id)
+        .then(function(res) {
+          self.activeEntry = res;
+        }, function(err) {
+          // TODO use ngmessages to show this upon return to the list view
+          self.error = `The entry with id# ${id} could not be found.`;
+          self.$state.go(`${self.moduleName}s-list`);
+        })
+        .finally(function() {
+          self.working = false;
+        });
+    }
 
     /*=============================================
      = initialization methods

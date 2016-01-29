@@ -23,14 +23,17 @@ var App;
                     modified: '2016-01-27T15:55:16.285Z'
                 }
             ];
+            var testError = 'Test error message';
             var ctrl;
             var $httpBackend;
             var $location;
+            var $stateParams;
             beforeEach(angular.mock.module('gameon'));
-            beforeEach(inject(function ($controller, _$httpBackend_, _$location_) {
+            beforeEach(inject(function ($controller, _$httpBackend_, _$location_, _$stateParams_) {
                 ctrl = $controller('PlatformsCtrl');
                 $httpBackend = _$httpBackend_;
                 $location = _$location_;
+                $stateParams = _$stateParams_;
                 $httpBackend.when('GET', '/static/views/home.html').respond(200);
             }));
             afterEach(function () {
@@ -39,8 +42,7 @@ var App;
             });
             it('initCreateView() should initialize the new object ' +
                 'and pre-populate the existing entries list', function () {
-                $httpBackend.expectGET('/api/platforms')
-                    .respond({ entries: testResponse });
+                $httpBackend.expectGET('/api/platforms').respond({ entries: testResponse });
                 ctrl.newEntry = testPost;
                 ctrl.initCreateView();
                 expect(ctrl.working).toBeTruthy();
@@ -79,7 +81,6 @@ var App;
             });
             it('create() should handle error responses properly', function () {
                 var origLength = ctrl.entries.length;
-                var testError = 'Test error message';
                 $httpBackend.expectPOST('/api/platforms/create', testPost)
                     .respond(function () {
                     return [400, '', {}, testError];
@@ -94,13 +95,39 @@ var App;
                 expect(ctrl.error).toBe(testError);
             });
             it('find() should load the list of entries', function () {
-                $httpBackend.expectGET('/api/platforms')
-                    .respond({ entries: testResponse });
+                $httpBackend.expectGET('/api/platforms').respond({ entries: testResponse });
                 ctrl.find();
                 expect(ctrl.working).toBeTruthy();
                 $httpBackend.flush();
+                expect(ctrl.error.length).toBe(0);
                 expect(ctrl.entries.length).toBeGreaterThan(0);
                 expect(ctrl.entries).toEqual(testResponse);
+                expect(ctrl.working).toBeFalsy();
+            });
+            it('findOne() should query and load the specified entry', function () {
+                var res = { entries: testResponse[0] };
+                var id = 123;
+                $httpBackend.expectGET("/api/platforms/" + id).respond(res);
+                $stateParams.id = id;
+                ctrl.findOne();
+                expect(ctrl.working).toBeTruthy();
+                $httpBackend.flush();
+                expect(ctrl.error.length).toBe(0);
+                expect(ctrl.activeEntry).toEqual(res.entries);
+                expect(ctrl.working).toBeFalsy();
+            });
+            it('findOne() should display an error if the desired entry could not be found, ' +
+                'and redirect back to the platforms list page', function () {
+                $httpBackend.expectGET(/\/api\/platforms\/\d+/)
+                    .respond(function () {
+                    return [404, '', {}, testError];
+                });
+                $httpBackend.expectGET('/static/views/platforms/list.html').respond(200);
+                $stateParams.id = 123;
+                ctrl.findOne();
+                expect(ctrl.working).toBeTruthy();
+                $httpBackend.flush();
+                expect($location.url()).toBe('/platforms');
                 expect(ctrl.working).toBeFalsy();
             });
         });

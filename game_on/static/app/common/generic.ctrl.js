@@ -3,7 +3,8 @@ var App;
     var Common;
     (function (Common) {
         var GenericController = (function () {
-            function GenericController($state, dataSvc, moduleName) {
+            function GenericController($stateParams, $state, dataSvc, moduleName) {
+                this.$stateParams = $stateParams;
                 this.$state = $state;
                 this.dataSvc = dataSvc;
                 this.moduleName = moduleName;
@@ -13,21 +14,6 @@ var App;
                 self.entries = [];
                 self.newEntry = self.defaultEntry();
             }
-            GenericController.prototype.find = function () {
-                var self = this;
-                self.error = '';
-                self.working = true;
-                self.dataSvc.query()
-                    .then(function (res) {
-                    self.entries = res;
-                }, function (err) {
-                    self.error = err.statusText;
-                })
-                    .finally(function () {
-                    self.working = false;
-                });
-            };
-            ;
             GenericController.prototype.create = function () {
                 var self = this;
                 self.error = '';
@@ -47,6 +33,37 @@ var App;
                 }
             };
             ;
+            GenericController.prototype.find = function () {
+                var self = this;
+                self.error = '';
+                self.working = true;
+                self.dataSvc.query()
+                    .then(function (res) {
+                    self.entries = res;
+                }, function (err) {
+                    self.error = err.statusText;
+                })
+                    .finally(function () {
+                    self.working = false;
+                });
+            };
+            ;
+            GenericController.prototype.findOne = function () {
+                var self = this;
+                self.error = '';
+                self.working = true;
+                var id = self.$stateParams['id'];
+                self.dataSvc.get(id)
+                    .then(function (res) {
+                    self.activeEntry = res;
+                }, function (err) {
+                    self.error = "The entry with id# " + id + " could not be found.";
+                    self.$state.go(self.moduleName + "s-list");
+                })
+                    .finally(function () {
+                    self.working = false;
+                });
+            };
             GenericController.prototype.initCreateView = function () {
                 var self = this;
                 if (self.entries.length === 0) {

@@ -129,6 +129,7 @@ var App;
                 ctrl.find();
                 expect(ctrl.working).toBeTruthy();
                 $httpBackend.flush();
+                expect(ctrl.error.length).toBe(0);
                 expect(ctrl.entries.length).toBeGreaterThan(0);
                 expect(ctrl.entries).toEqual(testResponse);
                 expect(ctrl.working).toBeFalsy();
