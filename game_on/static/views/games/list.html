@@ -1,11 +1,18 @@
 <div class="row" ng-init="ctrl.find()">
   <div class="col-md-10 col-md-offset-1">
 
-    <h3>Games</h3>
-    <hr>
+    <div class="page-header">
+      <h3>Games</h3>
+    </div>
+
+    <!-- TODO need to show this if there are API errors -->
+    <div class="alert alert-danger" role="alert" ng-show="ctrl.error" ng-cloak>
+      <span ng-bind="ctrl.error"></span>
+    </div>
 
     <div class="list-group">
-      <a class="list-group-item" ng-repeat="game in ctrl.entries" ui-sref="games-list">
+      <a class="list-group-item" ng-repeat="game in ctrl.entries"
+         ui-sref="games-detail({id: game.id})">
         <strong class="list-group-item-heading" ng-bind="game.name"></strong>
         <br>
         <small class="list-group-item-text">
