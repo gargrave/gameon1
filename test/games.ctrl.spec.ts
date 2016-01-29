@@ -46,18 +46,22 @@ module App.Tests {
       }
     ];
 
+    const testError = 'Test error message';
+
     /*=============================================
      = set up methods
      =============================================*/
     let ctrl;
     let $httpBackend;
     let $location;
+    let $stateParams;
 
     beforeEach(angular.mock.module('gameon'));
     beforeEach(inject(function($controller, _$httpBackend_,
-                               _$location_) {
+                               _$stateParams_, _$location_) {
       ctrl = $controller('GamesCtrl');
       $httpBackend = _$httpBackend_;
+      $stateParams = _$stateParams_;
       $location = _$location_;
 
       $httpBackend.when('GET', '/static/views/home.html').respond(200);
@@ -154,7 +158,6 @@ module App.Tests {
 
     it('create() should handle error responses properly', function() {
       let origLength = ctrl.entries.length;
-      let testError = 'Test error message';
 
       $httpBackend.expectPOST('/api/games/create', testPost)
         .respond(function() {
@@ -178,16 +181,37 @@ module App.Tests {
     /*=============================================
      = query all test
      =============================================*/
-    it('find() should load the list of entries', function() {
-      $httpBackend.expectGET('/api/games')
-        .respond({entries: testResponse});
-      ctrl.find();
+    it('findOne() should query and load the specified entry', function() {
+      let res = {entries: testResponse[0]};
+      let id = 123;
+
+      $httpBackend.expectGET(`/api/games/${id}`).respond(res);
+
+      $stateParams.id = id;
+      ctrl.findOne();
       expect(ctrl.working).toBeTruthy();
       $httpBackend.flush();
 
       expect(ctrl.error.length).toBe(0);
-      expect(ctrl.entries.length).toBeGreaterThan(0);
-      expect(ctrl.entries).toEqual(testResponse);
+      expect(ctrl.activeEntry).toEqual(res.entries[0]);
+      expect(ctrl.working).toBeFalsy();
+    });
+
+    it('findOne() should display an error if the desired entry could not be found, ' +
+      'and redirect back to the games list page', function() {
+
+      $httpBackend.expectGET(/\/api\/games\/\d+/)
+        .respond(function() {
+          return [404, '', {}, testError];
+        });
+      $httpBackend.expectGET('/static/views/games/list.html').respond(200);
+
+      $stateParams.id = 123;
+      ctrl.findOne();
+      expect(ctrl.working).toBeTruthy();
+      $httpBackend.flush();
+
+      expect($location.url()).toBe('/games');
       expect(ctrl.working).toBeFalsy();
     });
   });
