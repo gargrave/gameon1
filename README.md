@@ -5,7 +5,7 @@ export test="clear && python manage.py test"
 
 export run="python manage.py runserver --settings=game_on.settings.dev"
 export static="python manage.py collectstatic --settings=game_on.settings.dev"
-export test="claer && python manage.py test --settings=game_on.settings.dev"
+export test="clear && python manage.py test --settings=game_on.settings.dev"
 ```
 
 ## Deploying to Heroku
