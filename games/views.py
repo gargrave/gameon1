@@ -31,13 +31,13 @@ def games_list(request):
     return JsonResponse({'entries': games})
 
 
-def game_detail(request, id):
+def game_detail(request, pk):
     """
     Returns a single game matching the specified ID.
     :param request: HttpRequest
-    :param id: The id of the game to find
+    :param pk: The id of the game to find
     """
-    game = get_object_or_404(Game, pk=id)
+    game = get_object_or_404(Game, pk=pk)
     games = [{
         'id': game.pk,
         'name': game.name,
@@ -102,13 +102,13 @@ def platforms_list(request):
     return JsonResponse({'entries': platforms})
 
 
-def platform_detail(request, id):
+def platform_detail(request, pk):
     """
     Returns a single platform matching the specified ID.
     :param request: HttpRequest
-    :param id: The id of the platform to find
+    :param pk: The id of the platform to find
     """
-    platform = get_object_or_404(Platform, pk=id)
+    platform = get_object_or_404(Platform, pk=pk)
     platforms = [{
         'id': platform.pk,
         'name': platform.name,

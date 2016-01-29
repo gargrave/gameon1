@@ -47,7 +47,7 @@ class GamesViewsTest(TestCase):
         object that contains only a single element, which is the specified object.
         """
         res = self.client.get(reverse('api:game_detail',
-                                      kwargs={'id': self.test_game.pk}))
+                                      kwargs={'pk': self.test_game.pk}))
         self.assertEqual(res.status_code, 200)
         self.assertEqual(type(res), JsonResponse)
         json_data = json.loads(str(res.content, encoding='utf8'))
@@ -56,7 +56,7 @@ class GamesViewsTest(TestCase):
     def test_game_detail_view_with_bad_data(self):
         # should get a 404 if submitting a missing ID
         res = self.client.get(reverse('api:game_detail',
-                                      kwargs={'id': 987654321}))
+                                      kwargs={'pk': 987654321}))
         self.assertEqual(res.status_code, 404)
 
     def test_game_create_view(self):
@@ -128,7 +128,7 @@ class GamesViewsTest(TestCase):
         object that contains only a single element, which is the specified object.
         """
         res = self.client.get(reverse('api:platform_detail',
-                                      kwargs={'id': self.test_plat.pk}))
+                                      kwargs={'pk': self.test_plat.pk}))
         self.assertEqual(res.status_code, 200)
         self.assertEqual(type(res), JsonResponse)
         json_data = json.loads(str(res.content, encoding='utf8'))
@@ -137,7 +137,7 @@ class GamesViewsTest(TestCase):
     def test_platform_detail_view_with_bad_data(self):
         # should get a 404 if submitting a missing ID
         res = self.client.get(reverse('api:platform_detail',
-                                      kwargs={'id': 987654321}))
+                                      kwargs={'pk': 987654321}))
         self.assertEqual(res.status_code, 404)
 
     def test_platform_create_view(self):
