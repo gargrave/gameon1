@@ -3,20 +3,15 @@ var App;
     var Tests;
     (function (Tests) {
         describe('PlatformsCtrl', function () {
-            var moduleName = 'platforms';
             var emptyEntry = {
                 name: ''
             };
-            var nonEmptyEntry = {
-                name: 'Name'
+            var testPost = {
+                name: 'Win (PC)'
             };
-            var testPost = JSON.stringify({
-                name: 'Test Platform'
-            });
-            var testPostJSON = JSON.stringify(testPost);
             var testResponse = [
-                { name: 'Xbox One' },
-                { name: 'PS3' }
+                { id: 1, name: 'Xbox One' },
+                { id: 2, name: 'PS3' }
             ];
             var ctrl;
             var $httpBackend;
@@ -33,7 +28,7 @@ var App;
             });
             it('find() should load the list of entries', function () {
                 $httpBackend.when('GET', '/static/views/home.html').respond(200);
-                $httpBackend.expectGET("/api/" + moduleName)
+                $httpBackend.expectGET('/api/platforms')
                     .respond({ entries: testResponse });
                 ctrl.find();
                 expect(ctrl.working).toBeTruthy();
@@ -45,9 +40,9 @@ var App;
             it('initCreateView() should initialize the new object ' +
                 'and pre-populate the existing entries list', function () {
                 $httpBackend.when('GET', '/static/views/home.html').respond(200);
-                $httpBackend.expectGET("/api/" + moduleName)
+                $httpBackend.expectGET('/api/platforms')
                     .respond({ entries: testResponse });
-                ctrl.newEntry = nonEmptyEntry;
+                ctrl.newEntry = testPost;
                 ctrl.initCreateView();
                 expect(ctrl.working).toBeTruthy();
                 $httpBackend.flush();
@@ -63,22 +58,22 @@ var App;
                         }]
                 });
                 $httpBackend.when('GET', '/static/views/home.html').respond(200);
-                $httpBackend.expectPOST("/api/" + moduleName + "/create", testPostJSON)
+                $httpBackend.expectPOST('/api/platforms/create', testPost)
                     .respond(201, testPostResponse);
-                $httpBackend.expectGET("/static/views/" + moduleName + "/list.html").respond(200);
-                ctrl.newEntry = testPostJSON;
+                $httpBackend.expectGET('/static/views/platforms/list.html').respond(200);
+                ctrl.newEntry = testPost;
                 ctrl.create();
                 expect(ctrl.working).toBeTruthy();
                 $httpBackend.flush();
-                expect($location.url()).toBe("/" + moduleName);
+                expect($location.url()).toBe('/platforms');
                 expect(ctrl.newEntry).toEqual(emptyEntry);
                 expect(ctrl.working).toBeFalsy();
                 expect(ctrl.entries.length).toBe(origLength + 1);
             });
             it('create() should log an error if a similar object exists', function () {
                 $httpBackend.when('GET', '/static/views/home.html').respond(200);
-                ctrl.entries.push(testPostJSON);
-                ctrl.newEntry = testPostJSON;
+                ctrl.entries.push(testPost);
+                ctrl.newEntry = testPost;
                 ctrl.create();
                 $httpBackend.flush();
                 expect(ctrl.working).toBeFalsy();
@@ -89,11 +84,11 @@ var App;
                 var origLength = ctrl.entries.length;
                 var testError = 'Test error message';
                 $httpBackend.when('GET', '/static/views/home.html').respond(200);
-                $httpBackend.expectPOST("/api/" + moduleName + "/create", testPostJSON)
+                $httpBackend.expectPOST('/api/platforms/create', testPost)
                     .respond(function () {
                     return [400, '', {}, testError];
                 });
-                ctrl.newEntry = testPostJSON;
+                ctrl.newEntry = testPost;
                 ctrl.create();
                 expect(ctrl.working).toBeTruthy();
                 expect(ctrl.error).toBe('');

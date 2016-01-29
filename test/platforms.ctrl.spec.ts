@@ -1,25 +1,21 @@
 /// <reference path="../typings/tsd.d.ts" />
 module App.Tests {
+
+  import IPlatform = App.Platforms.IPlatform;
+
   describe('PlatformsCtrl', function() {
 
-    const moduleName = 'platforms';
-
-    const emptyEntry = {
+    const emptyEntry: IPlatform = {
       name: ''
     };
 
-    const nonEmptyEntry = {
-      name: 'Name'
+    const testPost: IPlatform = {
+      name: 'Win (PC)'
     };
 
-    const testPost = JSON.stringify({
-      name: 'Test Platform'
-    });
-    const testPostJSON = JSON.stringify(testPost);
-
-    const testResponse = [
-      {name: 'Xbox One'},
-      {name: 'PS3'}
+    const testResponse: IPlatform[] = [
+      {id: 1, name: 'Xbox One'},
+      {id: 2, name: 'PS3'}
     ];
 
     /*=============================================
@@ -47,7 +43,7 @@ module App.Tests {
      =============================================*/
     it('find() should load the list of entries', function() {
       $httpBackend.when('GET', '/static/views/home.html').respond(200);
-      $httpBackend.expectGET(`/api/${moduleName}`)
+      $httpBackend.expectGET('/api/platforms')
         .respond({entries: testResponse});
       ctrl.find();
       expect(ctrl.working).toBeTruthy();
@@ -64,9 +60,9 @@ module App.Tests {
     it('initCreateView() should initialize the new object ' +
       'and pre-populate the existing entries list', function() {
       $httpBackend.when('GET', '/static/views/home.html').respond(200);
-      $httpBackend.expectGET(`/api/${moduleName}`)
+      $httpBackend.expectGET('/api/platforms')
         .respond({entries: testResponse});
-      ctrl.newEntry = nonEmptyEntry;
+      ctrl.newEntry = testPost;
       ctrl.initCreateView();
       // ctrl should be working
       expect(ctrl.working).toBeTruthy();
@@ -88,17 +84,17 @@ module App.Tests {
       });
 
       $httpBackend.when('GET', '/static/views/home.html').respond(200);
-      $httpBackend.expectPOST(`/api/${moduleName}/create`, testPostJSON)
+      $httpBackend.expectPOST('/api/platforms/create', testPost)
         .respond(201, testPostResponse);
-      $httpBackend.expectGET(`/static/views/${moduleName}/list.html`).respond(200);
-      ctrl.newEntry = testPostJSON;
+      $httpBackend.expectGET('/static/views/platforms/list.html').respond(200);
+      ctrl.newEntry = testPost;
       ctrl.create();
       // ctrl should be working
       expect(ctrl.working).toBeTruthy();
       $httpBackend.flush();
 
       // we should be back on the list page
-      expect($location.url()).toBe(`/${moduleName}`);
+      expect($location.url()).toBe('/platforms');
       // ctrl.newEntry should be empty now
       expect(ctrl.newEntry).toEqual(emptyEntry);
       // ctrl.working should be false
@@ -107,10 +103,13 @@ module App.Tests {
       expect(ctrl.entries.length).toBe(origLength + 1);
     });
 
+    /*=============================================
+     = creation error test
+     =============================================*/
     it('create() should log an error if a similar object exists', function() {
       $httpBackend.when('GET', '/static/views/home.html').respond(200);
-      ctrl.entries.push(testPostJSON);
-      ctrl.newEntry = testPostJSON;
+      ctrl.entries.push(testPost);
+      ctrl.newEntry = testPost;
       ctrl.create();
       $httpBackend.flush();
 
@@ -122,19 +121,16 @@ module App.Tests {
       expect(ctrl.error.length).toBeGreaterThan(0);
     });
 
-    /*=============================================
-     = creation error test
-     =============================================*/
     it('create() should handle error responses properly', function() {
       let origLength = ctrl.entries.length;
       let testError = 'Test error message';
 
       $httpBackend.when('GET', '/static/views/home.html').respond(200);
-      $httpBackend.expectPOST(`/api/${moduleName}/create`, testPostJSON)
+      $httpBackend.expectPOST('/api/platforms/create', testPost)
         .respond(function() {
           return [400, '', {}, testError];
         });
-      ctrl.newEntry = testPostJSON;
+      ctrl.newEntry = testPost;
       ctrl.create();
       // should have no errors and not be working yet
       expect(ctrl.working).toBeTruthy();
