@@ -5,6 +5,7 @@ from . import views
 urlpatterns = [
     # games API Urls
     url(r'^games/?$', views.games_list, name='games_list'),
+    url(r'^games/(?P<id>\d+)/?$', views.game_detail, name='game_detail'),
     url(r'^games/create/?$', views.game_create, name='game_create'),
 
     # platforms API URLs

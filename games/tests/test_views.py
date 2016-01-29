@@ -13,9 +13,22 @@ class GamesViewsTest(TestCase):
     @classmethod
     def setUpTestData(self):
         self.reqfactory = RequestFactory()
+
         # dummy platform for testing POST
         self.test_plat = Platform(name='Test Platform')
         self.test_plat.save()
+
+        # dummy game for testing POST
+        self.test_game = Game(
+            name='Test Game',
+            platform=self.test_plat,
+            start_date='2015-03-21',
+            end_date='2015-04-02')
+        self.test_game.save()
+
+    #############################################################
+    # Games API Tests
+    #############################################################
 
     def test_games_list_view(self):
         """
@@ -27,6 +40,24 @@ class GamesViewsTest(TestCase):
         self.assertEqual(type(res), JsonResponse)
         json_data = json.loads(str(res.content, encoding='utf8'))
         self.assertIn('entries', json_data)
+
+    def test_game_detail_view(self):
+        """
+        The platform_detail should return a JsonResponse with an 'entries'
+        object that contains only a single element, which is the specified object.
+        """
+        res = self.client.get(reverse('api:game_detail',
+                                      kwargs={'id': self.test_game.pk}))
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(type(res), JsonResponse)
+        json_data = json.loads(str(res.content, encoding='utf8'))
+        self.assertIn('entries', json_data)
+
+    def test_game_detail_view_with_bad_data(self):
+        # should get a 404 if submitting a missing ID
+        res = self.client.get(reverse('api:game_detail',
+                                      kwargs={'id': 987654321}))
+        self.assertEqual(res.status_code, 404)
 
     def test_game_create_view(self):
         """
@@ -76,6 +107,10 @@ class GamesViewsTest(TestCase):
         self.assertEqual(str(res.content, encoding='utf8'),
                          'The data submitted could not be validated.')
 
+    #############################################################
+    # Platforms API Tests
+    #############################################################
+
     def test_platforms_list_view(self):
         """
         The 'platforms_list' view should return a JsonResponse with
@@ -104,12 +139,6 @@ class GamesViewsTest(TestCase):
         res = self.client.get(reverse('api:platform_detail',
                                       kwargs={'id': 987654321}))
         self.assertEqual(res.status_code, 404)
-        # # should reject malformed data
-        # bad_post = {'bad post': ''}
-        # res = self.client.post(url, bad_post)
-        # self.assertEqual(res.status_code, 400)
-        # self.assertEqual(str(res.content, encoding='utf8'),
-        #                  'The data submitted could not be validated.')
 
     def test_platform_create_view(self):
         url = reverse('api:platform_create')

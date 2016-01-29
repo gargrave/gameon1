@@ -31,6 +31,26 @@ def games_list(request):
     return JsonResponse({'entries': games})
 
 
+def game_detail(request, id):
+    """
+    Returns a single game matching the specified ID.
+    :param request: HttpRequest
+    :param id: The id of the game to find
+    """
+    game = get_object_or_404(Game, pk=id)
+    games = [{
+        'id': game.pk,
+        'name': game.name,
+        'platform': str(game.platform),
+        'startDate': game.start_date,
+        'endDate': game.end_date,
+        'finished': game.finished,
+        'created': game.created,
+        'modified': game.modified
+    }]
+    return JsonResponse({'entries': games})
+
+
 @require_POST
 def game_create(request):
     """
