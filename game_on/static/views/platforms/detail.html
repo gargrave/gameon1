@@ -1,0 +1,42 @@
+<div class="row" ng-init="ctrl.findOne()">
+  <div class="col-md-10 col-md-offset-1">
+
+    <div class="page-header">
+      <!-- title display -->
+      <h3 ng-bind="ctrl.activeEntry.name"></h3>
+
+      <!-- 'created by' text -->
+      <small>
+        <em class="text-muted">
+          Added on
+          <span ng-bind="ctrl.activeEntry.created | date:'mediumDate'"></span>
+        </em>
+      </small>
+
+      <div class="pull-right">
+        <!-- 'edit' button -->
+        <a class="btn btn-primary" href="/#/">
+          <i class="glyphicon glyphicon-edit"></i>
+        </a>
+        <!-- 'delete' button -->
+        <a class="btn btn-primary" ng-click="ctrl.remove()">
+          <i class="glyphicon glyphicon-trash"></i>
+        </a>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+
+  </div>
+</div>
+<!--
+<section ng-controller="TermsCtrl as tc" ng-init="ctrl.findOne()">
+  <!-- list all courses for this term ->
+  <h4>Courses for this term:</h4>
+  <div class="list-group">
+    <a ng-repeat="course in ctrl.getEntry().courses" class="list-group-item"
+       ng-href="#!/courses/{{ course._id }}">
+      <h4 class="list-group-item-heading" ng-bind="course.name">
+      </h4>
+    </a>
+  </div>
+</section>

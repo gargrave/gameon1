@@ -1,14 +1,20 @@
 <div class="row" ng-init="ctrl.find()">
   <div class="col-md-10 col-md-offset-1">
 
-    <h3>Platforms</h3>
-    <hr>
+    <div class="page-header">
+      <h3>Platforms</h3>
+    </div>
+
+    <!-- TODO need to show this if there are API errors -->
+    <div class="alert alert-danger" role="alert" ng-show="ctrl.error" ng-cloak>
+      <span ng-bind="ctrl.error"></span>
+    </div>
 
     <div class="list-group">
-      <a class="list-group-item" ng-repeat="platform in ctrl.entries" ui-sref="platforms-list">
+      <a class="list-group-item" ng-repeat="platform in ctrl.entries" ui-sref="platforms-detail({id: platform.id})">
         <strong class="list-group-item-heading" ng-bind="platform.name"></strong>
         <small class="list-group-item-text text-muted">
-           added on
+          added on
           <span ng-bind="platform.created | date:'medium'"></span>
         </small>
       </a>
