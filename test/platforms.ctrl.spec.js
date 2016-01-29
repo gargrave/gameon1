@@ -113,7 +113,7 @@ var App;
                 expect(ctrl.working).toBeTruthy();
                 $httpBackend.flush();
                 expect(ctrl.error.length).toBe(0);
-                expect(ctrl.activeEntry).toEqual(res.entries);
+                expect(ctrl.activeEntry).toEqual(res.entries[0]);
                 expect(ctrl.working).toBeFalsy();
             });
             it('findOne() should display an error if the desired entry could not be found, ' +

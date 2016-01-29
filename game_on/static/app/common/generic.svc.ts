@@ -60,7 +60,7 @@ module App.Common {
 
       self.$http.get(`/api/${self.moduleName}s/${id}`)
         .then(function(res) {
-          self.activeEntry = (<IApiResponse>res.data).entries;
+          self.activeEntry = (<IApiResponse>res.data).entries[0];
           deferred.resolve(self.activeEntry);
         }, function(err) {
           deferred.reject(err.data);

@@ -31,7 +31,7 @@ var App;
                 var deferred = self.$q.defer();
                 self.$http.get("/api/" + self.moduleName + "s/" + id)
                     .then(function (res) {
-                    self.activeEntry = res.data.entries;
+                    self.activeEntry = res.data.entries[0];
                     deferred.resolve(self.activeEntry);
                 }, function (err) {
                     deferred.reject(err.data);
