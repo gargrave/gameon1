@@ -11,6 +11,8 @@ module App.Games {
     startDate: string;
     endDate: string;
     finished: boolean;
+    created?: string;
+    modified?: string;
   }
 
   export class GamesCtrl extends App.Common.GenericController<IGame> {

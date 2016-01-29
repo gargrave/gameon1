@@ -7,6 +7,8 @@ module App.Platforms {
   export interface IPlatform {
     id?: number;
     name: string;
+    created?: string;
+    modified?: string;
   }
 
   export class PlatformsCtrl extends App.Common.GenericController<IPlatform> {
