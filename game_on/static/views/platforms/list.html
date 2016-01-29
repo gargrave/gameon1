@@ -11,10 +11,11 @@
     </div>
 
     <div class="list-group">
-      <a class="list-group-item" ng-repeat="platform in ctrl.entries" ui-sref="platforms-detail({id: platform.id})">
+      <a class="list-group-item" ng-repeat="platform in ctrl.entries"
+         ui-sref="platforms-detail({id: platform.id})">
         <strong class="list-group-item-heading" ng-bind="platform.name"></strong>
         <small class="list-group-item-text text-muted">
-          added on
+          Added on
           <span ng-bind="platform.created | date:'medium'"></span>
         </small>
       </a>
