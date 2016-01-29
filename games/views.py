@@ -1,5 +1,6 @@
 from django.core.exceptions import ValidationError
 from django.http import HttpResponse, JsonResponse
+from django.shortcuts import get_object_or_404
 from django.views.decorators.http import require_POST
 
 from .forms import GameForm, PlatformForm
@@ -78,6 +79,22 @@ def platforms_list(request):
             'created': platform.created,
             'modified': platform.modified
         })
+    return JsonResponse({'entries': platforms})
+
+
+def platform_detail(request, id):
+    """
+    Returns a single platform matching the specified ID.
+    :param request: HttpRequest
+    :param id: The id of the platform to find
+    """
+    platform = get_object_or_404(Platform, pk=id)
+    platforms = [{
+        'id': platform.pk,
+        'name': platform.name,
+        'created': platform.created,
+        'modified': platform.modified
+    }]
     return JsonResponse({'entries': platforms})
 
 

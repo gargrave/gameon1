@@ -87,6 +87,30 @@ class GamesViewsTest(TestCase):
         json_data = json.loads(str(res.content, encoding='utf8'))
         self.assertIn('entries', json_data)
 
+    def test_platform_detail_view(self):
+        """
+        The platform_detail should return a JsonResponse with an 'entries'
+        object that contains only a single element, which is the specified object.
+        """
+        res = self.client.get(reverse('api:platform_detail',
+                                      kwargs={'id': self.test_plat.pk}))
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(type(res), JsonResponse)
+        json_data = json.loads(str(res.content, encoding='utf8'))
+        self.assertIn('entries', json_data)
+
+    def test_platform_detail_view_with_bad_data(self):
+        # should get a 404 if submitting a missing ID
+        res = self.client.get(reverse('api:platform_detail',
+                                      kwargs={'id': 987654321}))
+        self.assertEqual(res.status_code, 404)
+        # # should reject malformed data
+        # bad_post = {'bad post': ''}
+        # res = self.client.post(url, bad_post)
+        # self.assertEqual(res.status_code, 400)
+        # self.assertEqual(str(res.content, encoding='utf8'),
+        #                  'The data submitted could not be validated.')
+
     def test_platform_create_view(self):
         url = reverse('api:platform_create')
         # should accept good submission,
@@ -107,7 +131,6 @@ class GamesViewsTest(TestCase):
 
     def test_platform_create_view_with_bad_data(self):
         url = reverse('api:platform_create')
-        # GET requests should be rejected
         res = self.client.get(url)
         self.assertEqual(res.status_code, 405)
         # should reject malformed data
