@@ -93,32 +93,35 @@ module App.Tests {
       expect(ctrl.working).toBeFalsy();
     });
 
-    it('create() should successfully save a new game object and redirect', function() {
+    it('create() should successfully save a new platform object, ' +
+      'and redirect to the new detail view', function() {
       let origLength: number = ctrl.entries.length;
+      let id = 654;
       let testPostResponse = {
         entries: [{
-          id: 10,
+          id: id,
           name: testPost.name,
           platform: testPost.platform,
           startDate: testPost.startDate,
           endDate: testPost.endDate,
-          finished: testPost.finished
+          finished: testPost.finished,
+          created: '2016-01-28T15:55:16.285Z',
+          modified: '2016-01-28T15:55:16.285Z'
         }]
       };
 
       $httpBackend.expectPOST(`/api/${MODULE}/create`, testPost)
         .respond(201, testPostResponse);
-      $httpBackend.expectGET(`/static/views/${MODULE}/list.html`).respond(200);
+      $httpBackend.when('GET', `/static/views/${MODULE}/detail.html`).respond(200);
+
       ctrl.newEntry = testPost;
       ctrl.create();
       // ctrl should be working
       expect(ctrl.working).toBeTruthy();
       $httpBackend.flush();
 
-      // we should be back on the list page
-      expect($location.url()).toBe(`/${MODULE}`);
-      // ctrl.newEntry should be empty now
-      expect(ctrl.newEntry).toEqual(emptyEntry);
+      // we should be back on the detail page for the new entry
+      expect($location.url()).toBe(`/${MODULE}/${id}`);
       // ctrl.working should be false
       expect(ctrl.working).toBeFalsy();
       // ctrl.entries.length should be one

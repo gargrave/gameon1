@@ -51,23 +51,26 @@ var App;
                 expect(ctrl.newEntry).toEqual(emptyEntry);
                 expect(ctrl.working).toBeFalsy();
             });
-            it('create() should successfully save a new platform object and redirect', function () {
+            it('create() should successfully save a new platform object, ' +
+                'and redirect to the new detail view', function () {
                 var origLength = ctrl.entries.length;
-                var testPostResponse = JSON.stringify({
+                var id = 654;
+                var testPostResponse = {
                     entries: [{
-                            id: 10,
-                            name: testPost.name
+                            id: id,
+                            name: testPost.name,
+                            created: '2016-01-28T15:55:16.285Z',
+                            modified: '2016-01-28T15:55:16.285Z'
                         }]
-                });
+                };
                 $httpBackend.expectPOST("/api/" + MODULE + "/create", testPost)
                     .respond(201, testPostResponse);
-                $httpBackend.expectGET("/static/views/" + MODULE + "/list.html").respond(200);
+                $httpBackend.when('GET', "/static/views/" + MODULE + "/detail.html").respond(200);
                 ctrl.newEntry = testPost;
                 ctrl.create();
                 expect(ctrl.working).toBeTruthy();
                 $httpBackend.flush();
-                expect($location.url()).toBe("/" + MODULE);
-                expect(ctrl.newEntry).toEqual(emptyEntry);
+                expect($location.url()).toBe("/" + MODULE + "/" + id);
                 expect(ctrl.working).toBeFalsy();
                 expect(ctrl.entries.length).toBe(origLength + 1);
             });
