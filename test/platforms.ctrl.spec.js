@@ -10,8 +10,18 @@ var App;
                 name: 'Win (PC)'
             };
             var testResponse = [
-                { id: 1, name: 'Xbox One' },
-                { id: 2, name: 'PS3' }
+                {
+                    id: 1,
+                    name: 'Xbox One',
+                    created: '2016-01-28T15:55:16.285Z',
+                    modified: '2016-01-28T15:55:16.285Z'
+                },
+                {
+                    id: 2,
+                    name: 'PS3',
+                    created: '2016-01-27T15:55:16.285Z',
+                    modified: '2016-01-27T15:55:16.285Z'
+                }
             ];
             var ctrl;
             var $httpBackend;
@@ -21,25 +31,14 @@ var App;
                 ctrl = $controller('PlatformsCtrl');
                 $httpBackend = _$httpBackend_;
                 $location = _$location_;
+                $httpBackend.when('GET', '/static/views/home.html').respond(200);
             }));
             afterEach(function () {
                 $httpBackend.verifyNoOutstandingExpectation();
                 $httpBackend.verifyNoOutstandingRequest();
             });
-            it('find() should load the list of entries', function () {
-                $httpBackend.when('GET', '/static/views/home.html').respond(200);
-                $httpBackend.expectGET('/api/platforms')
-                    .respond({ entries: testResponse });
-                ctrl.find();
-                expect(ctrl.working).toBeTruthy();
-                $httpBackend.flush();
-                expect(ctrl.entries.length).toBeGreaterThan(0);
-                expect(ctrl.entries).toEqual(testResponse);
-                expect(ctrl.working).toBeFalsy();
-            });
             it('initCreateView() should initialize the new object ' +
                 'and pre-populate the existing entries list', function () {
-                $httpBackend.when('GET', '/static/views/home.html').respond(200);
                 $httpBackend.expectGET('/api/platforms')
                     .respond({ entries: testResponse });
                 ctrl.newEntry = testPost;
@@ -57,7 +56,6 @@ var App;
                             name: testPost.name
                         }]
                 });
-                $httpBackend.when('GET', '/static/views/home.html').respond(200);
                 $httpBackend.expectPOST('/api/platforms/create', testPost)
                     .respond(201, testPostResponse);
                 $httpBackend.expectGET('/static/views/platforms/list.html').respond(200);
@@ -71,7 +69,6 @@ var App;
                 expect(ctrl.entries.length).toBe(origLength + 1);
             });
             it('create() should log an error if a similar object exists', function () {
-                $httpBackend.when('GET', '/static/views/home.html').respond(200);
                 ctrl.entries.push(testPost);
                 ctrl.newEntry = testPost;
                 ctrl.create();
@@ -83,7 +80,6 @@ var App;
             it('create() should handle error responses properly', function () {
                 var origLength = ctrl.entries.length;
                 var testError = 'Test error message';
-                $httpBackend.when('GET', '/static/views/home.html').respond(200);
                 $httpBackend.expectPOST('/api/platforms/create', testPost)
                     .respond(function () {
                     return [400, '', {}, testError];
@@ -96,6 +92,16 @@ var App;
                 expect(ctrl.working).toBeFalsy();
                 expect(ctrl.entries.length).toBe(origLength);
                 expect(ctrl.error).toBe(testError);
+            });
+            it('find() should load the list of entries', function () {
+                $httpBackend.expectGET('/api/platforms')
+                    .respond({ entries: testResponse });
+                ctrl.find();
+                expect(ctrl.working).toBeTruthy();
+                $httpBackend.flush();
+                expect(ctrl.entries.length).toBeGreaterThan(0);
+                expect(ctrl.entries).toEqual(testResponse);
+                expect(ctrl.working).toBeFalsy();
             });
         });
     })(Tests = App.Tests || (App.Tests = {}));

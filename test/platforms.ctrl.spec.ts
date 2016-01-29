@@ -14,8 +14,18 @@ module App.Tests {
     };
 
     const testResponse: IPlatform[] = [
-      {id: 1, name: 'Xbox One'},
-      {id: 2, name: 'PS3'}
+      {
+        id: 1,
+        name: 'Xbox One',
+        created: '2016-01-28T15:55:16.285Z',
+        modified: '2016-01-28T15:55:16.285Z'
+      },
+      {
+        id: 2,
+        name: 'PS3',
+        created: '2016-01-27T15:55:16.285Z',
+        modified: '2016-01-27T15:55:16.285Z'
+      }
     ];
 
     /*=============================================
@@ -31,6 +41,8 @@ module App.Tests {
       ctrl = $controller('PlatformsCtrl');
       $httpBackend = _$httpBackend_;
       $location = _$location_;
+
+      $httpBackend.when('GET', '/static/views/home.html').respond(200);
     }));
 
     afterEach(function() {
@@ -39,27 +51,10 @@ module App.Tests {
     });
 
     /*=============================================
-     = query all test
-     =============================================*/
-    it('find() should load the list of entries', function() {
-      $httpBackend.when('GET', '/static/views/home.html').respond(200);
-      $httpBackend.expectGET('/api/platforms')
-        .respond({entries: testResponse});
-      ctrl.find();
-      expect(ctrl.working).toBeTruthy();
-      $httpBackend.flush();
-
-      expect(ctrl.entries.length).toBeGreaterThan(0);
-      expect(ctrl.entries).toEqual(testResponse);
-      expect(ctrl.working).toBeFalsy();
-    });
-
-    /*=============================================
      = creation test
      =============================================*/
     it('initCreateView() should initialize the new object ' +
       'and pre-populate the existing entries list', function() {
-      $httpBackend.when('GET', '/static/views/home.html').respond(200);
       $httpBackend.expectGET('/api/platforms')
         .respond({entries: testResponse});
       ctrl.newEntry = testPost;
@@ -83,7 +78,6 @@ module App.Tests {
         }]
       });
 
-      $httpBackend.when('GET', '/static/views/home.html').respond(200);
       $httpBackend.expectPOST('/api/platforms/create', testPost)
         .respond(201, testPostResponse);
       $httpBackend.expectGET('/static/views/platforms/list.html').respond(200);
@@ -107,7 +101,6 @@ module App.Tests {
      = creation error test
      =============================================*/
     it('create() should log an error if a similar object exists', function() {
-      $httpBackend.when('GET', '/static/views/home.html').respond(200);
       ctrl.entries.push(testPost);
       ctrl.newEntry = testPost;
       ctrl.create();
@@ -125,7 +118,6 @@ module App.Tests {
       let origLength = ctrl.entries.length;
       let testError = 'Test error message';
 
-      $httpBackend.when('GET', '/static/views/home.html').respond(200);
       $httpBackend.expectPOST('/api/platforms/create', testPost)
         .respond(function() {
           return [400, '', {}, testError];
@@ -143,6 +135,21 @@ module App.Tests {
       expect(ctrl.entries.length).toBe(origLength);
       // the error message should not be empty
       expect(ctrl.error).toBe(testError);
+    });
+
+    /*=============================================
+     = query all test
+     =============================================*/
+    it('find() should load the list of entries', function() {
+      $httpBackend.expectGET('/api/platforms')
+        .respond({entries: testResponse});
+      ctrl.find();
+      expect(ctrl.working).toBeTruthy();
+      $httpBackend.flush();
+
+      expect(ctrl.entries.length).toBeGreaterThan(0);
+      expect(ctrl.entries).toEqual(testResponse);
+      expect(ctrl.working).toBeFalsy();
     });
   });
 }

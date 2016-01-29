@@ -59,6 +59,8 @@ module App.Tests {
       ctrl = $controller('GamesCtrl');
       $httpBackend = _$httpBackend_;
       $location = _$location_;
+
+      $httpBackend.when('GET', '/static/views/home.html').respond(200);
     }));
 
     afterEach(function() {
@@ -67,27 +69,10 @@ module App.Tests {
     });
 
     /*=============================================
-     = query all test
-     =============================================*/
-    it('find() should load the list of entries', function() {
-      $httpBackend.when('GET', '/static/views/home.html').respond(200);
-      $httpBackend.expectGET('/api/games')
-        .respond({entries: testResponse});
-      ctrl.find();
-      expect(ctrl.working).toBeTruthy();
-      $httpBackend.flush();
-
-      expect(ctrl.entries.length).toBeGreaterThan(0);
-      expect(ctrl.entries).toEqual(testResponse);
-      expect(ctrl.working).toBeFalsy();
-    });
-
-    /*=============================================
      = creation test
      =============================================*/
     it('initCreateView() should initialize the new object ' +
       'and pre-populate the existing entries list', function() {
-      $httpBackend.when('GET', '/static/views/home.html').respond(200);
       $httpBackend.expectGET('/api/games')
         .respond({entries: testResponse});
       ctrl.newEntry = testPost;
@@ -115,7 +100,6 @@ module App.Tests {
         }]
       };
 
-      $httpBackend.when('GET', '/static/views/home.html').respond(200);
       $httpBackend.expectPOST('/api/games/create', testPost)
         .respond(201, testPostResponse);
       $httpBackend.expectGET('/static/views/games/list.html').respond(200);
@@ -140,7 +124,6 @@ module App.Tests {
      =============================================*/
     it('create() should log an error if a similar object exists, ' +
       'and should not attempt to save the entry', function() {
-      $httpBackend.when('GET', '/static/views/home.html').respond(200);
       ctrl.entries.push(testPost);
       ctrl.newEntry = testPost;
       ctrl.create();
@@ -156,7 +139,6 @@ module App.Tests {
 
     it('create() should log an error in the platform id is invalid, ' +
       'and should not attempt to save the entry', function() {
-      $httpBackend.when('GET', '/static/views/home.html').respond(200);
       ctrl.newEntry = angular.copy(testPost);
       ctrl.newEntry.platform = invalidPlatform.id;
       ctrl.create();
@@ -174,7 +156,6 @@ module App.Tests {
       let origLength = ctrl.entries.length;
       let testError = 'Test error message';
 
-      $httpBackend.when('GET', '/static/views/home.html').respond(200);
       $httpBackend.expectPOST('/api/games/create', testPost)
         .respond(function() {
           return [400, '', {}, testError];
@@ -192,6 +173,21 @@ module App.Tests {
       expect(ctrl.entries.length).toBe(origLength);
       // the error message should not be empty
       expect(ctrl.error).toBe(testError);
+    });
+
+    /*=============================================
+     = query all test
+     =============================================*/
+    it('find() should load the list of entries', function() {
+      $httpBackend.expectGET('/api/games')
+        .respond({entries: testResponse});
+      ctrl.find();
+      expect(ctrl.working).toBeTruthy();
+      $httpBackend.flush();
+
+      expect(ctrl.entries.length).toBeGreaterThan(0);
+      expect(ctrl.entries).toEqual(testResponse);
+      expect(ctrl.working).toBeFalsy();
     });
   });
 }
