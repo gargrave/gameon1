@@ -23,7 +23,8 @@ var App;
                         .then(function (res) {
                         self.entries.push(res);
                         self.initCreateView();
-                        self.$state.go(self.moduleName + "s-list");
+                        var id = res.id;
+                        self.$state.go(self.moduleName + "s-detail", { id: id });
                     }, function (err) {
                         self.error = err.statusText;
                     })
@@ -63,6 +64,8 @@ var App;
                     .finally(function () {
                     self.working = false;
                 });
+            };
+            GenericController.prototype.remove = function () {
             };
             GenericController.prototype.initCreateView = function () {
                 var self = this;

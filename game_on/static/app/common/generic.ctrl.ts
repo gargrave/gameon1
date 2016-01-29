@@ -6,6 +6,12 @@ module App.Common {
   /*=============================================
    = interface details
    =============================================*/
+  export interface IDbEntry {
+    id?: number;
+    created?: string;
+    modified?: string;
+  }
+
   export interface IGenericController<T> {
     working: boolean;
     entries: T[];
@@ -16,6 +22,8 @@ module App.Common {
     create(): void;
     find(): void;
     findOne(): void;
+    remove(): void;
+
     initCreateView(): void;
   }
 
@@ -60,7 +68,10 @@ module App.Common {
             // add the new platform into the local list
             self.entries.push(res);
             self.initCreateView();
-            self.$state.go(`${self.moduleName}s-list`);
+
+            // get the id for the new entry, and redirect to its details page
+            let id = (<IDbEntry>res).id;
+            self.$state.go(`${self.moduleName}s-detail`, {id: id});
           }, function(err) {
             self.error = err.statusText;
           })
@@ -113,6 +124,13 @@ module App.Common {
         .finally(function() {
           self.working = false;
         });
+    }
+
+    /**
+     * Sends a query to the server to delete the currently-active entry.
+     */
+    remove(): void {
+
     }
 
     /*=============================================

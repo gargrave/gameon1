@@ -4,15 +4,12 @@ module App.Games {
   /*=============================================
    = interface definitions
    =============================================*/
-  export interface IGame {
-    id?: number;
+  export interface IGame extends App.Common.IDbEntry {
     name: string;
     platform: number;
     startDate: string;
     endDate: string;
     finished: boolean;
-    created?: string;
-    modified?: string;
   }
 
   export class GamesCtrl extends App.Common.GenericController<IGame> {

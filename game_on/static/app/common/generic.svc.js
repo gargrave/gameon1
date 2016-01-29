@@ -43,7 +43,7 @@ var App;
                 var deferred = self.$q.defer();
                 self.$http.post("/api/" + self.moduleName + "s/create", data)
                     .then(function (res) {
-                    deferred.resolve(res.data.entries);
+                    deferred.resolve(res.data.entries[0]);
                 }, function (err) {
                     deferred.reject(err);
                 });

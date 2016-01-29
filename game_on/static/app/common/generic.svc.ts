@@ -77,7 +77,7 @@ module App.Common {
 
       self.$http.post(`/api/${self.moduleName}s/create`, data)
         .then(function(res) {
-          deferred.resolve((<IApiResponse>res.data).entries);
+          deferred.resolve((<IApiResponse>res.data).entries[0]);
         }, function(err) {
           deferred.reject(err);
         });

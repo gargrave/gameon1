@@ -4,11 +4,8 @@ module App.Platforms {
   /*=============================================
    = interface definitions
    =============================================*/
-  export interface IPlatform {
-    id?: number;
+  export interface IPlatform extends App.Common.IDbEntry {
     name: string;
-    created?: string;
-    modified?: string;
   }
 
   export class PlatformsCtrl extends App.Common.GenericController<IPlatform> {
