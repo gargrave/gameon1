@@ -66,6 +66,9 @@ var App;
                 });
             };
             GenericController.prototype.remove = function () {
+                if (!confirm('Delete this fucko?')) {
+                    return;
+                }
                 var self = this;
                 self.error = '';
                 self.working = true;

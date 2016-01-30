@@ -132,6 +132,11 @@ module App.Common {
      * Sends a query to the server to delete the currently-active entry.
      */
     remove(): void {
+      // show confirm and early-out if user declines
+      if (!confirm('Delete this fucko?')) {
+        return;
+      }
+
       const self = this;
       self.error = '';
       self.working = true;
