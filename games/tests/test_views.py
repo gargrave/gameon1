@@ -168,3 +168,27 @@ class GamesViewsTest(TestCase):
         self.assertEqual(res.status_code, 400)
         self.assertEqual(str(res.content, encoding='utf8'),
                          'The data submitted could not be validated.')
+
+    def test_platform_delete_view(self):
+        """
+        Platform delete view should remove the specified entry and
+        return a simple 204 response.
+        """
+        test_id = self.test_plat.id
+        post_data = {'id': test_id}
+        res = self.client.post(reverse('api:platform_delete'),
+                               json.dumps(post_data),
+                               content_type='application/json')
+        self.assertEqual(res.status_code, 204)
+        # now do it again to test that the platform in question no longer exists
+        res = self.client.post(reverse('api:platform_delete'),
+                               json.dumps(post_data),
+                               content_type='application/json')
+        self.assertEqual(res.status_code, 404)
+
+        # should get a 404 if submitting a missing ID
+        post_data = {'id': 987654312}
+        res = self.client.post(reverse('api:platform_delete'),
+                               json.dumps(post_data),
+                               content_type='application/json')
+        self.assertEqual(res.status_code, 404)

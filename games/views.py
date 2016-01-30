@@ -122,7 +122,7 @@ def platform_detail(request, pk):
 def platform_create(request):
     """
     Creates a new Platform and returns the new object
-    :param request:  HttpRequest
+    :param request: HttpRequest
     """
     req = load_json_request(request)
     if req:
@@ -135,5 +135,21 @@ def platform_create(request):
             'modified': platform.modified
         }]
         return JsonResponse({'entries': res_data})
+    else:
+        return HttpResponse('The data submitted could not be validated.', status=400)
+
+
+@require_POST
+def platform_delete(request):
+    """
+    Deletes the Platform with the specified id, and returns a 204 response.
+    Returns 404 if no matching platform is found.
+    :param request: HttpRequest
+    """
+    req = load_json_request(request)
+    if req:
+        platform = get_object_or_404(Platform, pk=req['id'])
+        platform.delete()
+        return HttpResponse(status=204)
     else:
         return HttpResponse('The data submitted could not be validated.', status=400)
