@@ -86,6 +86,25 @@ def game_create(request):
 
 
 @require_POST
+def game_update(request):
+    req = load_json_request(request)
+    game = get_object_or_404(Game, pk=req['id'])
+    game.name = req['name']
+    game.save()
+    res_data = [{
+        'id': game.pk,
+        'name': game.name,
+        'platform': str(game.platform),
+        'start_date': game.start_date,
+        'end_date': game.end_date,
+        'finished': game.finished,
+        'created': game.created,
+        'modified': game.modified
+    }]
+    return JsonResponse({'entries': res_data})
+
+
+@require_POST
 def game_delete(request):
     """
     Deletes the Game with the specified id, and returns a 204 response.
@@ -169,3 +188,18 @@ def platform_delete(request):
         return HttpResponse(status=204)
     else:
         return HttpResponse('The data submitted could not be validated.', status=400)
+
+
+@require_POST
+def platform_update(request):
+    req = load_json_request(request)
+    platform = get_object_or_404(Platform, pk=req['id'])
+    platform.name = req['name']
+    platform.save()
+    res_data = [{
+        'id': platform.pk,
+        'name': platform.name,
+        'created': platform.created,
+        'modified': platform.modified
+    }]
+    return JsonResponse({'entries': res_data})

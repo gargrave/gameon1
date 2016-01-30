@@ -123,6 +123,32 @@ class GamesViewsTest(TestCase):
         self.assertEqual(str(res.content, encoding='utf8'),
                          'The data submitted could not be validated.')
 
+    def test_game_update_view(self):
+        new_name = self.test_game.name + '_updated'
+        url = reverse('api:game_update')
+        post_data = {
+            'id': self.test_game.pk,
+            'name': new_name,
+            'platform': self.test_plat.pk,
+            'start_date': self.test_game.start_date,
+            'end_date': self.test_game.end_date,
+            'finished': self.test_game.finished
+        }
+        res = self.client.post(url, json.dumps(post_data),
+                               content_type='application/json')
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(type(res), JsonResponse)
+        # ensure that the response has all of the expected data
+        res_data = json.loads(str(res.content, encoding='utf8'))['entries'][0]
+        for v in post_data:
+            self.assertIn(v, res_data)
+        # check that the object's name was correctly updated
+        self.assertEqual(res_data['name'], new_name)
+        # check that other data DID NOT change
+        self.assertEqual(res_data['start_date'], self.test_game.start_date)
+        self.assertEqual(res_data['end_date'], self.test_game.end_date)
+        self.assertEqual(res_data['finished'], self.test_game.finished)
+
     def test_game_delete_view(self):
         """
         Game delete view should remove the specified entry and
@@ -193,6 +219,24 @@ class GamesViewsTest(TestCase):
         self.assertEqual(res.status_code, 400)
         self.assertEqual(str(res.content, encoding='utf8'),
                          'The data submitted could not be validated.')
+
+    def test_platform_update_view(self):
+        new_name = self.test_plat.name + '_updated'
+        url = reverse('api:platform_update')
+        post_data = {
+            'id': self.test_plat.pk,
+            'name': new_name
+        }
+        res = self.client.post(url, json.dumps(post_data),
+                               content_type='application/json')
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(type(res), JsonResponse)
+        # ensure that the response has all of the expected data
+        res_data = json.loads(str(res.content, encoding='utf8'))['entries'][0]
+        for v in post_data:
+            self.assertIn(v, res_data)
+        # check that the object's name was correctly updated
+        self.assertEqual(res_data['name'], new_name)
 
     def test_platform_delete_view(self):
         """
