@@ -90,13 +90,17 @@ def game_update(request):
     req = load_json_request(request)
     game = get_object_or_404(Game, pk=req['id'])
     game.name = req['name']
+    game.platform = Platform.objects.get(pk=req['platform'])
+    game.start_date = req['startDate']
+    game.end_date = req['endDate']
+    game.finished = req['finished']
     game.save()
     res_data = [{
         'id': game.pk,
         'name': game.name,
         'platform': str(game.platform),
-        'start_date': game.start_date,
-        'end_date': game.end_date,
+        'startDate': game.start_date,
+        'endDate': game.end_date,
         'finished': game.finished,
         'created': game.created,
         'modified': game.modified

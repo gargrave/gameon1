@@ -123,15 +123,19 @@ class GamesViewsTest(TestCase):
         self.assertEqual(str(res.content, encoding='utf8'),
                          'The data submitted could not be validated.')
 
-    def test_game_update_view(self):
+    def test_game_update_partial_view(self):
+        """
+        Tests the the game_update view updates some but not all data.
+        :return:
+        """
         new_name = self.test_game.name + '_updated'
         url = reverse('api:game_update')
         post_data = {
             'id': self.test_game.pk,
             'name': new_name,
             'platform': self.test_plat.pk,
-            'start_date': self.test_game.start_date,
-            'end_date': self.test_game.end_date,
+            'startDate': self.test_game.start_date,
+            'endDate': self.test_game.end_date,
             'finished': self.test_game.finished
         }
         res = self.client.post(url, json.dumps(post_data),
@@ -145,9 +149,39 @@ class GamesViewsTest(TestCase):
         # check that the object's name was correctly updated
         self.assertEqual(res_data['name'], new_name)
         # check that other data DID NOT change
-        self.assertEqual(res_data['start_date'], self.test_game.start_date)
-        self.assertEqual(res_data['end_date'], self.test_game.end_date)
+        self.assertEqual(res_data['startDate'], self.test_game.start_date)
+        self.assertEqual(res_data['endDate'], self.test_game.end_date)
         self.assertEqual(res_data['finished'], self.test_game.finished)
+
+    def test_game_update_full_view(self):
+        """
+        Tests the the game_update view updates some but not all data.
+        :return:
+        """
+        new_platform = Platform(name='Another Platform')
+        new_platform.save()
+        url = reverse('api:game_update')
+        post_data = {
+            'id': self.test_game.pk,
+            'name': self.test_game.name + '_updated',
+            'platform': new_platform.pk,
+            'startDate': '2014-01-01',
+            'endDate': '2014-02-02',
+            'finished': self.test_game.finished
+        }
+        res = self.client.post(url, json.dumps(post_data),
+                               content_type='application/json')
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(type(res), JsonResponse)
+        # ensure that the response has all of the expected data
+        res_data = json.loads(str(res.content, encoding='utf8'))['entries'][0]
+        for v in post_data:
+            self.assertIn(v, res_data)
+        # check that the object's name was correctly updated
+        self.assertEqual(res_data['name'], post_data['name'])
+        self.assertEqual(res_data['startDate'], post_data['startDate'])
+        self.assertEqual(res_data['endDate'], post_data['endDate'])
+        self.assertEqual(res_data['finished'], post_data['finished'])
 
     def test_game_delete_view(self):
         """
