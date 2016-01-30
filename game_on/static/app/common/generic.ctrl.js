@@ -24,8 +24,7 @@ var App;
                         .then(function (res) {
                         self.entries.push(res);
                         self.initCreateView();
-                        var id = res.id;
-                        self.$state.go(self.moduleName + "s-detail", { id: id });
+                        self.gotoDetailView(res.id);
                     }, function (err) {
                         self.error = err.statusText;
                     })
@@ -58,6 +57,7 @@ var App;
                 self.dataSvc.get(id)
                     .then(function (res) {
                     self.activeEntry = res;
+                    self.newEntry = angular.copy(self.activeEntry);
                 }, function (err) {
                     self.error = "The entry with id# " + id + " could not be found.";
                     self.gotoListView();
@@ -65,6 +65,24 @@ var App;
                     .finally(function () {
                     self.working = false;
                 });
+            };
+            GenericController.prototype.update = function () {
+                var self = this;
+                var id = self.activeEntry.id;
+                self.error = '';
+                if (self.preValidate()) {
+                    self.working = true;
+                    self.dataSvc.update(self.newEntry)
+                        .then(function (res) {
+                        self.activeEntry = res;
+                        self.gotoDetailView(id);
+                    }, function (err) {
+                        self.error = err.statusText;
+                    })
+                        .finally(function () {
+                        self.working = false;
+                    });
+                }
             };
             GenericController.prototype.remove = function () {
                 var self = this;
@@ -98,7 +116,12 @@ var App;
                 return true;
             };
             GenericController.prototype.gotoListView = function () {
-                this.$state.go(this.moduleName + "s-list");
+                var self = this;
+                self.$state.go(this.moduleName + "s-list");
+            };
+            GenericController.prototype.gotoDetailView = function (id) {
+                var self = this;
+                self.$state.go(self.moduleName + "s-detail", { id: id });
             };
             return GenericController;
         })();

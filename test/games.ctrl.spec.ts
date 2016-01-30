@@ -91,7 +91,7 @@ module App.Tests {
     });
 
     /*=============================================
-     = creation test
+     = 'create' view tests
      =============================================*/
     it('initCreateView() should initialize the new object ' +
       'and pre-populate the existing entries list', function() {
@@ -145,7 +145,7 @@ module App.Tests {
     });
 
     /*=============================================
-     = creation error test
+     = 'create' view error tests
      =============================================*/
     it('create() should log an error if a similar object exists, ' +
       'and should not attempt to save the entry', function() {
@@ -200,7 +200,7 @@ module App.Tests {
     });
 
     /*=============================================
-     = query all test
+     = 'query all' view tests
      =============================================*/
     it('findOne() should query and load the specified entry', function() {
       let res = {entries: testResponse[0]};
@@ -237,7 +237,40 @@ module App.Tests {
     });
 
     /*=============================================
-     = 'remove' tests
+     = 'edit' view tests
+     =============================================*/
+    it('update() should update the existing entry and redirect ' +
+      'back to the details page', function() {
+      let entry = testResponse[1];
+      let id = entry.id;
+      let updatedName = 'Updated Name';
+      let testPostResponse = {
+        entries: [{
+          id: id,
+          name: updatedName,
+          created: entry.created,
+          modified: '2017-01-27T15:55:16.285Z'
+        }]
+      };
+
+      $httpBackend.expectPOST(`/api/${MODULE}/update`).respond(testPostResponse);
+      $httpBackend.when('GET', `/static/views/${MODULE}/detail.html`).respond(200);
+
+      ctrl.activeEntry = angular.copy(entry);
+      ctrl.newEntry = angular.copy(ctrl.activeEntry);
+      ctrl.update();
+      expect(ctrl.activeEntry.name).not.toEqual(updatedName);
+      expect(ctrl.working).toBeTruthy();
+      $httpBackend.flush();
+
+      // we should be back on the detail page for the updated entry
+      expect($location.url()).toBe(`/${MODULE}/${id}`);
+      expect(ctrl.working).toBeFalsy();
+      expect(ctrl.activeEntry.name).toEqual(updatedName);
+    });
+
+    /*=============================================
+     = 'remove' view tests
      =============================================*/
     it('remove() should successfully delete the currently active entry, ' +
       'and redirect back to the list view', function() {

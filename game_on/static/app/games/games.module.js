@@ -23,6 +23,11 @@ var App;
                     url: '/games/:id',
                     templateUrl: '/static/views/games/detail.html',
                     controller: 'GamesCtrl as ctrl'
+                })
+                    .state('games-edit', {
+                    url: '/games/:id/edit',
+                    templateUrl: '/static/views/games/edit.html',
+                    controller: 'GamesCtrl as ctrl'
                 });
             }
         ]);

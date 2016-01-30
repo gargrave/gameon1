@@ -72,11 +72,29 @@ module App.Common {
     }
 
     /**
-     * Save a new entry to the db.
+     * Saves a new entry to the db.
      */
-    save(data): ng.IPromise<T> {
+    save(data: T): ng.IPromise<T> {
       const self = this;
       const url = `/api/${self.moduleName}s/create`;
+      let deferred: ng.IDeferred<T> = self.$q.defer();
+
+      self.$http.post(url, data)
+        .then(function(res) {
+          self.needsUpdate = true;
+          deferred.resolve((<IApiResponse>res.data).entries[0]);
+        }, function(err) {
+          deferred.reject(err);
+        });
+      return deferred.promise;
+    };
+
+    /**
+     * Updates an existing entry on the db.
+     */
+    update(data: T): ng.IPromise<T> {
+      const self = this;
+      const url = `/api/${self.moduleName}s/update`;
       let deferred: ng.IDeferred<T> = self.$q.defer();
 
       self.$http.post(url, data)

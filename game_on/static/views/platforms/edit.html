@@ -1,14 +1,14 @@
-<div class="row" ng-init="ctrl.initCreateView()">
+<div class="row" ng-init="ctrl.findOne()">
   <div class="col-md-10 col-md-offset-1">
 
-    <h3>Add a Platform</h3>
+    <h3>Update <span ng-bind="ctrl.activeEntry.name"></span></h3>
     <hr>
 
     <div class="alert alert-danger" role="alert" ng-show="ctrl.error" ng-cloak>
       <span ng-bind="ctrl.error"></span>
     </div>
 
-    <<!-- TODO form should be disabled while working -->
+    <!-- TODO form should be disabled while working -->
     <form method="POST">
       <div class="form-group">
         <label for="name">Name:</label>
@@ -16,8 +16,8 @@
                name="name" maxlength="100" placeholder="Platform"
                ng-model="ctrl.newEntry.name" required>
       </div>
-      <button class="btn btn-default" ng-click="ctrl.create()">Submit</button>
-    </form>>
+      <button class="btn btn-default" ng-click="ctrl.update()">Submit</button>
+    </form>
 
   </div>
 </div>

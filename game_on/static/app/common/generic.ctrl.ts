@@ -22,6 +22,7 @@ module App.Common {
     create(): void;
     find(): void;
     findOne(): void;
+    update(): void;
     remove(): void;
 
     initCreateView(): void;
@@ -71,10 +72,7 @@ module App.Common {
             // add the new platform into the local list
             self.entries.push(res);
             self.initCreateView();
-
-            // get the id for the new entry, and redirect to its details page
-            let id = (<IDbEntry>res).id;
-            self.$state.go(`${self.moduleName}s-detail`, {id: id});
+            self.gotoDetailView((<IDbEntry>res).id);
           }, function(err) {
             self.error = err.statusText;
           })
@@ -119,6 +117,7 @@ module App.Common {
       self.dataSvc.get(id)
         .then(function(res) {
           self.activeEntry = res;
+          self.newEntry = angular.copy(self.activeEntry);
         }, function(err) {
           // TODO use ngmessages to show this upon return to the list view
           self.error = `The entry with id# ${id} could not be found.`;
@@ -127,6 +126,27 @@ module App.Common {
         .finally(function() {
           self.working = false;
         });
+    }
+
+    update(): void {
+      const self = this;
+      const id: number = (<IDbEntry>self.activeEntry).id;
+      self.error = '';
+
+      if (self.preValidate()) {
+        self.working = true;
+        self.dataSvc.update(self.newEntry)
+          .then(function(res) {
+            // add the new platform into the local list
+            self.activeEntry = res;
+            self.gotoDetailView(id);
+          }, function(err) {
+            self.error = err.statusText;
+          })
+          .finally(function() {
+            self.working = false;
+          });
+      }
     }
 
     /**
@@ -200,7 +220,13 @@ module App.Common {
      = state shortcuts
      =============================================*/
     gotoListView(): void {
-      this.$state.go(`${this.moduleName}s-list`);
+      const self = this;
+      self.$state.go(`${this.moduleName}s-list`);
+    }
+
+    gotoDetailView(id: number): void {
+      const self = this;
+      self.$state.go(`${self.moduleName}s-detail`, {id: id});
     }
   }
 }

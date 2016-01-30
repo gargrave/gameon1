@@ -23,6 +23,11 @@ var App;
                     url: '/platforms/:id',
                     templateUrl: '/static/views/platforms/detail.html',
                     controller: 'PlatformsCtrl as ctrl'
+                })
+                    .state('platforms-edit', {
+                    url: '/platforms/:id/edit',
+                    templateUrl: '/static/views/platforms/edit.html',
+                    controller: 'PlatformsCtrl as ctrl'
                 });
             }
         ]);

@@ -55,6 +55,20 @@ var App;
                 return deferred.promise;
             };
             ;
+            GenericService.prototype.update = function (data) {
+                var self = this;
+                var url = "/api/" + self.moduleName + "s/update";
+                var deferred = self.$q.defer();
+                self.$http.post(url, data)
+                    .then(function (res) {
+                    self.needsUpdate = true;
+                    deferred.resolve(res.data.entries[0]);
+                }, function (err) {
+                    deferred.reject(err);
+                });
+                return deferred.promise;
+            };
+            ;
             GenericService.prototype.remove = function (id) {
                 var self = this;
                 var url = "/api/" + self.moduleName + "s/delete";

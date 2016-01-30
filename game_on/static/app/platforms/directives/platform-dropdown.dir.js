@@ -10,7 +10,7 @@ var App;
                     scope: {
                         ngModel: '='
                     },
-                    templateUrl: 'static/views/platforms/platform-dropdown.html',
+                    templateUrl: 'static/views/platforms/partials/platform-dropdown.html',
                     link: function ($scope) {
                         $scope.working = true;
                         $scope.platforms = [{

@@ -169,6 +169,31 @@ var App;
                 expect($location.url()).toBe("/" + MODULE);
                 expect(ctrl.working).toBeFalsy();
             });
+            it('update() should update the existing entry and redirect ' +
+                'back to the details page', function () {
+                var entry = testResponse[1];
+                var id = entry.id;
+                var updatedName = 'Updated Name';
+                var testPostResponse = {
+                    entries: [{
+                            id: id,
+                            name: updatedName,
+                            created: entry.created,
+                            modified: '2017-01-27T15:55:16.285Z'
+                        }]
+                };
+                $httpBackend.expectPOST("/api/" + MODULE + "/update").respond(testPostResponse);
+                $httpBackend.when('GET', "/static/views/" + MODULE + "/detail.html").respond(200);
+                ctrl.activeEntry = angular.copy(entry);
+                ctrl.newEntry = angular.copy(ctrl.activeEntry);
+                ctrl.update();
+                expect(ctrl.activeEntry.name).not.toEqual(updatedName);
+                expect(ctrl.working).toBeTruthy();
+                $httpBackend.flush();
+                expect($location.url()).toBe("/" + MODULE + "/" + id);
+                expect(ctrl.working).toBeFalsy();
+                expect(ctrl.activeEntry.name).toEqual(updatedName);
+            });
             it('remove() should successfully delete the currently active entry, ' +
                 'and redirect back to the list view', function () {
                 ctrl.entries = testResponse;
