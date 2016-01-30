@@ -16,12 +16,25 @@ module App.Platforms {
       super($window, $stateParams, $state, dataSvc, 'platform');
     }
 
+    /*=============================================
+     = initialization methods
+     =============================================*/
     protected defaultEntry(): IPlatform {
       return {
         name: ''
       };
     }
 
+    protected buildSubmissionData(): void {
+      this.submissionData = {
+        id: this.newEntry.id,
+        name: this.newEntry.name
+      };
+    }
+
+    /*=============================================
+     = validation methods
+     =============================================*/
     protected preValidate(): boolean {
       const self = this;
 

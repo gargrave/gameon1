@@ -45,7 +45,10 @@ module App.Common {
     // any error messages to display
     error: string = '';
 
-    protected submissionData: T;
+    // the data that will actually be sent to the server for write requests
+    // this is useful for objects that need to be handled differently on the
+    // server than they do in the client
+    protected submissionData;
 
     constructor(protected $window: ng.IWindowService,
                 protected $stateParams: ng.ui.IStateParamsService,
@@ -204,6 +207,11 @@ module App.Common {
       self.newEntry = self.defaultEntry();
     };
 
+    /**
+     * Builds the data that will be sent to the server for write requests.
+     * By default, this is simply a copy of 'newEntry', but any sub-class
+     * can override to provide its own specifics.
+     */
     protected buildSubmissionData(): void {
       this.submissionData = angular.copy(this.newEntry);
     }

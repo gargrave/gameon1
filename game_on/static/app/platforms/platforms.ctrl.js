@@ -17,6 +17,12 @@ var App;
                     name: ''
                 };
             };
+            PlatformsCtrl.prototype.buildSubmissionData = function () {
+                this.submissionData = {
+                    id: this.newEntry.id,
+                    name: this.newEntry.name
+                };
+            };
             PlatformsCtrl.prototype.preValidate = function () {
                 var self = this;
                 var existing = _.find(self.entries, function (p) {
