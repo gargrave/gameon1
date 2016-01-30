@@ -85,6 +85,22 @@ def game_create(request):
         return HttpResponse('The data submitted could not be validated.', status=400)
 
 
+@require_POST
+def game_delete(request):
+    """
+    Deletes the Game with the specified id, and returns a 204 response.
+    Returns 404 if no matching platform is found.
+    :param request: HttpRequest
+    """
+    req = load_json_request(request)
+    if req:
+        game = get_object_or_404(Game, pk=req['id'])
+        game.delete()
+        return HttpResponse(status=204)
+    else:
+        return HttpResponse('The data submitted could not be validated.', status=400)
+
+
 def platforms_list(request):
     """
     Returns a list of all entries
