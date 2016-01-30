@@ -26,6 +26,22 @@ class GamesViewsTest(TestCase):
             end_date='2015-04-02')
         self.test_game.save()
 
+    def generic_delete_view_test(self, url, test_id):
+        post_data = {'id': test_id}
+        res = self.client.post(url, json.dumps(post_data),
+                               content_type='application/json')
+        self.assertEqual(res.status_code, 204)
+        # now do it again to test that the game in question no longer exists
+        res = self.client.post(url, json.dumps(post_data),
+                               content_type='application/json')
+        self.assertEqual(res.status_code, 404)
+
+        # should get a 404 if submitting a missing ID
+        post_data = {'id': 987654312}
+        res = self.client.post(url, json.dumps(post_data),
+                               content_type='application/json')
+        self.assertEqual(res.status_code, 404)
+
     #############################################################
     # Games API Tests
     #############################################################
@@ -112,22 +128,9 @@ class GamesViewsTest(TestCase):
         Game delete view should remove the specified entry and
         return a simple 204 response.
         """
-        url = reverse('api:game_delete')
-        test_id = self.test_game.id
-        post_data = {'id': test_id}
-        res = self.client.post(url, json.dumps(post_data),
-                               content_type='application/json')
-        self.assertEqual(res.status_code, 204)
-        # now do it again to test that the game in question no longer exists
-        res = self.client.post(url, json.dumps(post_data),
-                               content_type='application/json')
-        self.assertEqual(res.status_code, 404)
-
-        # should get a 404 if submitting a missing ID
-        post_data = {'id': 987654312}
-        res = self.client.post(url, json.dumps(post_data),
-                               content_type='application/json')
-        self.assertEqual(res.status_code, 404)
+        self.generic_delete_view_test(
+            reverse('api:game_delete'),
+            self.test_game.id)
 
     #############################################################
     # Platforms API Tests
@@ -196,19 +199,6 @@ class GamesViewsTest(TestCase):
         Platform delete view should remove the specified entry and
         return a simple 204 response.
         """
-        url = reverse('api:platform_delete')
-        test_id = self.test_plat.id
-        post_data = {'id': test_id}
-        res = self.client.post(url, json.dumps(post_data),
-                               content_type='application/json')
-        self.assertEqual(res.status_code, 204)
-        # now do it again to test that the platform in question no longer exists
-        res = self.client.post(url, json.dumps(post_data),
-                               content_type='application/json')
-        self.assertEqual(res.status_code, 404)
-
-        # should get a 404 if submitting a missing ID
-        post_data = {'id': 987654312}
-        res = self.client.post(url, json.dumps(post_data),
-                               content_type='application/json')
-        self.assertEqual(res.status_code, 404)
+        self.generic_delete_view_test(
+            reverse('api:platform_delete'),
+            self.test_plat.id)
