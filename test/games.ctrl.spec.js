@@ -169,17 +169,19 @@ var App;
                 expect($location.url()).toBe("/" + MODULE);
                 expect(ctrl.working).toBeFalsy();
             });
-            it('update() should update the existing entry and redirect ' +
-                'back to the details page', function () {
+            it('update() should partially update the existing entry ' +
+                'and redirect back to the details page', function () {
                 var entry = testResponse[1];
                 var id = entry.id;
-                var updatedName = 'Updated Name';
+                var updatedName = entry.name + '_updated';
                 var testPostResponse = {
                     entries: [{
-                            id: id,
+                            id: entry.id,
                             name: updatedName,
-                            created: entry.created,
-                            modified: '2017-01-27T15:55:16.285Z'
+                            platform: entry.platform,
+                            startDate: entry.startDate,
+                            endDate: entry.endDate,
+                            finished: entry.finished
                         }]
                 };
                 $httpBackend.expectPOST("/api/" + MODULE + "/update").respond(testPostResponse);
@@ -193,6 +195,40 @@ var App;
                 expect($location.url()).toBe("/" + MODULE + "/" + id);
                 expect(ctrl.working).toBeFalsy();
                 expect(ctrl.activeEntry.name).toEqual(updatedName);
+                expect(ctrl.activeEntry.platform).toEqual(entry.platform);
+                expect(ctrl.activeEntry.startDate).toEqual(entry.startDate);
+                expect(ctrl.activeEntry.endDate).toEqual(entry.endDate);
+            });
+            it('update() should completely update the existing entry ' +
+                'and redirect back to the details page', function () {
+                var entry = testResponse[1];
+                var id = entry.id;
+                var testPostResponse = {
+                    entries: [{
+                            id: entry.id,
+                            name: entry.name + '_updated',
+                            platform: entry.platform + '_updated',
+                            startDate: entry.startDate + '_updated',
+                            endDate: entry.endDate + '_updated',
+                            finished: entry.finished + '_updated'
+                        }]
+                };
+                var res = testPostResponse.entries[0];
+                $httpBackend.expectPOST("/api/" + MODULE + "/update").respond(testPostResponse);
+                $httpBackend.when('GET', "/static/views/" + MODULE + "/detail.html").respond(200);
+                ctrl.activeEntry = angular.copy(entry);
+                ctrl.newEntry = angular.copy(ctrl.activeEntry);
+                ctrl.update();
+                expect(ctrl.activeEntry.name).not.toEqual(res.name);
+                expect(ctrl.working).toBeTruthy();
+                $httpBackend.flush();
+                expect($location.url()).toBe("/" + MODULE + "/" + id);
+                expect(ctrl.working).toBeFalsy();
+                expect(ctrl.activeEntry.name).toEqual(res.name);
+                expect(ctrl.activeEntry.platform).toEqual(res.platform);
+                expect(ctrl.activeEntry.startDate).toEqual(res.startDate);
+                expect(ctrl.activeEntry.endDate).toEqual(res.endDate);
+                expect(ctrl.activeEntry.finished).toEqual(res.finished);
             });
             it('remove() should successfully delete the currently active entry, ' +
                 'and redirect back to the list view', function () {

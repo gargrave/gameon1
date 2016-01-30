@@ -239,17 +239,20 @@ module App.Tests {
     /*=============================================
      = 'edit' view tests
      =============================================*/
-    it('update() should update the existing entry and redirect ' +
-      'back to the details page', function() {
+    it('update() should partially update the existing entry ' +
+      'and redirect back to the details page', function() {
       let entry = testResponse[1];
       let id = entry.id;
-      let updatedName = 'Updated Name';
+      let updatedName = entry.name + '_updated';
+      // in this test, we will only update name
       let testPostResponse = {
         entries: [{
-          id: id,
+          id: entry.id,
           name: updatedName,
-          created: entry.created,
-          modified: '2017-01-27T15:55:16.285Z'
+          platform: entry.platform,
+          startDate: entry.startDate,
+          endDate: entry.endDate,
+          finished: entry.finished
         }]
       };
 
@@ -267,6 +270,46 @@ module App.Tests {
       expect($location.url()).toBe(`/${MODULE}/${id}`);
       expect(ctrl.working).toBeFalsy();
       expect(ctrl.activeEntry.name).toEqual(updatedName);
+      expect(ctrl.activeEntry.platform).toEqual(entry.platform);
+      expect(ctrl.activeEntry.startDate).toEqual(entry.startDate);
+      expect(ctrl.activeEntry.endDate).toEqual(entry.endDate);
+    });
+
+    it('update() should completely update the existing entry ' +
+      'and redirect back to the details page', function() {
+      let entry = testResponse[1];
+      let id = entry.id;
+      // in this test, we will update everything
+      let testPostResponse = {
+        entries: [{
+          id: entry.id,
+          name: entry.name + '_updated',
+          platform: entry.platform + '_updated',
+          startDate: entry.startDate + '_updated',
+          endDate: entry.endDate + '_updated',
+          finished: entry.finished + '_updated'
+        }]
+      };
+      let res = testPostResponse.entries[0];
+
+      $httpBackend.expectPOST(`/api/${MODULE}/update`).respond(testPostResponse);
+      $httpBackend.when('GET', `/static/views/${MODULE}/detail.html`).respond(200);
+
+      ctrl.activeEntry = angular.copy(entry);
+      ctrl.newEntry = angular.copy(ctrl.activeEntry);
+      ctrl.update();
+      expect(ctrl.activeEntry.name).not.toEqual(res.name);
+      expect(ctrl.working).toBeTruthy();
+      $httpBackend.flush();
+
+      // we should be back on the detail page for the updated entry
+      expect($location.url()).toBe(`/${MODULE}/${id}`);
+      expect(ctrl.working).toBeFalsy();
+      expect(ctrl.activeEntry.name).toEqual(res.name);
+      expect(ctrl.activeEntry.platform).toEqual(res.platform);
+      expect(ctrl.activeEntry.startDate).toEqual(res.startDate);
+      expect(ctrl.activeEntry.endDate).toEqual(res.endDate);
+      expect(ctrl.activeEntry.finished).toEqual(res.finished);
     });
 
     /*=============================================
