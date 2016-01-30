@@ -1,10 +1,20 @@
 /// <reference path="../../../../typings/tsd.d.ts" />
 module App.Games {
 
+  import IPlatform = App.Platforms.IPlatform;
+
   /*=============================================
    = interface definitions
    =============================================*/
   export interface IGame extends App.Common.IDbEntry {
+    name: string;
+    platform: IPlatform;
+    startDate: string;
+    endDate: string;
+    finished: boolean;
+  }
+
+  export interface IGameSubmission extends App.Common.IDbEntry {
     name: string;
     platform: number;
     startDate: string;
@@ -13,38 +23,57 @@ module App.Games {
   }
 
   export class GamesCtrl extends App.Common.GenericController<IGame> {
+
     constructor($window: ng.IWindowService,
                 $stateParams: ng.ui.IStateParamsService,
                 $state: ng.ui.IStateService,
-                dataSvc: App.Games.GamesSvc) {
+                dataSvc: App.Games.GamesSvc,
+                protected platformsSvc) {
       super($window, $stateParams, $state, dataSvc, 'game');
     }
 
+    /*=============================================
+     = initialization methods
+     =============================================*/
     protected defaultEntry(): IGame {
       return {
         name: '',
-        platform: -1,
+        platform: {id: -1, name: ''},
         startDate: '',
         endDate: '',
         finished: false
       };
     }
 
+    protected buildSubmissionData(): void {
+      this.submissionData = {
+        id: this.newEntry.id,
+        name: this.newEntry.name,
+        platform: this.newEntry.platform.id,
+        startDate: this.newEntry.startDate,
+        endDate: this.newEntry.endDate,
+        finished: this.newEntry.finished
+      };
+    }
+
+    /*=============================================
+     = validation methods
+     =============================================*/
     protected preValidate(): boolean {
       const self = this;
 
       // make sure the platform value is valid
-      let platform = self.newEntry.platform;
+      let platform = self.submissionData.platform;
       if (typeof(platform) !== 'number' || platform < 0) {
-        self.error = 'Invalid platform identifier.';
+        self.error = `Local Error: Invalid platform identifier: ${platform}`;
         return false;
       }
 
       // check for existing entries with this name and start-date
       let existing = _.find(self.entries, function(g) {
         let game: IGame = <IGame>g;
-        return game.name === self.newEntry.name &&
-          game.startDate === self.newEntry.startDate;
+        return game.name === self.submissionData.name &&
+          game.startDate === self.submissionData.startDate;
       });
       if (existing) {
         self.error = 'A game with an identical name and start-date already exists.';
@@ -55,6 +84,6 @@ module App.Games {
   }
 
   angular.module('games').controller('GamesCtrl', [
-    '$window', '$stateParams', '$state', 'gamesSvc',
+    '$window', '$stateParams', '$state', 'gamesSvc', 'platformsSvc',
     GamesCtrl]);
 }

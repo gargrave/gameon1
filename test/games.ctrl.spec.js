@@ -4,21 +4,28 @@ var App;
     (function (Tests) {
         describe('GamesCtrl', function () {
             var MODULE = 'games';
-            var invalidPlatform = { id: -1, name: 'Okay Name' };
+            var invalidPlatform = { id: -1, name: '' };
             var validPlatforms = [
                 { id: 1, name: 'Xbox One' },
                 { id: 2, name: 'PS3' }
             ];
-            var emptyEntry = {
+            var emptyNewEntry = {
                 name: '',
-                platform: invalidPlatform.id,
+                platform: invalidPlatform,
                 startDate: '',
                 endDate: '',
                 finished: false
             };
-            var testPost = {
+            var testNewEntry = {
                 name: 'Name',
-                platform: validPlatforms[0].id,
+                platform: validPlatforms[0],
+                startDate: '2015-01-01',
+                endDate: '2016-01-01',
+                finished: false
+            };
+            var testSubmissionData = {
+                name: 'Name',
+                platform: testNewEntry.platform.id,
                 startDate: '2015-01-01',
                 endDate: '2016-01-01',
                 finished: false
@@ -27,7 +34,7 @@ var App;
                 {
                     id: 1,
                     name: 'Lords of the Fallen',
-                    platform: validPlatforms[0].id,
+                    platform: validPlatforms[0],
                     startDate: '2014-10-31',
                     endDate: '2014-11-15',
                     finished: true,
@@ -37,7 +44,7 @@ var App;
                 {
                     id: 2,
                     name: 'Kingdom Hearts 1.5 HD',
-                    platform: validPlatforms[1].id,
+                    platform: validPlatforms[1],
                     startDate: '2014-7-22',
                     endDate: '2014-7-31',
                     finished: true,
@@ -74,11 +81,11 @@ var App;
                 'and pre-populate the existing entries list', function () {
                 $httpBackend.expectGET("/api/" + MODULE)
                     .respond({ entries: testResponse });
-                ctrl.newEntry = testPost;
+                ctrl.newEntry = testNewEntry;
                 ctrl.initCreateView();
                 expect(ctrl.working).toBeTruthy();
                 $httpBackend.flush();
-                expect(ctrl.newEntry).toEqual(emptyEntry);
+                expect(ctrl.newEntry).toEqual(emptyNewEntry);
                 expect(ctrl.working).toBeFalsy();
             });
             it('create() should successfully save a new platform object, ' +
@@ -88,19 +95,19 @@ var App;
                 var testPostResponse = {
                     entries: [{
                             id: id,
-                            name: testPost.name,
-                            platform: testPost.platform,
-                            startDate: testPost.startDate,
-                            endDate: testPost.endDate,
-                            finished: testPost.finished,
+                            name: testNewEntry.name,
+                            platform: testNewEntry.platform,
+                            startDate: testNewEntry.startDate,
+                            endDate: testNewEntry.endDate,
+                            finished: testNewEntry.finished,
                             created: '2016-01-28T15:55:16.285Z',
                             modified: '2016-01-28T15:55:16.285Z'
                         }]
                 };
-                $httpBackend.expectPOST("/api/" + MODULE + "/create", testPost)
+                $httpBackend.expectPOST("/api/" + MODULE + "/create", testSubmissionData)
                     .respond(201, testPostResponse);
                 $httpBackend.when('GET', "/static/views/" + MODULE + "/detail.html").respond(200);
-                ctrl.newEntry = testPost;
+                ctrl.newEntry = testNewEntry;
                 ctrl.create();
                 expect(ctrl.working).toBeTruthy();
                 $httpBackend.flush();
@@ -110,8 +117,8 @@ var App;
             });
             it('create() should log an error if a similar object exists, ' +
                 'and should not attempt to save the entry', function () {
-                ctrl.entries.push(testPost);
-                ctrl.newEntry = testPost;
+                ctrl.entries.push(testNewEntry);
+                ctrl.newEntry = testNewEntry;
                 ctrl.create();
                 $httpBackend.flush();
                 expect(ctrl.working).toBeFalsy();
@@ -120,7 +127,7 @@ var App;
             });
             it('create() should log an error in the platform id is invalid, ' +
                 'and should not attempt to save the entry', function () {
-                ctrl.newEntry = angular.copy(testPost);
+                ctrl.newEntry = angular.copy(testNewEntry);
                 ctrl.newEntry.platform = invalidPlatform.id;
                 ctrl.create();
                 $httpBackend.flush();
@@ -130,11 +137,11 @@ var App;
             });
             it('create() should handle error responses properly', function () {
                 var origLength = ctrl.entries.length;
-                $httpBackend.expectPOST("/api/" + MODULE + "/create", testPost)
+                $httpBackend.expectPOST("/api/" + MODULE + "/create", testSubmissionData)
                     .respond(function () {
                     return [400, '', {}, testError];
                 });
-                ctrl.newEntry = testPost;
+                ctrl.newEntry = testNewEntry;
                 ctrl.create();
                 expect(ctrl.working).toBeTruthy();
                 expect(ctrl.error).toBe('');

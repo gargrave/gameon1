@@ -2,30 +2,39 @@
 module App.Tests {
 
   import IGame = App.Games.IGame;
+  import IGameSubmission = App.Games.IGameSubmission;
   import IPlatform = App.Platforms.IPlatform;
 
   describe('GamesCtrl', function() {
 
     const MODULE = 'games';
 
-    const invalidPlatform: IPlatform = {id: -1, name: 'Okay Name'};
+    const invalidPlatform: IPlatform = {id: -1, name: ''};
 
     const validPlatforms: IPlatform[] = [
       {id: 1, name: 'Xbox One'},
       {id: 2, name: 'PS3'}
     ];
 
-    const emptyEntry: IGame = {
+    const emptyNewEntry: IGame = {
       name: '',
-      platform: invalidPlatform.id,
+      platform: invalidPlatform,
       startDate: '',
       endDate: '',
       finished: false
     };
 
-    const testPost: IGame = {
+    const testNewEntry: IGame = {
       name: 'Name',
-      platform: validPlatforms[0].id,
+      platform: validPlatforms[0],
+      startDate: '2015-01-01',
+      endDate: '2016-01-01',
+      finished: false
+    };
+
+    const testSubmissionData: IGameSubmission = {
+      name: 'Name',
+      platform: testNewEntry.platform.id,
       startDate: '2015-01-01',
       endDate: '2016-01-01',
       finished: false
@@ -35,7 +44,7 @@ module App.Tests {
       {
         id: 1,
         name: 'Lords of the Fallen',
-        platform: validPlatforms[0].id,
+        platform: validPlatforms[0],
         startDate: '2014-10-31',
         endDate: '2014-11-15',
         finished: true,
@@ -45,7 +54,7 @@ module App.Tests {
       {
         id: 2,
         name: 'Kingdom Hearts 1.5 HD',
-        platform: validPlatforms[1].id,
+        platform: validPlatforms[1],
         startDate: '2014-7-22',
         endDate: '2014-7-31',
         finished: true,
@@ -97,14 +106,14 @@ module App.Tests {
       'and pre-populate the existing entries list', function() {
       $httpBackend.expectGET(`/api/${MODULE}`)
         .respond({entries: testResponse});
-      ctrl.newEntry = testPost;
+      ctrl.newEntry = testNewEntry;
       ctrl.initCreateView();
       // ctrl should be working
       expect(ctrl.working).toBeTruthy();
       $httpBackend.flush();
 
       // ctrl.newEntry should be empty now
-      expect(ctrl.newEntry).toEqual(emptyEntry);
+      expect(ctrl.newEntry).toEqual(emptyNewEntry);
       // ctrl.working should be false
       expect(ctrl.working).toBeFalsy();
     });
@@ -116,21 +125,21 @@ module App.Tests {
       let testPostResponse = {
         entries: [{
           id: id,
-          name: testPost.name,
-          platform: testPost.platform,
-          startDate: testPost.startDate,
-          endDate: testPost.endDate,
-          finished: testPost.finished,
+          name: testNewEntry.name,
+          platform: testNewEntry.platform,
+          startDate: testNewEntry.startDate,
+          endDate: testNewEntry.endDate,
+          finished: testNewEntry.finished,
           created: '2016-01-28T15:55:16.285Z',
           modified: '2016-01-28T15:55:16.285Z'
         }]
       };
 
-      $httpBackend.expectPOST(`/api/${MODULE}/create`, testPost)
+      $httpBackend.expectPOST(`/api/${MODULE}/create`, testSubmissionData)
         .respond(201, testPostResponse);
       $httpBackend.when('GET', `/static/views/${MODULE}/detail.html`).respond(200);
 
-      ctrl.newEntry = testPost;
+      ctrl.newEntry = testNewEntry;
       ctrl.create();
       // ctrl should be working
       expect(ctrl.working).toBeTruthy();
@@ -149,8 +158,8 @@ module App.Tests {
      =============================================*/
     it('create() should log an error if a similar object exists, ' +
       'and should not attempt to save the entry', function() {
-      ctrl.entries.push(testPost);
-      ctrl.newEntry = testPost;
+      ctrl.entries.push(testNewEntry);
+      ctrl.newEntry = testNewEntry;
       ctrl.create();
       $httpBackend.flush();
 
@@ -164,7 +173,7 @@ module App.Tests {
 
     it('create() should log an error in the platform id is invalid, ' +
       'and should not attempt to save the entry', function() {
-      ctrl.newEntry = angular.copy(testPost);
+      ctrl.newEntry = angular.copy(testNewEntry);
       ctrl.newEntry.platform = invalidPlatform.id;
       ctrl.create();
       $httpBackend.flush();
@@ -180,11 +189,11 @@ module App.Tests {
     it('create() should handle error responses properly', function() {
       let origLength = ctrl.entries.length;
 
-      $httpBackend.expectPOST(`/api/${MODULE}/create`, testPost)
+      $httpBackend.expectPOST(`/api/${MODULE}/create`, testSubmissionData)
         .respond(function() {
           return [400, '', {}, testError];
         });
-      ctrl.newEntry = testPost;
+      ctrl.newEntry = testNewEntry;
       ctrl.create();
       // should have no errors and not be working yet
       expect(ctrl.working).toBeTruthy();

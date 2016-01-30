@@ -18,9 +18,10 @@ var App;
             GenericController.prototype.create = function () {
                 var self = this;
                 self.error = '';
+                self.buildSubmissionData();
                 if (self.preValidate()) {
                     self.working = true;
-                    self.dataSvc.save(self.newEntry)
+                    self.dataSvc.save(self.submissionData)
                         .then(function (res) {
                         self.entries.push(res);
                         self.initCreateView();
@@ -70,9 +71,10 @@ var App;
                 var self = this;
                 var id = self.activeEntry.id;
                 self.error = '';
+                self.buildSubmissionData();
                 if (self.preValidate()) {
                     self.working = true;
-                    self.dataSvc.update(self.newEntry)
+                    self.dataSvc.update(self.submissionData)
                         .then(function (res) {
                         self.activeEntry = res;
                         self.gotoDetailView(id);
@@ -112,6 +114,9 @@ var App;
                 self.newEntry = self.defaultEntry();
             };
             ;
+            GenericController.prototype.buildSubmissionData = function () {
+                this.submissionData = angular.copy(this.newEntry);
+            };
             GenericController.prototype.preValidate = function () {
                 return true;
             };

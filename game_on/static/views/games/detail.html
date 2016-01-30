@@ -31,13 +31,13 @@
   <div class="row">
     <div class="col-md-10 col-md-offset-1">
       <p><strong>Title:</strong> <span ng-bind="ctrl.activeEntry.name | date:'mediumDate'"></span></p>
-      <p><strong>Platform:</strong> <span ng-bind="ctrl.activeEntry.platform"></span></p>
+      <p><strong>Platform:</strong> <span ng-bind="ctrl.activeEntry.platform.name"></span></p>
       <p><strong>Start date:</strong> <span ng-bind="ctrl.activeEntry.startDate | date:'mediumDate'"></span></p>
       <p><strong>End date:</strong> <span ng-bind="ctrl.activeEntry.endDate | date:'mediumDate'"></span></p>
       <p><strong>Finished:</strong> <span ng-bind="ctrl.activeEntry.finished"></span></p>
       <hr>
-      <p><strong>Added:</strong> <span ng-bind="ctrl.activeEntry.created | date:'mediumDate'"></span></p>
-      <p><strong>Last modified:</strong> <span ng-bind="ctrl.activeEntry.modified | date:'mediumDate'"></span></p>
+      <p><strong>Added:</strong> <span ng-bind="ctrl.activeEntry.created | date:'medium'"></span></p>
+      <p><strong>Last modified:</strong> <span ng-bind="ctrl.activeEntry.modified | date:'medium'"></span></p>
     </div>
   </div>
 </div>

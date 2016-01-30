@@ -6,7 +6,7 @@ module App.Platforms {
       return {
         restrict: 'AE',
         scope: {
-          ngModel: '='
+          selected: '='
         },
         templateUrl: 'static/views/platforms/partials/platform-dropdown.html',
 

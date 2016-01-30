@@ -41,7 +41,12 @@ def game_detail(request, pk):
     games = [{
         'id': game.pk,
         'name': game.name,
-        'platform': str(game.platform),
+        'platform': {
+            'id': game.platform.pk,
+            'name': game.platform.name,
+            'created': game.platform.created,
+            'modified': game.platform.modified,
+        },
         'startDate': game.start_date,
         'endDate': game.end_date,
         'finished': game.finished,
@@ -71,7 +76,12 @@ def game_create(request):
             res_data = [{
                 'id': game.pk,
                 'name': game.name,
-                'platform': str(game.platform),
+                'platform': {
+                    'id': game.platform.pk,
+                    'name': game.platform.name,
+                    'created': game.platform.created,
+                    'modified': game.platform.modified,
+                },
                 'startDate': game.start_date,
                 'endDate': game.end_date,
                 'finished': game.finished,

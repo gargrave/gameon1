@@ -45,6 +45,8 @@ module App.Common {
     // any error messages to display
     error: string = '';
 
+    protected submissionData: T;
+
     constructor(protected $window: ng.IWindowService,
                 protected $stateParams: ng.ui.IStateParamsService,
                 protected $state: ng.ui.IStateService,
@@ -65,9 +67,10 @@ module App.Common {
       const self = this;
       self.error = '';
 
+      self.buildSubmissionData();
       if (self.preValidate()) {
         self.working = true;
-        self.dataSvc.save(self.newEntry)
+        self.dataSvc.save(self.submissionData)
           .then(function(res) {
             // add the new platform into the local list
             self.entries.push(res);
@@ -133,9 +136,10 @@ module App.Common {
       const id: number = (<IDbEntry>self.activeEntry).id;
       self.error = '';
 
+      self.buildSubmissionData();
       if (self.preValidate()) {
         self.working = true;
-        self.dataSvc.update(self.newEntry)
+        self.dataSvc.update(self.submissionData)
           .then(function(res) {
             // add the new platform into the local list
             self.activeEntry = res;
@@ -199,6 +203,10 @@ module App.Common {
       }
       self.newEntry = self.defaultEntry();
     };
+
+    protected buildSubmissionData(): void {
+      this.submissionData = angular.copy(this.newEntry);
+    }
 
     /*=============================================
      = validation methods
