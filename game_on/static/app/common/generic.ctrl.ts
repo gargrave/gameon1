@@ -44,7 +44,8 @@ module App.Common {
     // any error messages to display
     error: string = '';
 
-    constructor(protected $stateParams: ng.ui.IStateParamsService,
+    constructor(protected $window: ng.IWindowService,
+                protected $stateParams: ng.ui.IStateParamsService,
                 protected $state: ng.ui.IStateService,
                 protected dataSvc: GenericService<T>,
                 protected moduleName: string) {
@@ -132,30 +133,29 @@ module App.Common {
      * Sends a query to the server to delete the currently-active entry.
      */
     remove(): void {
-      // show confirm and early-out if user declines
-      if (!confirm('Delete this fucko?')) {
-        return;
-      }
-
       const self = this;
-      self.error = '';
-      self.working = true;
 
-      let id = self.$stateParams['id'];
+      // show confirm and early-out if user declines
+      if (self.$window.confirm('Are you sure you want to delete this entry?')) {
+        self.error = '';
+        self.working = true;
 
-      self.dataSvc.remove(id)
-        .then(function(res) {
-          // remove the entry from the local list
-          _.remove(self.entries, function(e) {
-            return (<IDbEntry>e).id === id;
+        let id = self.$stateParams['id'];
+
+        self.dataSvc.remove(id)
+          .then(function(res) {
+            // remove the entry from the local list
+            _.remove(self.entries, function(e) {
+              return (<IDbEntry>e).id === id;
+            });
+            self.gotoListView();
+          }, function(err) {
+            self.error = err.statusText;
+          })
+          .finally(function() {
+            self.working = false;
           });
-          self.gotoListView();
-        }, function(err) {
-          self.error = err.statusText;
-        })
-        .finally(function() {
-          self.working = false;
-        });
+      }
     }
 
     /*=============================================

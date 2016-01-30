@@ -3,7 +3,8 @@ var App;
     var Common;
     (function (Common) {
         var GenericController = (function () {
-            function GenericController($stateParams, $state, dataSvc, moduleName) {
+            function GenericController($window, $stateParams, $state, dataSvc, moduleName) {
+                this.$window = $window;
                 this.$stateParams = $stateParams;
                 this.$state = $state;
                 this.dataSvc = dataSvc;
@@ -66,25 +67,24 @@ var App;
                 });
             };
             GenericController.prototype.remove = function () {
-                if (!confirm('Delete this fucko?')) {
-                    return;
-                }
                 var self = this;
-                self.error = '';
-                self.working = true;
-                var id = self.$stateParams['id'];
-                self.dataSvc.remove(id)
-                    .then(function (res) {
-                    _.remove(self.entries, function (e) {
-                        return e.id === id;
+                if (self.$window.confirm('Are you sure you want to delete this entry?')) {
+                    self.error = '';
+                    self.working = true;
+                    var id = self.$stateParams['id'];
+                    self.dataSvc.remove(id)
+                        .then(function (res) {
+                        _.remove(self.entries, function (e) {
+                            return e.id === id;
+                        });
+                        self.gotoListView();
+                    }, function (err) {
+                        self.error = err.statusText;
+                    })
+                        .finally(function () {
+                        self.working = false;
                     });
-                    self.gotoListView();
-                }, function (err) {
-                    self.error = err.statusText;
-                })
-                    .finally(function () {
-                    self.working = false;
-                });
+                }
             };
             GenericController.prototype.initCreateView = function () {
                 var self = this;

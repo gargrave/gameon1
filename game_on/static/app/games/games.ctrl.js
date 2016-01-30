@@ -9,8 +9,8 @@ var App;
     (function (Games) {
         var GamesCtrl = (function (_super) {
             __extends(GamesCtrl, _super);
-            function GamesCtrl($stateParams, $state, dataSvc) {
-                _super.call(this, $stateParams, $state, dataSvc, 'game');
+            function GamesCtrl($window, $stateParams, $state, dataSvc) {
+                _super.call(this, $window, $stateParams, $state, dataSvc, 'game');
             }
             GamesCtrl.prototype.defaultEntry = function () {
                 return {
@@ -43,7 +43,7 @@ var App;
         })(App.Common.GenericController);
         Games.GamesCtrl = GamesCtrl;
         angular.module('games').controller('GamesCtrl', [
-            '$stateParams', '$state', 'gamesSvc',
+            '$window', '$stateParams', '$state', 'gamesSvc',
             GamesCtrl]);
     })(Games = App.Games || (App.Games = {}));
 })(App || (App = {}));

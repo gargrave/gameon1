@@ -12,7 +12,7 @@ module App.Common {
     query(): ng.IPromise<T[]>;
     get(id: number): ng.IPromise<T>;
     save(data): ng.IPromise<T>;
-    remove(id: number): ng.IPromise<T>
+    remove(id: number): ng.IPromise<T>;
   }
 
   /*=============================================

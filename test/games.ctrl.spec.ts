@@ -33,18 +33,24 @@ module App.Tests {
 
     const testResponse: IGame[] = [
       {
+        id: 1,
         name: 'Lords of the Fallen',
         platform: validPlatforms[0].id,
         startDate: '2014-10-31',
         endDate: '2014-11-15',
-        finished: true
+        finished: true,
+        created: '2016-01-27T15:55:16.285Z',
+        modified: '2016-01-27T15:55:16.285Z'
       },
       {
+        id: 2,
         name: 'Kingdom Hearts 1.5 HD',
         platform: validPlatforms[1].id,
         startDate: '2014-7-22',
         endDate: '2014-7-31',
-        finished: true
+        finished: true,
+        created: '2016-01-27T15:55:16.285Z',
+        modified: '2016-01-27T15:55:16.285Z'
       }
     ];
 
@@ -53,18 +59,28 @@ module App.Tests {
     /*=============================================
      = set up methods
      =============================================*/
-    let ctrl;
     let $httpBackend;
     let $location;
     let $stateParams;
+    let windowMock;
+    let ctrl;
 
     beforeEach(angular.mock.module('gameon'));
     beforeEach(inject(function($controller, _$httpBackend_,
-                               _$stateParams_, _$location_) {
-      ctrl = $controller('GamesCtrl');
+                               _$location_, _$stateParams_) {
       $httpBackend = _$httpBackend_;
-      $stateParams = _$stateParams_;
       $location = _$location_;
+      $stateParams = _$stateParams_;
+
+      // set up a mock window service to automatically confirm dialogs
+      windowMock = {
+        confirm: function(msg) {
+          return true;
+        }
+      };
+      ctrl = $controller('GamesCtrl', {
+        $window: windowMock
+      });
 
       $httpBackend.when('GET', '/static/views/home.html').respond(200);
     }));
@@ -217,6 +233,30 @@ module App.Tests {
       $httpBackend.flush();
 
       expect($location.url()).toBe(`/${MODULE}`);
+      expect(ctrl.working).toBeFalsy();
+    });
+
+    /*=============================================
+     = 'remove' tests
+     =============================================*/
+    it('remove() should successfully delete the currently active entry, ' +
+      'and redirect back to the list view', function() {
+      // set up controller's current list, so we can make sure the proper one gets removed
+      ctrl.entries = testResponse;
+      let id = ctrl.entries[0].id;
+      let origLength = ctrl.entries.length;
+
+      $httpBackend.expectPOST(`/api/${MODULE}/delete`).respond(204);
+      $httpBackend.when('GET', `/static/views/${MODULE}/list.html`).respond(200);
+
+      $stateParams.id = id;
+      ctrl.remove();
+      expect(ctrl.working).toBeTruthy();
+      $httpBackend.flush();
+
+      expect($location.url()).toBe(`/${MODULE}`);
+      expect(ctrl.entries.length).toBe(origLength - 1);
+      expect(ctrl.error.length).toBe(0);
       expect(ctrl.working).toBeFalsy();
     });
   });

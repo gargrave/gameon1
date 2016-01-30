@@ -25,31 +25,45 @@ var App;
             };
             var testResponse = [
                 {
+                    id: 1,
                     name: 'Lords of the Fallen',
                     platform: validPlatforms[0].id,
                     startDate: '2014-10-31',
                     endDate: '2014-11-15',
-                    finished: true
+                    finished: true,
+                    created: '2016-01-27T15:55:16.285Z',
+                    modified: '2016-01-27T15:55:16.285Z'
                 },
                 {
+                    id: 2,
                     name: 'Kingdom Hearts 1.5 HD',
                     platform: validPlatforms[1].id,
                     startDate: '2014-7-22',
                     endDate: '2014-7-31',
-                    finished: true
+                    finished: true,
+                    created: '2016-01-27T15:55:16.285Z',
+                    modified: '2016-01-27T15:55:16.285Z'
                 }
             ];
             var testError = 'Test error message';
-            var ctrl;
             var $httpBackend;
             var $location;
             var $stateParams;
+            var windowMock;
+            var ctrl;
             beforeEach(angular.mock.module('gameon'));
-            beforeEach(inject(function ($controller, _$httpBackend_, _$stateParams_, _$location_) {
-                ctrl = $controller('GamesCtrl');
+            beforeEach(inject(function ($controller, _$httpBackend_, _$location_, _$stateParams_) {
                 $httpBackend = _$httpBackend_;
-                $stateParams = _$stateParams_;
                 $location = _$location_;
+                $stateParams = _$stateParams_;
+                windowMock = {
+                    confirm: function (msg) {
+                        return true;
+                    }
+                };
+                ctrl = $controller('GamesCtrl', {
+                    $window: windowMock
+                });
                 $httpBackend.when('GET', '/static/views/home.html').respond(200);
             }));
             afterEach(function () {
@@ -153,6 +167,22 @@ var App;
                 expect(ctrl.working).toBeTruthy();
                 $httpBackend.flush();
                 expect($location.url()).toBe("/" + MODULE);
+                expect(ctrl.working).toBeFalsy();
+            });
+            it('remove() should successfully delete the currently active entry, ' +
+                'and redirect back to the list view', function () {
+                ctrl.entries = testResponse;
+                var id = ctrl.entries[0].id;
+                var origLength = ctrl.entries.length;
+                $httpBackend.expectPOST("/api/" + MODULE + "/delete").respond(204);
+                $httpBackend.when('GET', "/static/views/" + MODULE + "/list.html").respond(200);
+                $stateParams.id = id;
+                ctrl.remove();
+                expect(ctrl.working).toBeTruthy();
+                $httpBackend.flush();
+                expect($location.url()).toBe("/" + MODULE);
+                expect(ctrl.entries.length).toBe(origLength - 1);
+                expect(ctrl.error.length).toBe(0);
                 expect(ctrl.working).toBeFalsy();
             });
         });

@@ -35,18 +35,28 @@ module App.Tests {
     /*=============================================
      = set up methods
      =============================================*/
-    let ctrl;
     let $httpBackend;
     let $location;
     let $stateParams;
+    let windowMock;
+    let ctrl;
 
     beforeEach(angular.mock.module('gameon'));
     beforeEach(inject(function($controller, _$httpBackend_,
                                _$location_, _$stateParams_) {
-      ctrl = $controller('PlatformsCtrl');
       $httpBackend = _$httpBackend_;
       $location = _$location_;
       $stateParams = _$stateParams_;
+
+      // set up a mock window service to automatically confirm dialogs
+      windowMock = {
+        confirm: function(msg) {
+          return true;
+        }
+      };
+      ctrl = $controller('PlatformsCtrl', {
+        $window: windowMock
+      });
 
       $httpBackend.when('GET', '/static/views/home.html').respond(200);
     }));
@@ -202,7 +212,6 @@ module App.Tests {
     /*=============================================
      = 'remove' tests
      =============================================*/
-    // TODO *** start here ***
     it('remove() should successfully delete the currently active entry, ' +
       'and redirect back to the list view', function() {
       // set up controller's current list, so we can make sure the proper one gets removed

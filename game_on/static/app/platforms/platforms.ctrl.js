@@ -9,8 +9,8 @@ var App;
     (function (Platforms) {
         var PlatformsCtrl = (function (_super) {
             __extends(PlatformsCtrl, _super);
-            function PlatformsCtrl($stateParams, $state, dataSvc) {
-                _super.call(this, $stateParams, $state, dataSvc, 'platform');
+            function PlatformsCtrl($window, $stateParams, $state, dataSvc) {
+                _super.call(this, $window, $stateParams, $state, dataSvc, 'platform');
             }
             PlatformsCtrl.prototype.defaultEntry = function () {
                 return {
@@ -32,7 +32,7 @@ var App;
         })(App.Common.GenericController);
         Platforms.PlatformsCtrl = PlatformsCtrl;
         angular.module('platforms').controller('PlatformsCtrl', [
-            '$stateParams', '$state', 'platformsSvc',
+            '$window', '$stateParams', '$state', 'platformsSvc',
             PlatformsCtrl]);
     })(Platforms = App.Platforms || (App.Platforms = {}));
 })(App || (App = {}));

@@ -25,16 +25,24 @@ var App;
                 }
             ];
             var testError = 'Test error message';
-            var ctrl;
             var $httpBackend;
             var $location;
             var $stateParams;
+            var windowMock;
+            var ctrl;
             beforeEach(angular.mock.module('gameon'));
             beforeEach(inject(function ($controller, _$httpBackend_, _$location_, _$stateParams_) {
-                ctrl = $controller('PlatformsCtrl');
                 $httpBackend = _$httpBackend_;
                 $location = _$location_;
                 $stateParams = _$stateParams_;
+                windowMock = {
+                    confirm: function (msg) {
+                        return true;
+                    }
+                };
+                ctrl = $controller('PlatformsCtrl', {
+                    $window: windowMock
+                });
                 $httpBackend.when('GET', '/static/views/home.html').respond(200);
             }));
             afterEach(function () {
