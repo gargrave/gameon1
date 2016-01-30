@@ -22,6 +22,9 @@ var App;
                                 .then(function (res) {
                                 $scope.platforms = res;
                                 $scope.working = false;
+                                if ($scope.selected.name === '') {
+                                    $scope.selected = $scope.platforms[0];
+                                }
                             });
                         })();
                     }

@@ -24,6 +24,10 @@ module App.Platforms {
               .then(function(res) {
                 $scope.platforms = res;
                 $scope.working = false;
+                // pre-select first option if a value is not already defined
+                if ($scope.selected.name === '') {
+                  $scope.selected = $scope.platforms[0];
+                }
               });
           })();
         }
