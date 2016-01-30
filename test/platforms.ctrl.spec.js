@@ -126,7 +126,7 @@ var App;
                     .respond(function () {
                     return [404, '', {}, testError];
                 });
-                $httpBackend.expectGET("/static/views/" + MODULE + "/list.html").respond(200);
+                $httpBackend.when('GET', "/static/views/" + MODULE + "/list.html").respond(200);
                 $stateParams.id = 123;
                 ctrl.findOne();
                 expect(ctrl.working).toBeTruthy();
@@ -136,7 +136,19 @@ var App;
             });
             it('remove() should successfully delete the currently active entry, ' +
                 'and redirect back to the list view', function () {
+                ctrl.entries = testResponse;
+                var id = ctrl.entries[0].id;
+                var origLength = ctrl.entries.length;
+                $httpBackend.expectPOST("/api/" + MODULE + "/delete").respond(204);
+                $httpBackend.when('GET', "/static/views/" + MODULE + "/list.html").respond(200);
+                $stateParams.id = id;
+                ctrl.remove();
+                expect(ctrl.working).toBeTruthy();
                 $httpBackend.flush();
+                expect($location.url()).toBe("/" + MODULE);
+                expect(ctrl.entries.length).toBe(origLength - 1);
+                expect(ctrl.error.length).toBe(0);
+                expect(ctrl.working).toBeFalsy();
             });
         });
     })(Tests = App.Tests || (App.Tests = {}));

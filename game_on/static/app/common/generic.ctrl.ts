@@ -25,6 +25,8 @@ module App.Common {
     remove(): void;
 
     initCreateView(): void;
+
+    gotoListView(): void;
   }
 
   /*=============================================
@@ -119,7 +121,7 @@ module App.Common {
         }, function(err) {
           // TODO use ngmessages to show this upon return to the list view
           self.error = `The entry with id# ${id} could not be found.`;
-          self.$state.go(`${self.moduleName}s-list`);
+          self.gotoListView();
         })
         .finally(function() {
           self.working = false;
@@ -130,7 +132,25 @@ module App.Common {
      * Sends a query to the server to delete the currently-active entry.
      */
     remove(): void {
+      const self = this;
+      self.error = '';
+      self.working = true;
 
+      let id = self.$stateParams['id'];
+
+      self.dataSvc.remove(id)
+        .then(function(res) {
+          // remove the entry from the local list
+          _.remove(self.entries, function(e) {
+            return (<IDbEntry>e).id === id;
+          });
+          self.gotoListView();
+        }, function(err) {
+          self.error = err.statusText;
+        })
+        .finally(function() {
+          self.working = false;
+        });
     }
 
     /*=============================================
@@ -169,6 +189,13 @@ module App.Common {
      */
     protected preValidate(): boolean {
       return true;
+    }
+
+    /*=============================================
+     = state shortcuts
+     =============================================*/
+    gotoListView(): void {
+      this.$state.go(`${this.moduleName}s-list`);
     }
   }
 }

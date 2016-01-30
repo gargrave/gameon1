@@ -59,13 +59,29 @@ var App;
                     self.activeEntry = res;
                 }, function (err) {
                     self.error = "The entry with id# " + id + " could not be found.";
-                    self.$state.go(self.moduleName + "s-list");
+                    self.gotoListView();
                 })
                     .finally(function () {
                     self.working = false;
                 });
             };
             GenericController.prototype.remove = function () {
+                var self = this;
+                self.error = '';
+                self.working = true;
+                var id = self.$stateParams['id'];
+                self.dataSvc.remove(id)
+                    .then(function (res) {
+                    _.remove(self.entries, function (e) {
+                        return e.id === id;
+                    });
+                    self.gotoListView();
+                }, function (err) {
+                    self.error = err.statusText;
+                })
+                    .finally(function () {
+                    self.working = false;
+                });
             };
             GenericController.prototype.initCreateView = function () {
                 var self = this;
@@ -77,6 +93,9 @@ var App;
             ;
             GenericController.prototype.preValidate = function () {
                 return true;
+            };
+            GenericController.prototype.gotoListView = function () {
+                this.$state.go(this.moduleName + "s-list");
             };
             return GenericController;
         })();

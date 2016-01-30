@@ -188,7 +188,7 @@ module App.Tests {
         .respond(function() {
           return [404, '', {}, testError];
         });
-      $httpBackend.expectGET(`/static/views/${MODULE}/list.html`).respond(200);
+      $httpBackend.when('GET', `/static/views/${MODULE}/list.html`).respond(200);
 
       $stateParams.id = 123;
       ctrl.findOne();
@@ -202,13 +202,26 @@ module App.Tests {
     /*=============================================
      = 'remove' tests
      =============================================*/
+    // TODO *** start here ***
     it('remove() should successfully delete the currently active entry, ' +
       'and redirect back to the list view', function() {
-      // expect(ctrl.working).toBeTruthy();
+      // set up controller's current list, so we can make sure the proper one gets removed
+      ctrl.entries = testResponse;
+      let id = ctrl.entries[0].id;
+      let origLength = ctrl.entries.length;
+
+      $httpBackend.expectPOST(`/api/${MODULE}/delete`).respond(204);
+      $httpBackend.when('GET', `/static/views/${MODULE}/list.html`).respond(200);
+
+      $stateParams.id = id;
+      ctrl.remove();
+      expect(ctrl.working).toBeTruthy();
       $httpBackend.flush();
 
-      // expect($location.url()).toBe(`/${MODULE}`);
-      // expect(ctrl.working).toBeFalsy();
+      expect($location.url()).toBe(`/${MODULE}`);
+      expect(ctrl.entries.length).toBe(origLength - 1);
+      expect(ctrl.error.length).toBe(0);
+      expect(ctrl.working).toBeFalsy();
     });
   });
 }

@@ -12,6 +12,7 @@ module App.Common {
     query(): ng.IPromise<T[]>;
     get(id: number): ng.IPromise<T>;
     save(data): ng.IPromise<T>;
+    remove(id: number): ng.IPromise<T>
   }
 
   /*=============================================
@@ -19,8 +20,8 @@ module App.Common {
    =============================================*/
   export abstract class GenericService<T> implements IGenericService<T> {
 
-    private entries: T[];
-    private activeEntry: T;
+    protected entries: T[];
+    protected needsUpdate: boolean = false;
 
     constructor(protected $http: ng.IHttpService,
                 protected $q: ng.IQService,
@@ -32,14 +33,16 @@ module App.Common {
      */
     query(): ng.IPromise<T[]> {
       const self = this;
+      const url = `/api/${self.moduleName}s`;
       let deferred: ng.IDeferred<T[]> = self.$q.defer();
 
-      if (self.entries) {
+      if (self.entries && !self.needsUpdate) {
         deferred.resolve(self.entries);
       } else {
-        self.$http.get(`/api/${self.moduleName}s`)
+        self.$http.get(url)
           .then(function(res) {
             self.entries = (<IApiResponse>res.data).entries;
+            self.needsUpdate = false;
             deferred.resolve(self.entries);
           }, function(err) {
             deferred.reject(err.data);
@@ -56,12 +59,12 @@ module App.Common {
      */
     get(id: number): ng.IPromise<T> {
       const self = this;
+      const url = `/api/${self.moduleName}s/${id}`;
       let deferred: ng.IDeferred<T> = self.$q.defer();
 
-      self.$http.get(`/api/${self.moduleName}s/${id}`)
+      self.$http.get(url)
         .then(function(res) {
-          self.activeEntry = (<IApiResponse>res.data).entries[0];
-          deferred.resolve(self.activeEntry);
+          deferred.resolve((<IApiResponse>res.data).entries[0]);
         }, function(err) {
           deferred.reject(err.data);
         });
@@ -73,15 +76,33 @@ module App.Common {
      */
     save(data): ng.IPromise<T> {
       const self = this;
+      const url = `/api/${self.moduleName}s/create`;
       let deferred: ng.IDeferred<T> = self.$q.defer();
 
-      self.$http.post(`/api/${self.moduleName}s/create`, data)
+      self.$http.post(url, data)
         .then(function(res) {
+          self.needsUpdate = true;
           deferred.resolve((<IApiResponse>res.data).entries[0]);
         }, function(err) {
           deferred.reject(err);
         });
       return deferred.promise;
     };
+
+    /**
+     * Removes the entry with the matching id from the db.
+     */
+    remove(id: number): ng.IPromise<T> {
+      const self = this;
+      const url = `/api/${self.moduleName}s/delete`;
+      let deferred: ng.IDeferred<T> = self.$q.defer();
+
+      self.$http.post(url, {id: id})
+        .then(function(res) {
+          self.needsUpdate = true;
+          deferred.resolve(null);
+        });
+      return deferred.promise;
+    }
   }
 }
