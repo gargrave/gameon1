@@ -1,0 +1,55 @@
+<nav class="navbar navbar-inverse navbar-fixed-top" ng-controller="MenusCtrl as ctrl">
+  <div class="container-fluid">
+
+    <!-- branding -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+              data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+      </button>
+      <a class="navbar-brand" ui-sref="home">GameOn</a>
+    </div>
+
+    <!-- dropdown -->
+    <div class="collapse navbar-collapse">
+
+
+      {% if user.is_authenticated %}
+        <!-- dynamic menus from menusSvc -->
+        <ul class="nav navbar-nav">
+          <li class="dropdown" ng-repeat="menu in ctrl.menus">
+            <a class="dropdown-toggle" data-toggle="dropdown" role="button"
+               aria-haspopup="true" aria-expanded="false"><span ng-bind="menu.title"></span> <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+              <li ng-repeat="child in menu.children">
+                <a ui-sref="{A child.link A}"><span ng-bind="child.title"></span></a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+
+
+        <!-- Account Info (i.e. user is signed in) -->
+        <ul class="nav navbar-nav navbar-right">
+          <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown">
+              <span>{{ user }}</span> <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a href="">Profile</a></li>
+              <!-- admin site link for staff users-->
+              {% if user.is_staff %}
+                <li><a href="admin">Admin</a></li>
+              {% endif %}
+              <li class="divider"></li>
+              <!-- logout link -->
+              <li><a href="{% url 'logout' %}">Logout</a></li>
+            </ul>
+          </li>
+        </ul>
+      {% endif %}
+
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
