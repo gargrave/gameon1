@@ -1,4 +1,10 @@
 body {
-  padding-top: 70px; }
+  padding-top: 50px; }
+
+#site-jumbotron {
+  margin-top: 30px; }
+
+#login-form {
+  margin-top: 100px; }
 
 /*# sourceMappingURL=main.css.map */
