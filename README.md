@@ -1,4 +1,6 @@
-```
+## Command Shortcuts
+
+```sh
 export run="python manage.py runserver"
 export static="python manage.py collectstatic"
 export test="python manage.py test"
