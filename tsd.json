@@ -6,13 +6,13 @@
   "bundle": "typings/tsd.d.ts",
   "installed": {
     "angularjs/angular.d.ts": {
-      "commit": "7b3d5a6ea5acda4a81f71309f1cc62354e63b681"
+      "commit": "6d3c9f422fe385f4f34d3be4c7920476163c87ec"
     },
     "angularjs/angular-resource.d.ts": {
       "commit": "dc9dabe74a5be62613b17a3605309783a12ff28a"
     },
     "jquery/jquery.d.ts": {
-      "commit": "7b3d5a6ea5acda4a81f71309f1cc62354e63b681"
+      "commit": "6d3c9f422fe385f4f34d3be4c7920476163c87ec"
     },
     "lodash/lodash.d.ts": {
       "commit": "2e7a477ac2b6471055aa6e0e56b333e8f327d6b7"
@@ -25,6 +25,9 @@
     },
     "jasmine/jasmine.d.ts": {
       "commit": "7b3d5a6ea5acda4a81f71309f1cc62354e63b681"
+    },
+    "angularjs/angular-animate.d.ts": {
+      "commit": "6d3c9f422fe385f4f34d3be4c7920476163c87ec"
     }
   }
 }
