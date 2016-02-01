@@ -7,7 +7,14 @@
               data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
         <span class="sr-only">Toggle navigation</span>
       </button>
-      <a class="navbar-brand" ui-sref="home">GameOn</a>
+      <a class="navbar-brand" ui-sref="home">
+        GameOn
+        {% if globalvars.build == 'dev' %}
+          <small class="text-muted">(dev)</small>
+        {% elif globalvars.build == 'staging' %}
+          <small class="text-muted">(staging)</small>
+        {% endif %}
+      </a>
     </div>
 
     <!-- dropdown -->

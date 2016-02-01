@@ -14,7 +14,7 @@
 {% block content %}
 {% endblock %}
 
-{% if globalvars.build == 'dev' %}
+{% if globalvars.build == 'dev' or globalvars.build == 'staging' %}
   <script src="{% static 'libs/js/lodash.min.js' %}"></script>
   <script src="{% static 'libs/js/jquery.min.js' %}"></script>
   <script src="{% static 'libs/js/bootstrap.min.js' %}"></script>
