@@ -4,6 +4,7 @@ import dj_database_url
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 VERSION = '0.1.0'
+DEBUG = False
 BUILD = 'prod'
 
 INSTALLED_APPS = (
