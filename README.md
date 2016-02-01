@@ -22,3 +22,7 @@ export test="python manage.py test --settings=game_on.settings.dev"
 
 - add `--app APP` to the end of a command to specify which app
   - `heroku run python manage.py migrate --app gameon-staging`
+
+## Tools
+
+- [datepicker](https://github.com/eternicode/bootstrap-datepicker)
