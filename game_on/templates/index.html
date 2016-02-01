@@ -1,7 +1,12 @@
 {% extends 'base.html' %}
 
 {% block title %}
-  Index
+  GameOn
+  {% if globalvars.build == 'dev' %}
+    (dev)
+  {% elif globalvars.build == 'staging' %}
+    (staging)
+  {% endif %}
 {% endblock %}
 
 {% block content %}
