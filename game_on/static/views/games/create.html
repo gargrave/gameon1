@@ -1,9 +1,10 @@
 <div class="row" ng-init="ctrl.initCreateView()">
-  <div class="col-md-10 col-md-offset-1">
+  <div class="col-md-6 col-md-offset-3">
 
     <h3>Add a Game</h3>
     <hr>
 
+    <!-- error message display -->
     <div class="alert alert-danger" role="alert" ng-show="ctrl.error" ng-cloak>
       <span ng-bind="ctrl.error"></span>
     </div>
@@ -11,6 +12,7 @@
     <!-- TODO form should be disabled while working -->
     <form method="POST">
 
+      <!-- title input -->
       <div class="form-group">
         <label for="name">Title:</label>
         <input class="form-control" type="text" id="name"
@@ -18,26 +20,24 @@
                ng-model="ctrl.newEntry.name" required>
       </div>
 
+      <!-- platform selector -->
       <div class="form-group">
         <platform-dropdown selected="ctrl.newEntry.platform"></platform-dropdown>
       </div>
 
+      <!-- start date datepicker -->
       <div class="form-group">
-        <!-- TODO add datepickers -->
-        <label for="name">Start date:</label>
-        <input class="form-control" type="text" id="startDate"
-               name="startDate" maxlength="10" placeholder="YYYY-MM-DD"
-               ng-model="ctrl.newEntry.startDate" required>
+        <datepicker date-model="ctrl.newEntry.startDate" label="Start date:">
+        </datepicker>
       </div>
 
+      <!-- end date datepicker -->
       <div class="form-group">
-        <!-- TODO add datepickers -->
-        <label for="name">End date:</label>
-        <input class="form-control" type="text" id="endDate"
-               name="endDate" maxlength="10" placeholder="YYYY-MM-DD"
-               ng-model="ctrl.newEntry.endDate" required>
+        <datepicker date-model="ctrl.newEntry.endDate" label="End date:">
+        </datepicker>
       </div>
 
+      <!-- finished checkbox -->
       <div class="form-group">
         <input type="checkbox" id="finished" name="finished"
                ng-model="ctrl.newEntry.finished">
