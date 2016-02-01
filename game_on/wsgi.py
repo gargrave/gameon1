@@ -5,7 +5,7 @@ from whitenoise.django import DjangoWhiteNoise
 
 os.environ.setdefault(
     "DJANGO_SETTINGS_MODULE",
-    "game_on.settings.dev")
+    "game_on.settings.base")
 
 application = get_wsgi_application()
 application = DjangoWhiteNoise(application)
