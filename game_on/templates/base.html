@@ -14,30 +14,41 @@
 {% block content %}
 {% endblock %}
 
-<script src="{% static 'libs/js/lodash.min.js' %}"></script>
-<script src="{% static 'libs/js/jquery.min.js' %}"></script>
-<script src="{% static 'libs/js/bootstrap.min.js' %}"></script>
-<script src="{% static 'libs/js/angular.min.js' %}"></script>
-<script src="{% static 'libs/js/angular-ui-router.min.js' %}"></script>
+{% if globalvars.build == 'dev' %}
+  <script src="{% static 'libs/js/lodash.min.js' %}"></script>
+  <script src="{% static 'libs/js/jquery.min.js' %}"></script>
+  <script src="{% static 'libs/js/bootstrap.min.js' %}"></script>
+  <script src="{% static 'libs/js/angular.min.js' %}"></script>
+  <script src="{% static 'libs/js/angular-ui-router.min.js' %}"></script>
 
-<script src="{% static 'app/app.js' %}"></script>
-<script src="{% static 'app/common/generic.ctrl.js' %}"></script>
-<script src="{% static 'app/common/generic.svc.js' %}"></script>
+  <script src="{% static 'app/app.js' %}"></script>
+  <script src="{% static 'app/common/generic.ctrl.js' %}"></script>
+  <script src="{% static 'app/common/generic.svc.js' %}"></script>
 
-<script src="{% static 'app/menus/menus.module.js' %}"></script>
-<script src="{% static 'app/menus/menus.ctrl.js' %}"></script>
-<script src="{% static 'app/menus/menus.svc.js' %}"></script>
+  <script src="{% static 'app/menus/menus.module.js' %}"></script>
+  <script src="{% static 'app/menus/menus.ctrl.js' %}"></script>
+  <script src="{% static 'app/menus/menus.svc.js' %}"></script>
 
-<script src="{% static 'app/games/games.module.js' %}"></script>
-<script src="{% static 'app/games/games.menus.js' %}"></script>
-<script src="{% static 'app/games/games.ctrl.js' %}"></script>
-<script src="{% static 'app/games/games.svc.js' %}"></script>
+  <script src="{% static 'app/games/games.module.js' %}"></script>
+  <script src="{% static 'app/games/games.ctrl.js' %}"></script>
+  <script src="{% static 'app/games/games.svc.js' %}"></script>
+  <script src="{% static 'app/games/games.menus.js' %}"></script>
 
-<script src="{% static 'app/platforms/platforms.module.js' %}"></script>
-<script src="{% static 'app/platforms/platforms.menus.js' %}"></script>
-<script src="{% static 'app/platforms/platforms.ctrl.js' %}"></script>
-<script src="{% static 'app/platforms/platforms.svc.js' %}"></script>
-<script src="{% static 'app/platforms/directives/platform-dropdown.dir.js' %}"></script>
+  <script src="{% static 'app/platforms/platforms.module.js' %}"></script>
+  <script src="{% static 'app/platforms/platforms.ctrl.js' %}"></script>
+  <script src="{% static 'app/platforms/platforms.svc.js' %}"></script>
+  <script src="{% static 'app/platforms/platforms.menus.js' %}"></script>
+  <script src="{% static 'app/platforms/directives/platform-dropdown.dir.js' %}"></script>
+{% endif %}
+
+{% if globalvars.build == 'prod' %}
+  <script src="{% static 'libs/js/lodash.min.js' %}"></script>
+  <script src="{% static 'libs/js/jquery.min.js' %}"></script>
+  <script src="{% static 'libs/js/bootstrap.min.js' %}"></script>
+  <script src="{% static 'libs/js/angular.min.js' %}"></script>
+  <script src="{% static 'libs/js/angular-ui-router.min.js' %}"></script>
+  <script src="{% static 'app/app.min.js' %}"></script>
+{% endif %}
 
 </body>
 </html>
