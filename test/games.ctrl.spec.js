@@ -58,18 +58,21 @@ var App;
             var $stateParams;
             var windowMock;
             var ctrl;
+            var scope;
             beforeEach(angular.mock.module('gameon'));
-            beforeEach(inject(function ($controller, _$httpBackend_, _$location_, _$stateParams_) {
+            beforeEach(inject(function ($rootScope, $controller, _$httpBackend_, _$location_, _$stateParams_) {
                 $httpBackend = _$httpBackend_;
                 $location = _$location_;
                 $stateParams = _$stateParams_;
+                scope = $rootScope.$new();
                 windowMock = {
                     confirm: function (msg) {
                         return true;
                     }
                 };
                 ctrl = $controller('GamesCtrl', {
-                    $window: windowMock
+                    $window: windowMock,
+                    $scope: scope
                 });
                 $httpBackend.when('GET', '/static/views/home.html').respond(200);
             }));
@@ -151,7 +154,7 @@ var App;
                 expect(ctrl.error).toBe(testError);
             });
             it('findOne() should query and load the specified entry', function () {
-                var res = { entries: testResponse[0] };
+                var res = { entries: [testResponse[0]] };
                 var id = 123;
                 $httpBackend.expectGET("/api/" + MODULE + "/" + id).respond(res);
                 $stateParams.id = id;
@@ -252,6 +255,27 @@ var App;
                 expect(ctrl.entries.length).toBe(origLength - 1);
                 expect(ctrl.error.length).toBe(0);
                 expect(ctrl.working).toBeFalsy();
+            });
+            it('onDateChanged() should set endDate equal to startDate if endDate is before startDate', function () {
+                ctrl.newEntry.startDate = '2015-04-11';
+                ctrl.newEntry.endDate = '2015-04-01';
+                ctrl.onDateChanged();
+                $httpBackend.flush();
+                expect(ctrl.newEntry.endDate).toEqual(ctrl.newEntry.startDate);
+            });
+            it('onDateChanged() should set endDate equal to startDate if endDate is blank', function () {
+                var date1 = '2016-01-15';
+                ctrl.newEntry.startDate = date1;
+                ctrl.onDateChanged();
+                $httpBackend.flush();
+                expect(ctrl.newEntry.endDate).toEqual(date1);
+            });
+            it('onDateChanged() should set startDate equal to endDate if startDate is blank', function () {
+                var date1 = '2016-02-15';
+                ctrl.newEntry.endDate = date1;
+                ctrl.onDateChanged();
+                $httpBackend.flush();
+                expect(ctrl.newEntry.startDate).toEqual(date1);
             });
         });
     })(Tests = App.Tests || (App.Tests = {}));

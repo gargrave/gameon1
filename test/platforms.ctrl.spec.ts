@@ -176,7 +176,7 @@ module App.Tests {
      = 'query one' view tests
      =============================================*/
     it('findOne() should query and load the specified entry', function() {
-      let res = {entries: testResponse[0]};
+      let res = {entries: [testResponse[0]]};
       let id = 123;
 
       $httpBackend.expectGET(`/api/${MODULE}/${id}`).respond(res);
@@ -268,3 +268,4 @@ module App.Tests {
     });
   });
 }
+

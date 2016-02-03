@@ -117,7 +117,7 @@ var App;
                 expect(ctrl.working).toBeFalsy();
             });
             it('findOne() should query and load the specified entry', function () {
-                var res = { entries: testResponse[0] };
+                var res = { entries: [testResponse[0]] };
                 var id = 123;
                 $httpBackend.expectGET("/api/" + MODULE + "/" + id).respond(res);
                 $stateParams.id = id;
