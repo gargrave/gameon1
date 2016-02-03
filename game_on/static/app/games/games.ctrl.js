@@ -9,9 +9,21 @@ var App;
     (function (Games) {
         var GamesCtrl = (function (_super) {
             __extends(GamesCtrl, _super);
-            function GamesCtrl($window, $stateParams, $state, dataSvc, platformsSvc) {
+            function GamesCtrl($window, $stateParams, $state, dataSvc, platformsSvc, $scope) {
                 _super.call(this, $window, $stateParams, $state, dataSvc, 'game');
                 this.platformsSvc = platformsSvc;
+                this.$scope = $scope;
+                var self = this;
+                $scope.$watch(function () {
+                    return self.newEntry.startDate;
+                }, function () {
+                    self.onDateChanged();
+                });
+                $scope.$watch(function () {
+                    return self.newEntry.endDate;
+                }, function () {
+                    self.onDateChanged();
+                });
             }
             GamesCtrl.prototype.defaultEntry = function () {
                 return {
@@ -31,6 +43,22 @@ var App;
                     endDate: this.newEntry.endDate,
                     finished: this.newEntry.finished
                 };
+            };
+            GamesCtrl.prototype.onDateChanged = function () {
+                var self = this;
+                if (self.newEntry.startDate && !self.newEntry.endDate) {
+                    self.newEntry.endDate = self.newEntry.startDate;
+                }
+                else if (self.newEntry.endDate && !self.newEntry.startDate) {
+                    self.newEntry.startDate = self.newEntry.endDate;
+                }
+                else {
+                    var start = new Date(self.newEntry.startDate);
+                    var end = new Date(self.newEntry.endDate);
+                    if (end < start) {
+                        self.newEntry.endDate = self.newEntry.startDate;
+                    }
+                }
             };
             GamesCtrl.prototype.preValidate = function () {
                 var self = this;
@@ -54,7 +82,8 @@ var App;
         })(App.Common.GenericController);
         Games.GamesCtrl = GamesCtrl;
         angular.module('games').controller('GamesCtrl', [
-            '$window', '$stateParams', '$state', 'gamesSvc', 'platformsSvc',
+            '$window', '$stateParams', '$state', 'gamesSvc',
+            'platformsSvc', '$scope',
             GamesCtrl]);
     })(Games = App.Games || (App.Games = {}));
 })(App || (App = {}));

@@ -2,6 +2,7 @@
 module App.Games {
 
   import IPlatform = App.Platforms.IPlatform;
+  import IScope = angular.IScope;
 
   /*=============================================
    = interface definitions
@@ -28,8 +29,23 @@ module App.Games {
                 $stateParams: ng.ui.IStateParamsService,
                 $state: ng.ui.IStateService,
                 dataSvc: App.Games.GamesSvc,
-                protected platformsSvc) {
+                protected platformsSvc: App.Platforms.PlatformsSvc,
+                protected $scope: ng.IScope) {
       super($window, $stateParams, $state, dataSvc, 'game');
+
+      const self = this;
+      $scope.$watch(() => {
+          return self.newEntry.startDate;
+        }, () => {
+          self.onDateChanged();
+        }
+      );
+      $scope.$watch(() => {
+          return self.newEntry.endDate;
+        }, () => {
+          self.onDateChanged();
+        }
+      );
     }
 
     /*=============================================
@@ -54,6 +70,23 @@ module App.Games {
         endDate: this.newEntry.endDate,
         finished: this.newEntry.finished
       };
+    }
+
+    onDateChanged(): void {
+      const self = this;
+
+      // if one date is blank, set it equal to the non-blank one
+      if (self.newEntry.startDate && !self.newEntry.endDate) {
+        self.newEntry.endDate = self.newEntry.startDate;
+      } else if (self.newEntry.endDate && !self.newEntry.startDate) {
+        self.newEntry.startDate = self.newEntry.endDate;
+      } else {
+        let start = new Date(self.newEntry.startDate);
+        let end = new Date(self.newEntry.endDate);
+        if (end < start) {
+          self.newEntry.endDate = self.newEntry.startDate;
+        }
+      }
     }
 
     /*=============================================
@@ -84,6 +117,7 @@ module App.Games {
   }
 
   angular.module('games').controller('GamesCtrl', [
-    '$window', '$stateParams', '$state', 'gamesSvc', 'platformsSvc',
+    '$window', '$stateParams', '$state', 'gamesSvc',
+    'platformsSvc', '$scope',
     GamesCtrl]);
 }
