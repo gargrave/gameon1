@@ -75,7 +75,7 @@ module.exports = function(grunt) {
       main: {
         options: {
           mangle: false,
-          banner: '/* <%= config.title %> | built on <%= config.date() %> */'
+          banner: '/* \n<%= config.title %> \nbuilt on <%= config.date() %> \n*/\n'
         },
         files: [{
           '<%= config.distDir %>/app.min.js': [
