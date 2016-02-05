@@ -20,10 +20,10 @@ module.exports = function(config) {
       'bower_components/angular-ui-router/release/angular-ui-router.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // ng app
-      'game_on/static/app/app.js',
-      'game_on/static/app/**/*.module.js',
-      'game_on/static/app/**/*.ctrl.js',
-      'game_on/static/app/**/*svc.js',
+      'game_on/static/app-build/js/app.js',
+      'game_on/static/app-build/js/**/*.module.js',
+      'game_on/static/app-build/js/**/*.ctrl.js',
+      'game_on/static/app-build/js/**/*svc.js',
       // test files
       'test/**/*.spec.js'
     ],
