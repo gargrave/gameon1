@@ -1,3 +1,4 @@
+/// <reference path="../../../../../typings/tsd.d.ts" />
 module App.Platforms {
   // a counter to give unique names to each instance
   let counter = 0;

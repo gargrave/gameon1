@@ -1,3 +1,4 @@
+/// <reference path="../../../../../../typings/tsd.d.ts" />
 module App.Platforms {
   angular.module('platforms').directive('platformDropdown', [
     'platformsSvc',

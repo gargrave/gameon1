@@ -1,4 +1,4 @@
-/// <reference path="../../../../typings/tsd.d.ts" />
+/// <reference path="../../../../../typings/tsd.d.ts" />
 module App.Games {
 
   import IPlatform = App.Platforms.IPlatform;

@@ -5,16 +5,18 @@
 <head>
   <meta charset="UTF-8">
   <title>{% block title %}{% endblock %}</title>
+
   {% if globalvars.build == 'dev' %}
     {# CSS for dev builds #}
     <link rel="stylesheet" href="{% static 'libs/css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'libs/css/bootstrap-datepicker3.min.css' %}">
+    <link rel="stylesheet" href="{% static 'app-build/css/main.css' %}">
   {% elif globalvars.build == 'prod' or globalvars.build == 'staging' %}
     {# CSS for staging/prod builds #}
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <link rel="stylesheet" href="{% static 'libs/css/bootstrap-datepicker3.min.css' %}">
+    <link rel="stylesheet" href="{% static 'app-dist/css/main.css' %}">
   {% endif %}
-  <link rel="stylesheet" href="{% static 'css/main.css' %}">
 </head>
 <body ng-app="gameon">
 
@@ -32,25 +34,25 @@
   <script src="{% static 'libs/js/angular-animate.min.js' %}"></script>
   <script src="{% static 'libs/js/bootstrap-datepicker.min.js' %}"></script>
 
-  <script src="{% static 'app/app.js' %}"></script>
-  <script src="{% static 'app/common/generic.ctrl.js' %}"></script>
-  <script src="{% static 'app/common/generic.svc.js' %}"></script>
-  <script src="{% static 'app/common/datepicker.dir.js' %}"></script>
+  <script src="{% static 'app-build/js/app.js' %}"></script>
+  <script src="{% static 'app-build/js/common/generic.ctrl.js' %}"></script>
+  <script src="{% static 'app-build/js/common/generic.svc.js' %}"></script>
+  <script src="{% static 'app-build/js/common/datepicker.dir.js' %}"></script>
 
-  <script src="{% static 'app/menus/menus.module.js' %}"></script>
-  <script src="{% static 'app/menus/menus.ctrl.js' %}"></script>
-  <script src="{% static 'app/menus/menus.svc.js' %}"></script>
+  <script src="{% static 'app-build/js/menus/menus.module.js' %}"></script>
+  <script src="{% static 'app-build/js/menus/menus.ctrl.js' %}"></script>
+  <script src="{% static 'app-build/js/menus/menus.svc.js' %}"></script>
 
-  <script src="{% static 'app/games/games.module.js' %}"></script>
-  <script src="{% static 'app/games/games.ctrl.js' %}"></script>
-  <script src="{% static 'app/games/games.svc.js' %}"></script>
-  <script src="{% static 'app/games/games.menus.js' %}"></script>
+  <script src="{% static 'app-build/js/games/games.module.js' %}"></script>
+  <script src="{% static 'app-build/js/games/games.ctrl.js' %}"></script>
+  <script src="{% static 'app-build/js/games/games.svc.js' %}"></script>
+  <script src="{% static 'app-build/js/games/games.menus.js' %}"></script>
 
-  <script src="{% static 'app/platforms/platforms.module.js' %}"></script>
-  <script src="{% static 'app/platforms/platforms.ctrl.js' %}"></script>
-  <script src="{% static 'app/platforms/platforms.svc.js' %}"></script>
-  <script src="{% static 'app/platforms/platforms.menus.js' %}"></script>
-  <script src="{% static 'app/platforms/directives/platform-dropdown.dir.js' %}"></script>
+  <script src="{% static 'app-build/js/platforms/platforms.module.js' %}"></script>
+  <script src="{% static 'app-build/js/platforms/platforms.ctrl.js' %}"></script>
+  <script src="{% static 'app-build/js/platforms/platforms.svc.js' %}"></script>
+  <script src="{% static 'app-build/js/platforms/platforms.menus.js' %}"></script>
+  <script src="{% static 'app-build/js/platforms/directives/platform-dropdown.dir.js' %}"></script>
 
 {% elif globalvars.build == 'prod' or globalvars.build == 'staging' %}
   {# JS for staging/prod builds #}
@@ -62,7 +64,7 @@
   <script src="//code.angularjs.org/1.4.9/angular-animate.min.js"></script>
   <script src="//code.angularjs.org/1.4.9/angular-messages.min.js"></script>
   <script src="{% static 'libs/js/bootstrap-datepicker.min.js' %}"></script>
-  <script src="{% static 'app/app.min.js' %}"></script>
+  <script src="{% static 'app-dist/app.min.js' %}"></script>
 {% endif %}
 
 </body>
