@@ -50,7 +50,8 @@ module App.Common {
     // server than they do in the client
     protected submissionData;
 
-    constructor(protected $window: ng.IWindowService,
+    constructor(protected $scope,
+                protected $window: ng.IWindowService,
                 protected $stateParams: ng.ui.IStateParamsService,
                 protected $state: ng.ui.IStateService,
                 protected dataSvc: GenericService<T>,

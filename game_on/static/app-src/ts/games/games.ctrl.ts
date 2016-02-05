@@ -2,7 +2,6 @@
 module App.Games {
 
   import IPlatform = App.Platforms.IPlatform;
-  import IScope = angular.IScope;
 
   /*=============================================
    = interface definitions
@@ -25,13 +24,13 @@ module App.Games {
 
   export class GamesCtrl extends App.Common.GenericController<IGame> {
 
-    constructor($window: ng.IWindowService,
+    constructor($scope,
+                $window: ng.IWindowService,
                 $stateParams: ng.ui.IStateParamsService,
                 $state: ng.ui.IStateService,
                 dataSvc: App.Games.GamesSvc,
-                protected platformsSvc: App.Platforms.PlatformsSvc,
-                protected $scope: ng.IScope) {
-      super($window, $stateParams, $state, dataSvc, 'game');
+                protected platformsSvc: App.Platforms.PlatformsSvc) {
+      super($scope, $window, $stateParams, $state, dataSvc, 'game');
 
       const self = this;
       $scope.$watch(() => {
@@ -117,7 +116,7 @@ module App.Games {
   }
 
   angular.module('games').controller('GamesCtrl', [
-    '$window', '$stateParams', '$state', 'gamesSvc',
-    'platformsSvc', '$scope',
+    '$scope', '$window', '$stateParams', '$state', 'gamesSvc',
+    'platformsSvc',
     GamesCtrl]);
 }
