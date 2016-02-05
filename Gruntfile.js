@@ -104,6 +104,20 @@ module.exports = function(grunt) {
           dest: '<%= config.distDir %>/libs'
         }]
       }
+    },
+
+    /*=============================================
+     = watch
+     =============================================*/
+    watch: {
+      sass: {
+        files: ['<%= config.srcDir %>/css/**/*.scss'],
+        tasks: ['sass']
+      },
+      ts: {
+        files: ['<%= config.srcDir %>/ts/**/*.ts'],
+        tasks: ['typescript']
+      }
     }
   });
 
