@@ -7,6 +7,7 @@ module.exports = function(grunt) {
       srcDir: 'game_on/static/app-src',
       buildDir: 'game_on/static/app-build',
       distDir: 'game_on/static/app-dist',
+      libsDir: 'game_on/static/libs',
       date: function() {
         var d = new Date();
         return d.getFullYear() + '/' + (d.getMonth() + 1) + '/' + d.getDate();
@@ -57,6 +58,16 @@ module.exports = function(grunt) {
       }
     },
 
+    /*==============================================
+     = clean
+     ==============================================*/
+    clean: {
+      main: [
+        '<%= config.buildDir %>/*',
+        '<%= config.distDir %>/*'
+      ]
+    },
+
     /*=============================================
      = uglify
      =============================================*/
@@ -77,11 +88,31 @@ module.exports = function(grunt) {
           ]
         }]
       }
-    }
+    },
 
+    /*=============================================
+     = copy
+     =============================================*/
+    copy: {
+      libs: {
+        files: [{
+          expand: true,
+          flatten: true,
+          src: [
+            '<%= config.libsDir %>/css/bootstrap-datepicker3.min.css'
+          ],
+          dest: '<%= config.distDir %>/libs'
+        }]
+      }
+    }
   });
 
   grunt.registerTask('build', [
     'sass', 'typescript'
+  ]);
+  grunt.registerTask('dist', [
+    'sass', 'cssmin',
+    'typescript', 'uglify',
+    'copy'
   ]);
 };
