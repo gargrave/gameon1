@@ -9,11 +9,12 @@ module App.Platforms {
   }
 
   export class PlatformsCtrl extends App.Common.GenericController<IPlatform> {
-    constructor($window: ng.IWindowService,
+    constructor($scope,
+                $window: ng.IWindowService,
                 $stateParams: ng.ui.IStateParamsService,
                 $state: ng.ui.IStateService,
                 dataSvc: App.Platforms.PlatformsSvc) {
-      super($window, $stateParams, $state, dataSvc, 'platform');
+      super($scope, $window, $stateParams, $state, dataSvc, 'platform');
     }
 
     /*=============================================
@@ -36,21 +37,25 @@ module App.Platforms {
      = validation methods
      =============================================*/
     protected preValidate(): boolean {
-      const self = this;
+      // TODO make a wrapper interface for forms
+      this.$scope.entryForm.$submitted = true;
+      if (this.$scope.entryForm.$valid) {
+        const self = this;
 
-      // check for existing entries with this name
-      let existing = _.find(self.entries, function(p) {
-        let plat: IPlatform = <IPlatform>p;
-        return plat.name === self.newEntry.name;
-      });
-      if (existing) {
-        self.error = 'A platform with an identical name already exists.';
+        // check for existing entries with this name
+        let existing = _.find(self.entries, function(p) {
+          let plat: IPlatform = <IPlatform>p;
+          return plat.name === self.newEntry.name;
+        });
+        if (existing) {
+          self.error = 'A platform with an identical name already exists.';
+        }
+        return existing === undefined;
       }
-      return existing === undefined;
     }
   }
 
   angular.module('platforms').controller('PlatformsCtrl', [
-    '$window', '$stateParams', '$state', 'platformsSvc',
+    '$scope', '$window', '$stateParams', '$state', 'platformsSvc',
     PlatformsCtrl]);
 }
