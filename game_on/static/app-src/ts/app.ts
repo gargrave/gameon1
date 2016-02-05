@@ -2,6 +2,7 @@
 module App.Config {
   angular.module('gameon', [
       'ui.router',
+      'ngMessages',
       'menus',
       'platforms',
       'games'
