@@ -78,13 +78,13 @@ module.exports = function(grunt) {
           banner: '/* <%= config.title %> | built on <%= config.date() %> */'
         },
         files: [{
-          'game_on/static/app/app.min.js': [
-            'game_on/static/app/app.js',
-            'game_on/static/app/**/*.module.js',
-            'game_on/static/app/**/*.ctrl.js',
-            'game_on/static/app/**/*.svc.js',
-            'game_on/static/app/**/*.menus.js',
-            'game_on/static/app/**/*.dir.js'
+          '<%= config.distDir %>/app.min.js': [
+            '<%= config.buildDir %>/js/app.js',
+            '<%= config.buildDir %>/js/**/*.module.js',
+            '<%= config.buildDir %>/js/**/*.ctrl.js',
+            '<%= config.buildDir %>/js/**/*.svc.js',
+            '<%= config.buildDir %>/js/**/*.menus.js',
+            '<%= config.buildDir %>/js/**/*.dir.js'
           ]
         }]
       }
