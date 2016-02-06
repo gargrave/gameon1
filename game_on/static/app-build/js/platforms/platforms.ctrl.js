@@ -25,18 +25,20 @@ var App;
                 };
             };
             PlatformsCtrl.prototype.preValidate = function () {
-                this.$scope.entryForm.$submitted = true;
-                if (this.$scope.entryForm.$valid) {
-                    var self_1 = this;
-                    var existing = _.find(self_1.entries, function (p) {
-                        var plat = p;
-                        return plat.name === self_1.newEntry.name;
-                    });
-                    if (existing) {
-                        self_1.error = 'A platform with an identical name already exists.';
-                    }
-                    return existing === undefined;
+                var self = this;
+                self.$scope.entryForm.$submitted = true;
+                if (!this.$scope.entryForm.$valid) {
+                    self.error = 'There were problems with the data submitted.';
+                    return false;
                 }
+                var existing = _.find(self.entries, function (p) {
+                    var plat = p;
+                    return plat.name === self.newEntry.name;
+                });
+                if (existing) {
+                    self.error = 'A platform with an identical name already exists.';
+                }
+                return existing === undefined;
             };
             return PlatformsCtrl;
         })(App.Common.GenericController);

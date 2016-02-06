@@ -5,6 +5,7 @@ var App;
     (function (Config) {
         angular.module('gameon', [
             'ui.router',
+            'ngMessages',
             'menus',
             'platforms',
             'games'

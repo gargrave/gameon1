@@ -126,7 +126,7 @@ module.exports = function(grunt) {
       ts: {
         files: [
           '<%= config.srcDir %>/ts/**/*.ts',
-          'test/*.spec.js'
+          'test/**/*.spec.ts'
         ],
         tasks: ['typescript']
       }
