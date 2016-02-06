@@ -1,38 +1,6 @@
 /// <reference path="../../../../../typings/tsd.d.ts" />
 module App.Common {
-
-  import GenericService = App.Common.GenericService;
-
-  /*=============================================
-   = interface details
-   =============================================*/
-  export interface IDbEntry {
-    id?: number;
-    created?: string;
-    modified?: string;
-  }
-
-  export interface IGenericController<T> {
-    working: boolean;
-    entries: T[];
-    activeEntry: T;
-    newEntry: T;
-    error: string;
-
-    create(): void;
-    find(): void;
-    findOne(): void;
-    update(): void;
-    remove(): void;
-
-    initCreateView(): void;
-
-    gotoListView(): void;
-  }
-
-  /*=============================================
-   = class implementation
-   =============================================*/
+  
   export abstract class GenericController<T> implements IGenericController<T> {
     // whether we are currently working
     working: boolean = false;
@@ -54,7 +22,7 @@ module App.Common {
                 protected $window: ng.IWindowService,
                 protected $stateParams: ng.ui.IStateParamsService,
                 protected $state: ng.ui.IStateService,
-                protected dataSvc: GenericService<T>,
+                protected dataSvc: App.Common.GenericService<T>,
                 protected moduleName: string) {
       const self = this;
       self.entries = [];

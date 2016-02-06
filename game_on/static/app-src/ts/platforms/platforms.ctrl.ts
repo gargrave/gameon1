@@ -1,13 +1,6 @@
 /// <reference path="../../../../../typings/tsd.d.ts" />
 module App.Platforms {
 
-  /*=============================================
-   = interface definitions
-   =============================================*/
-  export interface IPlatform extends App.Common.IDbEntry {
-    name: string;
-  }
-
   export class PlatformsCtrl extends App.Common.GenericController<IPlatform> {
     constructor($scope,
                 $window: ng.IWindowService,

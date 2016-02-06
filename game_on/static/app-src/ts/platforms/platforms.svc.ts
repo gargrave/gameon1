@@ -1,12 +1,7 @@
 /// <reference path="../../../../../typings/tsd.d.ts" />
 module App.Platforms {
 
-  import IPlatform = App.Platforms.IPlatform;
-
-  /*=============================================
-   = class implementation
-   =============================================*/
-  export class PlatformsSvc extends App.Common.GenericService<IPlatform> {
+  export class PlatformsSvc extends App.Common.GenericService<App.Platforms.IPlatform> {
 
     constructor(protected $http: ng.IHttpService,
                 protected $q: ng.IQService) {

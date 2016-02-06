@@ -4,7 +4,8 @@ var App;
     var Common;
     (function (Common) {
         var GenericController = (function () {
-            function GenericController($window, $stateParams, $state, dataSvc, moduleName) {
+            function GenericController($scope, $window, $stateParams, $state, dataSvc, moduleName) {
+                this.$scope = $scope;
                 this.$window = $window;
                 this.$stateParams = $stateParams;
                 this.$state = $state;

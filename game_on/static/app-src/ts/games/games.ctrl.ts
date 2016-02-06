@@ -1,27 +1,6 @@
 /// <reference path="../../../../../typings/tsd.d.ts" />
 module App.Games {
 
-  import IPlatform = App.Platforms.IPlatform;
-
-  /*=============================================
-   = interface definitions
-   =============================================*/
-  export interface IGame extends App.Common.IDbEntry {
-    name: string;
-    platform: IPlatform;
-    startDate: string;
-    endDate: string;
-    finished: boolean;
-  }
-
-  export interface IGameSubmission extends App.Common.IDbEntry {
-    name: string;
-    platform: number;
-    startDate: string;
-    endDate: string;
-    finished: boolean;
-  }
-
   export class GamesCtrl extends App.Common.GenericController<IGame> {
 
     constructor($scope,

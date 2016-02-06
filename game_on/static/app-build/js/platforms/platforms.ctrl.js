@@ -10,8 +10,8 @@ var App;
     (function (Platforms) {
         var PlatformsCtrl = (function (_super) {
             __extends(PlatformsCtrl, _super);
-            function PlatformsCtrl($window, $stateParams, $state, dataSvc) {
-                _super.call(this, $window, $stateParams, $state, dataSvc, 'platform');
+            function PlatformsCtrl($scope, $window, $stateParams, $state, dataSvc) {
+                _super.call(this, $scope, $window, $stateParams, $state, dataSvc, 'platform');
             }
             PlatformsCtrl.prototype.defaultEntry = function () {
                 return {
@@ -25,21 +25,24 @@ var App;
                 };
             };
             PlatformsCtrl.prototype.preValidate = function () {
-                var self = this;
-                var existing = _.find(self.entries, function (p) {
-                    var plat = p;
-                    return plat.name === self.newEntry.name;
-                });
-                if (existing) {
-                    self.error = 'A platform with an identical name already exists.';
+                this.$scope.entryForm.$submitted = true;
+                if (this.$scope.entryForm.$valid) {
+                    var self_1 = this;
+                    var existing = _.find(self_1.entries, function (p) {
+                        var plat = p;
+                        return plat.name === self_1.newEntry.name;
+                    });
+                    if (existing) {
+                        self_1.error = 'A platform with an identical name already exists.';
+                    }
+                    return existing === undefined;
                 }
-                return existing === undefined;
             };
             return PlatformsCtrl;
         })(App.Common.GenericController);
         Platforms.PlatformsCtrl = PlatformsCtrl;
         angular.module('platforms').controller('PlatformsCtrl', [
-            '$window', '$stateParams', '$state', 'platformsSvc',
+            '$scope', '$window', '$stateParams', '$state', 'platformsSvc',
             PlatformsCtrl]);
     })(Platforms = App.Platforms || (App.Platforms = {}));
 })(App || (App = {}));

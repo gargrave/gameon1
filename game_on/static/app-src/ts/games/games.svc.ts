@@ -1,12 +1,7 @@
 /// <reference path="../../../../../typings/tsd.d.ts" />
 module App.Games {
 
-  import IGame = App.Games.IGame;
-
-  /*=============================================
-   = class implementation
-   =============================================*/
-  export class GamesSvc extends App.Common.GenericService<IGame> {
+  export class GamesSvc extends App.Common.GenericService<App.Games.IGame> {
 
     constructor(protected $http: ng.IHttpService,
                 protected $q: ng.IQService) {

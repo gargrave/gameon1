@@ -10,10 +10,9 @@ var App;
     (function (Games) {
         var GamesCtrl = (function (_super) {
             __extends(GamesCtrl, _super);
-            function GamesCtrl($window, $stateParams, $state, dataSvc, platformsSvc, $scope) {
-                _super.call(this, $window, $stateParams, $state, dataSvc, 'game');
+            function GamesCtrl($scope, $window, $stateParams, $state, dataSvc, platformsSvc) {
+                _super.call(this, $scope, $window, $stateParams, $state, dataSvc, 'game');
                 this.platformsSvc = platformsSvc;
-                this.$scope = $scope;
                 var self = this;
                 $scope.$watch(function () {
                     return self.newEntry.startDate;
@@ -83,8 +82,8 @@ var App;
         })(App.Common.GenericController);
         Games.GamesCtrl = GamesCtrl;
         angular.module('games').controller('GamesCtrl', [
-            '$window', '$stateParams', '$state', 'gamesSvc',
-            'platformsSvc', '$scope',
+            '$scope', '$window', '$stateParams', '$state', 'gamesSvc',
+            'platformsSvc',
             GamesCtrl]);
     })(Games = App.Games || (App.Games = {}));
 })(App || (App = {}));
