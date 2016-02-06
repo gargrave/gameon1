@@ -273,27 +273,6 @@ var App;
                 expect(ctrl.error.length).toBe(0);
                 expect(ctrl.working).toBeFalsy();
             });
-            it('onDateChanged() should set endDate equal to startDate if endDate is before startDate', function () {
-                ctrl.newEntry.startDate = '2015-04-11';
-                ctrl.newEntry.endDate = '2015-04-01';
-                ctrl.onDateChanged();
-                $httpBackend.flush();
-                expect(ctrl.newEntry.endDate).toEqual(ctrl.newEntry.startDate);
-            });
-            it('onDateChanged() should set endDate equal to startDate if endDate is blank', function () {
-                var date1 = '2016-01-15';
-                ctrl.newEntry.startDate = date1;
-                ctrl.onDateChanged();
-                $httpBackend.flush();
-                expect(ctrl.newEntry.endDate).toEqual(date1);
-            });
-            it('onDateChanged() should set startDate equal to endDate if startDate is blank', function () {
-                var date1 = '2016-02-15';
-                ctrl.newEntry.endDate = date1;
-                ctrl.onDateChanged();
-                $httpBackend.flush();
-                expect(ctrl.newEntry.startDate).toEqual(date1);
-            });
         });
     })(Tests = App.Tests || (App.Tests = {}));
 })(App || (App = {}));
