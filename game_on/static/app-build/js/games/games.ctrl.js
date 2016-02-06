@@ -13,17 +13,6 @@ var App;
             function GamesCtrl($scope, $window, $stateParams, $state, dataSvc, platformsSvc) {
                 _super.call(this, $scope, $window, $stateParams, $state, dataSvc, 'game');
                 this.platformsSvc = platformsSvc;
-                var self = this;
-                $scope.$watch(function () {
-                    return self.newEntry.startDate;
-                }, function () {
-                    self.onDateChanged();
-                });
-                $scope.$watch(function () {
-                    return self.newEntry.endDate;
-                }, function () {
-                    self.onDateChanged();
-                });
             }
             GamesCtrl.prototype.defaultEntry = function () {
                 return {
@@ -43,22 +32,6 @@ var App;
                     endDate: this.newEntry.endDate,
                     finished: this.newEntry.finished
                 };
-            };
-            GamesCtrl.prototype.onDateChanged = function () {
-                var self = this;
-                if (self.newEntry.startDate && !self.newEntry.endDate) {
-                    self.newEntry.endDate = self.newEntry.startDate;
-                }
-                else if (self.newEntry.endDate && !self.newEntry.startDate) {
-                    self.newEntry.startDate = self.newEntry.endDate;
-                }
-                else {
-                    var start = new Date(self.newEntry.startDate);
-                    var end = new Date(self.newEntry.endDate);
-                    if (end < start) {
-                        self.newEntry.endDate = self.newEntry.startDate;
-                    }
-                }
             };
             GamesCtrl.prototype.preValidate = function () {
                 var self = this;
