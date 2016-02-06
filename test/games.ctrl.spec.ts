@@ -84,12 +84,19 @@ module App.Tests {
       $stateParams = _$stateParams_;
       scope = $rootScope.$new();
 
+      // add the entry form that we will need to the scope
+      scope.entryForm = {
+        $submitted: true,
+        $valid: true
+      };
+
       // set up a mock window service to automatically confirm dialogs
       windowMock = {
         confirm: function(msg) {
           return true;
         }
       };
+
       ctrl = $controller('GamesCtrl', {
         $window: windowMock,
         $scope: scope
@@ -210,6 +217,23 @@ module App.Tests {
       expect(ctrl.entries.length).toBe(origLength);
       // the error message should not be empty
       expect(ctrl.error).toBe(testError);
+    });
+
+    it('create() should reject the new entry and show an error message ' +
+      'if the form is not valid', function() {
+      let origLength = ctrl.entries.length;
+
+      ctrl.newEntry = testNewEntry;
+      ctrl.$scope.entryForm.$valid = false;
+      ctrl.create();
+      $httpBackend.flush();
+
+      // ctrl.working should be false
+      expect(ctrl.working).toBeFalsy();
+      // ctrl.entries.length should be the same as before
+      expect(ctrl.entries.length).toBe(origLength);
+      // the error message should not be empty
+      expect(ctrl.error.length).toBeGreaterThan(0);
     });
 
     /*=============================================

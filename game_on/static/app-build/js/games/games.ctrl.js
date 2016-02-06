@@ -62,6 +62,12 @@ var App;
             };
             GamesCtrl.prototype.preValidate = function () {
                 var self = this;
+                var form = self.$scope.entryForm;
+                form.$submitted = true;
+                if (!form.$valid) {
+                    self.error = 'Invalid submission. Please check the form for errors.';
+                    return false;
+                }
                 var platform = self.submissionData.platform;
                 if (typeof (platform) !== 'number' || platform < 0) {
                     self.error = "Local Error: Invalid platform identifier: " + platform;

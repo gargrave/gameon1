@@ -9,3 +9,8 @@ body {
 #login-form {
   margin-top: 100px;
 }
+
+/* Bootstrap overrides */
+.alert {
+  padding: 8px 12px !important;
+}

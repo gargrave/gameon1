@@ -72,6 +72,14 @@ module App.Games {
      =============================================*/
     protected preValidate(): boolean {
       const self = this;
+      const form: App.Common.IFormWrapper = self.$scope.entryForm;
+
+      // set the form's 'submitted' status and check if it is valid
+      form.$submitted = true;
+      if (!form.$valid) {
+        self.error = 'Invalid submission. Please check the form for errors.';
+        return false;
+      }
 
       // make sure the platform value is valid
       let platform = self.submissionData.platform;

@@ -30,12 +30,13 @@ module App.Platforms {
      = validation methods
      =============================================*/
     protected preValidate(): boolean {
-      // TODO make a wrapper interface for forms
       const self = this;
+      const form: App.Common.IFormWrapper = self.$scope.entryForm;
 
-      self.$scope.entryForm.$submitted = true;
-      if (!this.$scope.entryForm.$valid) {
-        self.error = 'There were problems with the data submitted.';
+      // set the form's 'submitted' status and check if it is valid
+      form.$submitted = true;
+      if (!form.$valid) {
+        self.error = 'Invalid submission. Please check the form for errors.';
         return false;
       }
 

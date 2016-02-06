@@ -26,9 +26,10 @@ var App;
             };
             PlatformsCtrl.prototype.preValidate = function () {
                 var self = this;
-                self.$scope.entryForm.$submitted = true;
-                if (!this.$scope.entryForm.$valid) {
-                    self.error = 'There were problems with the data submitted.';
+                var form = self.$scope.entryForm;
+                form.$submitted = true;
+                if (!form.$valid) {
+                    self.error = 'Invalid submission. Please check the form for errors.';
                     return false;
                 }
                 var existing = _.find(self.entries, function (p) {

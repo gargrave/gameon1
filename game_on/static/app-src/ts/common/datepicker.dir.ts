@@ -10,13 +10,15 @@ module App.Platforms {
         restrict: 'AE',
         scope: {
           label: '@',
+          name: '@',
           dateModel: '='
         },
 
         template: `
         <label for="{A ::uniqueId A}"><span ng-bind="label"></span></label>
         <div id="{A ::uniqueId A}">
-          <input type="text" class="form-control" maxlength="10"
+          <input type="text" class="form-control" name="{A ::name A}"
+                 maxlength="10" ng-pattern="/^20[0-1][0-9]-[0-1][0-9]-[0-3][0-9]$/"
                  ng-model="dateModel" required>
         </div>
         `,

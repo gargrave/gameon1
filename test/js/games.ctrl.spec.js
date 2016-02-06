@@ -67,6 +67,10 @@ var App;
                 $location = _$location_;
                 $stateParams = _$stateParams_;
                 scope = $rootScope.$new();
+                scope.entryForm = {
+                    $submitted: true,
+                    $valid: true
+                };
                 windowMock = {
                     confirm: function (msg) {
                         return true;
@@ -154,6 +158,17 @@ var App;
                 expect(ctrl.working).toBeFalsy();
                 expect(ctrl.entries.length).toBe(origLength);
                 expect(ctrl.error).toBe(testError);
+            });
+            it('create() should reject the new entry and show an error message ' +
+                'if the form is not valid', function () {
+                var origLength = ctrl.entries.length;
+                ctrl.newEntry = testNewEntry;
+                ctrl.$scope.entryForm.$valid = false;
+                ctrl.create();
+                $httpBackend.flush();
+                expect(ctrl.working).toBeFalsy();
+                expect(ctrl.entries.length).toBe(origLength);
+                expect(ctrl.error.length).toBeGreaterThan(0);
             });
             it('findOne() should query and load the specified entry', function () {
                 var res = { entries: [testResponse[0]] };
