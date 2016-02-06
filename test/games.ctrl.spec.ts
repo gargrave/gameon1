@@ -1,4 +1,5 @@
 /// <reference path="../typings/tsd.d.ts" />
+/// <reference path="../game_on/static/app-src/ts/app.d.ts" />
 module App.Tests {
 
   import IGame = App.Games.IGame;
@@ -71,9 +72,9 @@ module App.Tests {
     let $httpBackend;
     let $location;
     let $stateParams;
+    let scope;
     let windowMock;
     let ctrl;
-    let scope;
 
     beforeEach(angular.mock.module('gameon'));
     beforeEach(inject(function($rootScope, $controller, _$httpBackend_,

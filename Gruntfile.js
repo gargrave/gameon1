@@ -55,6 +55,15 @@ module.exports = function(grunt) {
           target: 'es5',
           removeComments: true
         }
+      },
+      tests: {
+        src: ['test/*.spec.ts'],
+        dest: 'test/js/',
+        options: {
+          module: 'commonjs',
+          target: 'es5',
+          removeComments: true
+        }
       }
     },
 
@@ -115,7 +124,10 @@ module.exports = function(grunt) {
         tasks: ['sass']
       },
       ts: {
-        files: ['<%= config.srcDir %>/ts/**/*.ts'],
+        files: [
+          '<%= config.srcDir %>/ts/**/*.ts',
+          'test/*.spec.js'
+        ],
         tasks: ['typescript']
       }
     }

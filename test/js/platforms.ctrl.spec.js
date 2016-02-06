@@ -1,3 +1,5 @@
+/// <reference path="../typings/tsd.d.ts" />
+/// <reference path="../game_on/static/app-src/ts/app.d.ts" />
 var App;
 (function (App) {
     var Tests;
@@ -28,20 +30,23 @@ var App;
             var $httpBackend;
             var $location;
             var $stateParams;
+            var scope;
             var windowMock;
             var ctrl;
             beforeEach(angular.mock.module('gameon'));
-            beforeEach(inject(function ($controller, _$httpBackend_, _$location_, _$stateParams_) {
+            beforeEach(inject(function ($rootScope, $controller, _$httpBackend_, _$location_, _$stateParams_) {
                 $httpBackend = _$httpBackend_;
                 $location = _$location_;
                 $stateParams = _$stateParams_;
+                scope = $rootScope.$new();
                 windowMock = {
                     confirm: function (msg) {
                         return true;
                     }
                 };
                 ctrl = $controller('PlatformsCtrl', {
-                    $window: windowMock
+                    $window: windowMock,
+                    $scope: scope
                 });
                 $httpBackend.when('GET', '/static/views/home.html').respond(200);
             }));

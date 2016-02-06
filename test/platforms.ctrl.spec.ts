@@ -1,4 +1,5 @@
 /// <reference path="../typings/tsd.d.ts" />
+/// <reference path="../game_on/static/app-src/ts/app.d.ts" />
 module App.Tests {
 
   import IPlatform = App.Platforms.IPlatform;
@@ -38,15 +39,17 @@ module App.Tests {
     let $httpBackend;
     let $location;
     let $stateParams;
+    let scope;
     let windowMock;
     let ctrl;
 
     beforeEach(angular.mock.module('gameon'));
-    beforeEach(inject(function($controller, _$httpBackend_,
+    beforeEach(inject(function($rootScope, $controller, _$httpBackend_,
                                _$location_, _$stateParams_) {
       $httpBackend = _$httpBackend_;
       $location = _$location_;
       $stateParams = _$stateParams_;
+      scope = $rootScope.$new();
 
       // set up a mock window service to automatically confirm dialogs
       windowMock = {
@@ -55,7 +58,8 @@ module App.Tests {
         }
       };
       ctrl = $controller('PlatformsCtrl', {
-        $window: windowMock
+        $window: windowMock,
+        $scope: scope
       });
 
       $httpBackend.when('GET', '/static/views/home.html').respond(200);

@@ -17,6 +17,7 @@ module.exports = function(config) {
       'bower_components/jquery/dist/jquery.js',
       'bower_components/lodash/dist/lodash.js',
       'bower_components/angular/angular.js',
+      'bower_components/angular-messages/angular-messages.js',
       'bower_components/angular-ui-router/release/angular-ui-router.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // ng app
@@ -25,7 +26,7 @@ module.exports = function(config) {
       'game_on/static/app-build/js/**/*.ctrl.js',
       'game_on/static/app-build/js/**/*svc.js',
       // test files
-      'test/**/*.spec.js'
+      'test/js/**/*.spec.js'
     ],
 
     // list of files to exclude
