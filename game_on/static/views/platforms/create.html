@@ -8,15 +8,27 @@
       <span ng-bind="ctrl.error"></span>
     </div>
 
-    <!-- TODO form should be disabled while working -->
-    <form method="POST">
+    <form method="POST" ng-submit="ctrl.create()" name="entryForm" novalidate>
+
       <div class="form-group">
+        <!-- platform 'name' input -->
         <label for="name">Name:</label>
-        <input class="form-control" type="text" id="name"
-               name="name" maxlength="100" placeholder="Platform"
+        <input class="form-control" type="text" id="name" name="name"
+               minlength="3" maxlength="100" placeholder="Platform"
                ng-model="ctrl.newEntry.name" required>
+
+        <!-- platform 'name' validation messages -->
+        <div ng-messages="entryForm.name.$error" ng-if="entryForm.$submitted">
+          <div class="alert alert-warning" ng-message="required">
+            This is a required field.
+          </div>
+          <div class="alert alert-warning" ng-message="minlength">
+            Must be at least 3 characters long.
+          </div>
+        </div>
       </div>
-      <button class="btn btn-default" ng-click="ctrl.create()">Submit</button>
+
+      <button class="btn btn-default" ng-disabled="ctrl.working">Submit</button>
     </form>
 
   </div>

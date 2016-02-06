@@ -1,6 +1,6 @@
 /// <reference path="../../../../../typings/tsd.d.ts" />
 module App.Common {
-  
+
   export abstract class GenericController<T> implements IGenericController<T> {
     // whether we are currently working
     working: boolean = false;
