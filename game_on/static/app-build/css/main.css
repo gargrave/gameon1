@@ -1,5 +1,5 @@
 body {
-  padding-top: 50px; }
+  margin-top: 50px; }
 
 #site-jumbotron {
   margin-top: 30px; }
@@ -7,8 +7,14 @@ body {
 #login-form {
   margin-top: 100px; }
 
+.top-panel {
+  margin-top: 50px; }
+
 /* Bootstrap overrides */
 .alert {
   padding: 8px 12px !important; }
+
+.panel {
+  box-shadow: 0 4px 8px #c8c8c8; }
 
 /*# sourceMappingURL=main.css.map */
