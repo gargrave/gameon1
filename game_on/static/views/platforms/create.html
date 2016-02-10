@@ -1,17 +1,25 @@
 <div class="row" ng-init="ctrl.initCreateView()">
-  <div class="col-md-6 col-md-offset-3">
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3">
 
-    <h3>Add a Platform</h3>
-    <hr>
+      <!-- error message display -->
+      <div class="alert alert-danger" role="alert" ng-show="ctrl.error" ng-cloak>
+        <span ng-bind="ctrl.error"></span>
+      </div>
 
-    <!-- error message display -->
-    <div class="alert alert-danger" role="alert" ng-show="ctrl.error" ng-cloak>
-      <span ng-bind="ctrl.error"></span>
+      <div class="panel panel-default top-panel">
+
+        <div class="panel-heading">
+          <h3 class="panel-title">Add a Platform</h3>
+        </div>
+
+        <div class="panel-body">
+          <form method="POST" ng-submit="ctrl.create()" name="entryForm" novalidate>
+            <div ng-include="'static/views/platforms/partials/platform-form.html'"></div>
+          </form>
+        </div>
+      </div>
+
     </div>
-
-    <form method="POST" ng-submit="ctrl.create()" name="entryForm" novalidate>
-      <div ng-include="'static/views/platforms/partials/platform-form.html'"></div>
-    </form>
-
   </div>
 </div>

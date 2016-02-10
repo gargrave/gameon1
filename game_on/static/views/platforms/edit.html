@@ -1,17 +1,27 @@
-<div class="row" ng-init="ctrl.findOne()">
-  <div class="col-md-6 col-md-offset-3">
+<div ng-init="ctrl.findOne()">
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3">
 
-    <h3>Update <span ng-bind="ctrl.activeEntry.name"></span></h3>
-    <hr>
+      <!-- error message display -->
+      <div class="alert alert-danger" role="alert" ng-show="ctrl.error" ng-cloak>
+        <span ng-bind="ctrl.error"></span>
+      </div>
 
-    <!-- error message display -->
-    <div class="alert alert-danger" role="alert" ng-show="ctrl.error" ng-cloak>
-      <span ng-bind="ctrl.error"></span>
+      <div class="panel panel-default top-panel">
+
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            Update <span ng-bind="ctrl.activeEntry.name"></span>
+          </h3>
+        </div>
+
+        <div class="panel-body">
+          <form method="POST" ng-submit="ctrl.update()" name="entryForm" novalidate>
+            <div ng-include="'static/views/platforms/partials/platform-form.html'"></div>
+          </form>
+        </div>
+      </div>
+
     </div>
-
-    <form method="POST" ng-submit="ctrl.update()" name="entryForm" novalidate>
-      <div ng-include="'static/views/platforms/partials/platform-form.html'"></div>
-    </form>
-
   </div>
 </div>
