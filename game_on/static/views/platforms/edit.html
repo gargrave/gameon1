@@ -1,22 +1,16 @@
 <div class="row" ng-init="ctrl.findOne()">
-  <div class="col-md-10 col-md-offset-1">
+  <div class="col-md-6 col-md-offset-3">
 
     <h3>Update <span ng-bind="ctrl.activeEntry.name"></span></h3>
     <hr>
 
+    <!-- error message display -->
     <div class="alert alert-danger" role="alert" ng-show="ctrl.error" ng-cloak>
       <span ng-bind="ctrl.error"></span>
     </div>
 
-    <!-- TODO form should be disabled while working -->
-    <form method="POST">
-      <div class="form-group">
-        <label for="name">Name:</label>
-        <input class="form-control" type="text" id="name"
-               name="name" maxlength="100" placeholder="Platform"
-               ng-model="ctrl.newEntry.name" required>
-      </div>
-      <button class="btn btn-default" ng-click="ctrl.update()">Submit</button>
+    <form method="POST" ng-submit="ctrl.update()" name="entryForm" novalidate>
+      <div ng-include="'static/views/platforms/partials/platform-form.html'"></div>
     </form>
 
   </div>
