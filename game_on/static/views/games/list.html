@@ -30,9 +30,9 @@
 
           <!-- length played display -->
           <div class="col-xs-3 text-center">
-            <span>Enjoyed for:</span>
+            Enjoyed for: <span></span>
             <br>
-            <strong><span>30 days</span></strong>
+            <strong><span ng-bind="game.startDate | daysFilter:game.endDate"></span></strong>
           </div>
 
           <!-- start/end date display -->
