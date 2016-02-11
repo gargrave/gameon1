@@ -11,15 +11,45 @@
     </div>
 
     <div class="list-group">
+
+
       <a class="list-group-item" ng-repeat="game in ctrl.entries"
          ui-sref="games-detail({id: game.id})">
-        <strong class="list-group-item-heading" ng-bind="game.name"></strong>
-        <br>
-        <small class="list-group-item-text">
-          Added on
-          <span ng-bind="game.created | date:'medium'"></span>
-        </small>
+
+        <div class="row">
+
+          <!-- title/added-on display -->
+          <div class="col-xs-5 text-left">
+            <strong class="list-group-item-heading" ng-bind="game.name"></strong>
+            <br>
+            <small class="list-group-item-text">
+              Added on
+              <span ng-bind="game.created | date:'medium'"></span>
+            </small>
+          </div>
+
+          <!-- length played display -->
+          <div class="col-xs-3 text-center">
+            Enjoyed for: <span></span>
+            <br>
+            <strong><span ng-bind="game.startDate | daysFilter:game.endDate"></span></strong>
+          </div>
+
+          <!-- start/end date display -->
+          <div class="col-xs-4 text-right">
+            <small>Started:
+              <span class="text-mutued" ng-bind="game.startDate  | date:'shortDate'"></span>
+            </small>
+            <br>
+            <small>Ended:
+              <span class="text-mutued" ng-bind="game.endDate  | date:'shortDate'"></span>
+            </small>
+          </div>
+
+        </div><!-- /row -->
       </a>
+
+
     </div>
 
   </div>

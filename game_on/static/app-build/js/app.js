@@ -6,6 +6,7 @@ var App;
         angular.module('gameon', [
             'ui.router',
             'ngMessages',
+            'common',
             'menus',
             'platforms',
             'games'

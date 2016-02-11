@@ -61,4 +61,10 @@
   <label for="finished">Finished?</label>
 </div>
 
+<!-- error message display -->
+<div class="alert alert-danger" role="alert" ng-show="ctrl.error" ng-cloak>
+  <span ng-bind="ctrl.error"></span>
+</div>
+
 <button class="btn btn-primary" ng-disabled="ctrl.working">Submit</button>
+<span class="btn btn-default pull-right" ui-sref="games-list" ng-disabled="ctrl.working">Cancel</span>

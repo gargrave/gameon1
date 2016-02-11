@@ -23,8 +23,9 @@ module.exports = function(config) {
       // ng app
       'game_on/static/app-build/js/app.js',
       'game_on/static/app-build/js/**/*.module.js',
+      'game_on/static/app-build/js/**/*.filters.js',
       'game_on/static/app-build/js/**/*.ctrl.js',
-      'game_on/static/app-build/js/**/*svc.js',
+      'game_on/static/app-build/js/**/*.svc.js',
       // test files
       'test/js/**/*.spec.js'
     ],
