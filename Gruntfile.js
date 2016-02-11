@@ -90,6 +90,7 @@ module.exports = function(grunt) {
           '<%= config.distDir %>/app.min.js': [
             '<%= config.buildDir %>/js/app.js',
             '<%= config.buildDir %>/js/**/*.module.js',
+            '<%= config.buildDir %>/js/**/*.filters.js',
             '<%= config.buildDir %>/js/**/*.ctrl.js',
             '<%= config.buildDir %>/js/**/*.svc.js',
             '<%= config.buildDir %>/js/**/*.menus.js',
