@@ -28,4 +28,18 @@ module App.Common {
   }
 
   angular.module('common').filter('daysFilter', DaysFilter);
+
+  export function TruncFilter() {
+    return function(input: string, len: number): string {
+      console.log(input.length);
+      let str = input;
+      if (str.length > len) {
+        // truncate the string
+        str = input.substring(0, len) + '...';
+      }
+      return str;
+    };
+  }
+
+  angular.module('common').filter('truncFilter', TruncFilter);
 }

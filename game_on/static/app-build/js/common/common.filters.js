@@ -18,5 +18,17 @@ var App;
         }
         Common.DaysFilter = DaysFilter;
         angular.module('common').filter('daysFilter', DaysFilter);
+        function TruncFilter() {
+            return function (input, len) {
+                console.log(input.length);
+                var str = input;
+                if (str.length > len) {
+                    str = input.substring(0, len) + '...';
+                }
+                return str;
+            };
+        }
+        Common.TruncFilter = TruncFilter;
+        angular.module('common').filter('truncFilter', TruncFilter);
     })(Common = App.Common || (App.Common = {}));
 })(App || (App = {}));

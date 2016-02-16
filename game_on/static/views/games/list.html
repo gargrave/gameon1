@@ -20,7 +20,7 @@
 
           <!-- title/added-on display -->
           <div class="col-xs-5 text-left">
-            <strong class="list-group-item-heading" ng-bind="game.name"></strong>
+            <strong class="list-group-item-heading" ng-bind="game.name | truncFilter:28"></strong>
             <br>
             <small class="list-group-item-text">
               Added on
