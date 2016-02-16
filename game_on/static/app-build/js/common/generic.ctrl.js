@@ -13,6 +13,7 @@ var App;
                 this.moduleName = moduleName;
                 this.working = false;
                 this.error = '';
+                this.filterText = '';
                 var self = this;
                 self.entries = [];
                 self.newEntry = self.defaultEntry();
