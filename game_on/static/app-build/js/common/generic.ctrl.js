@@ -14,6 +14,7 @@ var App;
                 this.working = false;
                 this.error = '';
                 this.filterText = '';
+                this.sortText = 'startDate';
                 var self = this;
                 self.entries = [];
                 self.newEntry = self.defaultEntry();
@@ -119,6 +120,14 @@ var App;
             ;
             GenericController.prototype.buildSubmissionData = function () {
                 this.submissionData = angular.copy(this.newEntry);
+            };
+            GenericController.prototype.setSortText = function (text) {
+                if (this.sortText === text) {
+                    this.sortText = "-" + text;
+                }
+                else {
+                    this.sortText = text;
+                }
             };
             GenericController.prototype.preValidate = function () {
                 return true;

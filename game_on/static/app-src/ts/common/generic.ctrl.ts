@@ -15,6 +15,8 @@ module App.Common {
 
     // string for filtering entry listings
     filterText: string = '';
+    // string for sorting entry listings
+    sortText: string = 'startDate';
 
     // the data that will actually be sent to the server for write requests
     // this is useful for objects that need to be handled differently on the
@@ -186,6 +188,21 @@ module App.Common {
      */
     protected buildSubmissionData(): void {
       this.submissionData = angular.copy(this.newEntry);
+    }
+
+    /**
+     * Sets the string to use for sorting the entry list. If the string provided
+     * is the current sorting text, a minus sign will be appended to the front to
+     * reverse the order.
+     *
+     * @param text {string} The new value of the sorting text
+     */
+    setSortText(text: string): void {
+      if (this.sortText === text) {
+        this.sortText = `-${text}`;
+      } else {
+        this.sortText = text;
+      }
     }
 
     /*=============================================
