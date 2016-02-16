@@ -46,6 +46,7 @@ var App;
                 self.dataSvc.query()
                     .then(function (res) {
                     self.entries = res;
+                    self.initListView();
                 }, function (err) {
                     self.error = err.statusText;
                 })
@@ -117,7 +118,8 @@ var App;
                 }
                 self.newEntry = self.defaultEntry();
             };
-            ;
+            GenericController.prototype.initListView = function () {
+            };
             GenericController.prototype.buildSubmissionData = function () {
                 this.submissionData = angular.copy(this.newEntry);
             };

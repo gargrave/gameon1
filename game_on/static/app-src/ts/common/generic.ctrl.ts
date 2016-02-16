@@ -73,6 +73,7 @@ module App.Common {
       self.dataSvc.query()
         .then(function(res) {
           self.entries = res;
+          self.initListView();
         }, function(err) {
           self.error = err.statusText;
         })
@@ -179,7 +180,18 @@ module App.Common {
         self.find();
       }
       self.newEntry = self.defaultEntry();
-    };
+    }
+
+    /**
+     * Called after the list view has successfully been initialized with the
+     * response from the server. Anything a controller needs to do to the list
+     * of entries before it is used can be done here.
+     *
+     * Note that this is only called after a successful API query--in case of errors,
+     * it will not be called.
+     */
+    initListView(): void {
+    }
 
     /**
      * Builds the data that will be sent to the server for write requests.
