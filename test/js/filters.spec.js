@@ -54,5 +54,20 @@ var App;
                 expect(result).toEqual(expected);
             });
         });
+        describe('truncFilter', function () {
+            var filter;
+            beforeEach(angular.mock.module('gameon'));
+            beforeEach(inject(function (_$filter_) {
+                filter = _$filter_('pluralize');
+            }));
+            it('should not change the word for single objects', function () {
+                var result = filter('day', 1);
+                expect(result).toBe('day');
+            });
+            it('should add an "s" for plural objects', function () {
+                var result = filter('day', 2);
+                expect(result).toBe('days');
+            });
+        });
     })(Tests = App.Tests || (App.Tests = {}));
 })(App || (App = {}));

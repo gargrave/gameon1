@@ -2,6 +2,9 @@
 /// <reference path="../game_on/static/app-src/ts/app.d.ts" />
 module App.Tests {
 
+  /*==============================================
+   = Days Filter
+   ==============================================*/
   describe('daysFilter', function() {
 
     let defaultString: string = '1 day';
@@ -45,6 +48,9 @@ module App.Tests {
     });
   });
 
+  /*==============================================
+   = Truncate Filter
+   ==============================================*/
   describe('truncFilter', function() {
     let filter;
 
@@ -66,6 +72,28 @@ module App.Tests {
       let expected = 'This is the test s...';
 
       expect(result).toEqual(expected);
+    });
+  });
+
+  /*==============================================
+   = Pluralize Filter
+   ==============================================*/
+  describe('truncFilter', function() {
+    let filter;
+
+    beforeEach(angular.mock.module('gameon'));
+    beforeEach(inject(function(_$filter_) {
+      filter = _$filter_('pluralize');
+    }));
+
+    it('should not change the word for single objects', function() {
+      let result = filter('day', 1);
+      expect(result).toBe('day');
+    });
+
+    it('should add an "s" for plural objects', function() {
+      let result = filter('day', 2);
+      expect(result).toBe('days');
     });
   });
 }

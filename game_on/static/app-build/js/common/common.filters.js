@@ -29,5 +29,16 @@ var App;
         }
         Common.TruncFilter = TruncFilter;
         angular.module('common').filter('truncFilter', TruncFilter);
+        function PluralizeFilter() {
+            return function (input, count) {
+                var str = input;
+                if (count !== 1) {
+                    str += 's';
+                }
+                return str;
+            };
+        }
+        Common.PluralizeFilter = PluralizeFilter;
+        angular.module('common').filter('pluralize', PluralizeFilter);
     })(Common = App.Common || (App.Common = {}));
 })(App || (App = {}));
