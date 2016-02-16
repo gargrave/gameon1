@@ -10,15 +10,17 @@
   </div><!-- /row -->
 
   <div class="row">
-    <div class="col-sm-7"></div>
-    <div class="col-sm-3 col-sm-offset-1">
+    <div class="col-sm-6"></div>
+    <div class="col-sm-4 col-sm-offset-1">
 
+      <!-- search/filter input -->
       <div class="input-group">
         <span class="input-group-addon">
           <span class="glyphicon glyphicon-search"></span>
         </span>
         <input type="text" class="form-control" placeholder="Search..." ng-model="ctrl.filterText">
       </div>
+
     </div>
   </div><!-- /row -->
   <br>
@@ -38,13 +40,18 @@
             <th>
               <a href="" ng-click="ctrl.setSortText('name')">Title</a>
             </th>
+            <th>
+              <a href="" ng-click="ctrl.setSortText('platform')">Platform</a>
+            </th>
             <th class="text-center">
               <a href="" ng-click="ctrl.setSortText('startDate')">Start date</a>
             </th>
             <th class="text-center">
               <a href="" ng-click="ctrl.setSortText('endDate')">End date</a>
             </th>
-            <th class="text-right">Enjoyed for</th>
+            <th class="text-right">
+              <a href="" ng-click="ctrl.setSortText('daysPlayed')">Enjoyed for</a>
+            </th>
           </tr>
           </thead>
           <tbody>
@@ -52,10 +59,16 @@
               ui-sref="games-detail({id: game.id})">
             <!-- title -->
             <td ng-bind="game.name"></td>
+
+            <!-- platform -->
+            <td ng-bind="game.platform"></td>
+
             <!-- start date -->
             <td class="text-center" ng-bind="game.startDate  | date:'shortDate'"></td>
+
             <!-- end date -->
             <td class="text-center" ng-bind="game.endDate  | date:'shortDate'"></td>
+
             <!-- length played display -->
             <td class="text-right">
               <span ng-bind="game.daysPlayed"></span> <span ng-bind="'day' | pluralize: game.daysPlayed"></span>
