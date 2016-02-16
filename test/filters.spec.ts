@@ -44,4 +44,28 @@ module App.Tests {
       expect(result).toBe('32 days');
     });
   });
+
+  describe('truncFilter', function() {
+    let filter;
+
+    beforeEach(angular.mock.module('gameon'));
+    beforeEach(inject(function(_$filter_) {
+      filter = _$filter_('truncFilter');
+    }));
+
+    it('should get the same string back if it is shorter than the specified length', function() {
+      let testStr = 'This is the test str.';
+      let result = filter(testStr, 21);
+
+      expect(result).toEqual(testStr);
+    });
+
+    it('should return a truncated string if it is longer than the specified length', function() {
+      let testStr = 'This is the test str.';
+      let result = filter(testStr, 18);
+      let expected = 'This is the test s...';
+
+      expect(result).toEqual(expected);
+    });
+  });
 }
