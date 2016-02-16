@@ -111,11 +111,13 @@ module App.Tests {
     it('should return "Yes" for "true" values', function() {
       expect(filter('True')).toBe('Yes');
       expect(filter('true')).toBe('Yes');
+      expect(filter(true)).toBe('Yes');
     });
 
     it('should return "No" for "false" values', function() {
       expect(filter('False')).toBe('No');
       expect(filter('false')).toBe('No');
+      expect(filter(false)).toBe('No');
     });
   });
 }

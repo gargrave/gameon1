@@ -66,8 +66,9 @@ module App.Common {
    * Translates true/false values into Yes/No strings.
    */
   export function BooleanFilter() {
-    return function(input: string) {
-      return input.toLowerCase() === 'true' ? 'Yes' : 'No';
+    return function(input) {
+      let str = input || '';
+      return str.toString().toLowerCase() === 'true' ? 'Yes' : 'No';
     };
   }
   angular.module('common').filter('boolean', BooleanFilter);

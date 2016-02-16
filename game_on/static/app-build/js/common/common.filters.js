@@ -42,7 +42,8 @@ var App;
         angular.module('common').filter('pluralize', PluralizeFilter);
         function BooleanFilter() {
             return function (input) {
-                return input.toLowerCase() === 'true' ? 'Yes' : 'No';
+                var str = input || '';
+                return str.toString().toLowerCase() === 'true' ? 'Yes' : 'No';
             };
         }
         Common.BooleanFilter = BooleanFilter;
