@@ -1,5 +1,5 @@
 <div class="row" ng-init="ctrl.find()">
-  <div class="col-md-8 col-md-offset-2">
+  <div class="col-md-10 col-md-offset-1">
 
     <div class="page-header">
       <h3>Games</h3>
@@ -10,15 +10,41 @@
       <span ng-bind="ctrl.error"></span>
     </div>
 
+    <div class="table-responsive">
+      <table class="table table-hover">
+        <thead>
+        <tr>
+          <th>Title</th>
+          <th class="text-center">Start date</th>
+          <th class="text-center">End date</th>
+          <th class="text-right">Enjoyed for</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="game in ctrl.entries | orderBy: 'name'"
+            ui-sref="games-detail({id: game.id})">
+          <!-- title -->
+          <td ng-bind="game.name"></td>
+          <!-- start date -->
+          <td class="text-center" ng-bind="game.startDate  | date:'shortDate'"></td>
+          <!-- end date -->
+          <td class="text-center" ng-bind="game.endDate  | date:'shortDate'"></td>
+          <!-- length played display -->
+          <td class="text-right" ng-bind="game.startDate | daysFilter:game.endDate"></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!--
     <div class="list-group">
 
-
-      <a class="list-group-item" ng-repeat="game in ctrl.entries"
+      <a class="list-group-item" ng-repeat="game in ctrl.entries | orderBy: 'name'"
          ui-sref="games-detail({id: game.id})">
 
         <div class="row">
 
-          <!-- title/added-on display -->
+          <!-- title/added-on display --><!--
           <div class="col-xs-5 text-left">
             <strong class="list-group-item-heading" ng-bind="game.name | truncFilter:28"></strong>
             <br>
@@ -28,14 +54,14 @@
             </small>
           </div>
 
-          <!-- length played display -->
+          <!-- length played display --><!--
           <div class="col-xs-3 text-center">
             Enjoyed for: <span></span>
             <br>
             <strong><span ng-bind="game.startDate | daysFilter:game.endDate"></span></strong>
           </div>
 
-          <!-- start/end date display -->
+          <!-- start/end date display --><!--
           <div class="col-xs-4 text-right">
             <small>Started:
               <span class="text-mutued" ng-bind="game.startDate  | date:'shortDate'"></span>
@@ -46,11 +72,10 @@
             </small>
           </div>
 
-        </div><!-- /row -->
+        </div><!-- /row --><!--
       </a>
 
-
-    </div>
+    </div>-->
 
   </div>
 </div>
