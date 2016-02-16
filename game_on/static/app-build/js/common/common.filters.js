@@ -20,10 +20,6 @@ var App;
         angular.module('common').filter('daysFilter', DaysFilter);
         function TruncFilter() {
             return function (input, len) {
-<<<<<<< HEAD
-                console.log(input.length);
-=======
->>>>>>> dev
                 var str = input;
                 if (str.length > len) {
                     str = input.substring(0, len) + '...';
@@ -33,8 +29,6 @@ var App;
         }
         Common.TruncFilter = TruncFilter;
         angular.module('common').filter('truncFilter', TruncFilter);
-<<<<<<< HEAD
-=======
         function PluralizeFilter() {
             return function (input, count) {
                 var str = input;
@@ -54,6 +48,5 @@ var App;
         }
         Common.BooleanFilter = BooleanFilter;
         angular.module('common').filter('boolean', BooleanFilter);
->>>>>>> dev
     })(Common = App.Common || (App.Common = {}));
 })(App || (App = {}));

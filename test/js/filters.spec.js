@@ -36,7 +36,7 @@ var App;
                 expect(result).toBe('32 days');
             });
         });
-        describe('truncFilter', function () {
+        describe('TruncFilter', function () {
             var filter;
             beforeEach(angular.mock.module('gameon'));
             beforeEach(inject(function (_$filter_) {
@@ -54,9 +54,7 @@ var App;
                 expect(result).toEqual(expected);
             });
         });
-<<<<<<< HEAD
-=======
-        describe('truncFilter', function () {
+        describe('PluralizeFilter', function () {
             var filter;
             beforeEach(angular.mock.module('gameon'));
             beforeEach(inject(function (_$filter_) {
@@ -71,7 +69,7 @@ var App;
                 expect(result).toBe('days');
             });
         });
-        describe('truncFilter', function () {
+        describe('BooleanFilter', function () {
             var filter;
             beforeEach(angular.mock.module('gameon'));
             beforeEach(inject(function (_$filter_) {
@@ -88,6 +86,5 @@ var App;
                 expect(filter(false)).toBe('No');
             });
         });
->>>>>>> dev
     })(Tests = App.Tests || (App.Tests = {}));
 })(App || (App = {}));
