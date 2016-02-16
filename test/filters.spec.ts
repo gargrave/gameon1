@@ -2,6 +2,9 @@
 /// <reference path="../game_on/static/app-src/ts/app.d.ts" />
 module App.Tests {
 
+  /*==============================================
+   = Days Filter
+   ==============================================*/
   describe('daysFilter', function() {
 
     let defaultString: string = '1 day';
@@ -45,7 +48,10 @@ module App.Tests {
     });
   });
 
-  describe('truncFilter', function() {
+  /*==============================================
+   = Truncate Filter
+   ==============================================*/
+  describe('TruncFilter', function() {
     let filter;
 
     beforeEach(angular.mock.module('gameon'));
@@ -66,6 +72,52 @@ module App.Tests {
       let expected = 'This is the test s...';
 
       expect(result).toEqual(expected);
+    });
+  });
+
+  /*==============================================
+   = Pluralize Filter
+   ==============================================*/
+  describe('PluralizeFilter', function() {
+    let filter;
+
+    beforeEach(angular.mock.module('gameon'));
+    beforeEach(inject(function(_$filter_) {
+      filter = _$filter_('pluralize');
+    }));
+
+    it('should not change the word for single objects', function() {
+      let result = filter('day', 1);
+      expect(result).toBe('day');
+    });
+
+    it('should add an "s" for plural objects', function() {
+      let result = filter('day', 2);
+      expect(result).toBe('days');
+    });
+  });
+
+  /*==============================================
+   = Boolean Filter
+   ==============================================*/
+  describe('BooleanFilter', function() {
+    let filter;
+
+    beforeEach(angular.mock.module('gameon'));
+    beforeEach(inject(function(_$filter_) {
+      filter = _$filter_('boolean');
+    }));
+
+    it('should return "Yes" for "true" values', function() {
+      expect(filter('True')).toBe('Yes');
+      expect(filter('true')).toBe('Yes');
+      expect(filter(true)).toBe('Yes');
+    });
+
+    it('should return "No" for "false" values', function() {
+      expect(filter('False')).toBe('No');
+      expect(filter('false')).toBe('No');
+      expect(filter(false)).toBe('No');
     });
   });
 }

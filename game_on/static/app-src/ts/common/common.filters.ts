@@ -26,12 +26,14 @@ module App.Common {
       return daysString;
     };
   }
-
   angular.module('common').filter('daysFilter', DaysFilter);
 
+  /*
+   * Truncates the provided string to the specified length. If the string is shorter
+   * or equal to the specified length, no change occurs.
+   */
   export function TruncFilter() {
     return function(input: string, len: number): string {
-      console.log(input.length);
       let str = input;
       if (str.length > len) {
         // truncate the string
@@ -40,6 +42,34 @@ module App.Common {
       return str;
     };
   }
-
   angular.module('common').filter('truncFilter', TruncFilter);
+
+  /*
+   * Adds the appropriate ending to pluralize a word based on the count
+   *
+   * e.g.
+   *  'day' | pluralize: 1 -> 'day'
+   *  'day' | pluralize: 2 -> 'days'
+   */
+  export function PluralizeFilter() {
+    return function(input: string, count: number): string {
+      let str = input;
+      if (count !== 1) {
+        str += 's';
+      }
+      return str;
+    };
+  }
+  angular.module('common').filter('pluralize', PluralizeFilter);
+
+  /*
+   * Translates true/false values into Yes/No strings.
+   */
+  export function BooleanFilter() {
+    return function(input) {
+      let str = input || '';
+      return str.toString().toLowerCase() === 'true' ? 'Yes' : 'No';
+    };
+  }
+  angular.module('common').filter('boolean', BooleanFilter);
 }

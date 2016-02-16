@@ -6,6 +6,7 @@ declare module App.Games {
     startDate: string;
     endDate: string;
     finished: boolean;
+    daysPlayed?: number;
   }
 
   export interface IGameSubmission extends App.Common.IDbEntry {

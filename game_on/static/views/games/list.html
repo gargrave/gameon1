@@ -1,56 +1,83 @@
-<div class="row" ng-init="ctrl.find()">
-  <div class="col-md-8 col-md-offset-2">
+<div ng-init="ctrl.find()">
+  <div class="row">
+    <div class="col-sm-10 col-sm-offset-1">
 
-    <div class="page-header">
-      <h3>Games</h3>
-    </div>
-
-    <!-- TODO need to show this if there are API errors -->
-    <div class="alert alert-danger" role="alert" ng-show="ctrl.error" ng-cloak>
-      <span ng-bind="ctrl.error"></span>
-    </div>
-
-    <div class="list-group">
-
-
-      <a class="list-group-item" ng-repeat="game in ctrl.entries"
-         ui-sref="games-detail({id: game.id})">
-
-        <div class="row">
-
-          <!-- title/added-on display -->
-          <div class="col-xs-5 text-left">
-            <strong class="list-group-item-heading" ng-bind="game.name | truncFilter:28"></strong>
-            <br>
-            <small class="list-group-item-text">
-              Added on
-              <span ng-bind="game.created | date:'medium'"></span>
-            </small>
-          </div>
-
-          <!-- length played display -->
-          <div class="col-xs-3 text-center">
-            Enjoyed for: <span></span>
-            <br>
-            <strong><span ng-bind="game.startDate | daysFilter:game.endDate"></span></strong>
-          </div>
-
-          <!-- start/end date display -->
-          <div class="col-xs-4 text-right">
-            <small>Started:
-              <span class="text-mutued" ng-bind="game.startDate  | date:'shortDate'"></span>
-            </small>
-            <br>
-            <small>Ended:
-              <span class="text-mutued" ng-bind="game.endDate  | date:'shortDate'"></span>
-            </small>
-          </div>
-
-        </div><!-- /row -->
-      </a>
-
+      <div class="page-header">
+        <h3>Games</h3>
+      </div>
 
     </div>
+  </div><!-- /row -->
 
-  </div>
+  <div class="row">
+    <div class="col-sm-6"></div>
+    <div class="col-sm-4 col-sm-offset-1">
+
+      <!-- search/filter input -->
+      <div class="input-group">
+        <span class="input-group-addon">
+          <span class="glyphicon glyphicon-search"></span>
+        </span>
+        <input type="text" class="form-control" placeholder="Search..." ng-model="ctrl.filterText">
+      </div>
+
+    </div>
+  </div><!-- /row -->
+  <br>
+
+  <div class="row">
+    <div class="col-sm-10 col-sm-offset-1">
+
+      <!-- error message display -->
+      <div class="alert alert-danger" role="alert" ng-show="ctrl.error" ng-cloak>
+        <span ng-bind="ctrl.error"></span>
+      </div>
+
+      <div class="table-responsive" ng-hide="ctrl.working" ng-cloak>
+        <table class="table table-hover">
+          <thead>
+          <tr>
+            <th>
+              <a href="" ng-click="ctrl.setSortText('name')">Title</a>
+            </th>
+            <th>
+              <a href="" ng-click="ctrl.setSortText('platform')">Platform</a>
+            </th>
+            <th class="text-center">
+              <a href="" ng-click="ctrl.setSortText('startDate')">Start date</a>
+            </th>
+            <th class="text-center">
+              <a href="" ng-click="ctrl.setSortText('endDate')">End date</a>
+            </th>
+            <th class="text-right">
+              <a href="" ng-click="ctrl.setSortText('daysPlayed')">Enjoyed for</a>
+            </th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr ng-repeat="game in ctrl.entries | orderBy: ctrl.sortText | filter: ctrl.filterText"
+              ui-sref="games-detail({id: game.id})">
+            <!-- title -->
+            <td ng-bind="game.name"></td>
+
+            <!-- platform -->
+            <td ng-bind="game.platform"></td>
+
+            <!-- start date -->
+            <td class="text-center" ng-bind="game.startDate  | date:'shortDate'"></td>
+
+            <!-- end date -->
+            <td class="text-center" ng-bind="game.endDate  | date:'shortDate'"></td>
+
+            <!-- length played display -->
+            <td class="text-right">
+              <span ng-bind="game.daysPlayed"></span> <span ng-bind="'day' | pluralize: game.daysPlayed"></span>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div><!-- /row -->
 </div>

@@ -54,5 +54,40 @@ var App;
                 expect(result).toEqual(expected);
             });
         });
+<<<<<<< HEAD
+=======
+        describe('truncFilter', function () {
+            var filter;
+            beforeEach(angular.mock.module('gameon'));
+            beforeEach(inject(function (_$filter_) {
+                filter = _$filter_('pluralize');
+            }));
+            it('should not change the word for single objects', function () {
+                var result = filter('day', 1);
+                expect(result).toBe('day');
+            });
+            it('should add an "s" for plural objects', function () {
+                var result = filter('day', 2);
+                expect(result).toBe('days');
+            });
+        });
+        describe('truncFilter', function () {
+            var filter;
+            beforeEach(angular.mock.module('gameon'));
+            beforeEach(inject(function (_$filter_) {
+                filter = _$filter_('boolean');
+            }));
+            it('should return "Yes" for "true" values', function () {
+                expect(filter('True')).toBe('Yes');
+                expect(filter('true')).toBe('Yes');
+                expect(filter(true)).toBe('Yes');
+            });
+            it('should return "No" for "false" values', function () {
+                expect(filter('False')).toBe('No');
+                expect(filter('false')).toBe('No');
+                expect(filter(false)).toBe('No');
+            });
+        });
+>>>>>>> dev
     })(Tests = App.Tests || (App.Tests = {}));
 })(App || (App = {}));

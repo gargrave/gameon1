@@ -36,6 +36,16 @@ module App.Games {
       };
     }
 
+    initListView(): void {
+      const self = this;
+      self.entries.forEach(function(entry, idx, array) {
+        let start: Date = new Date(entry.startDate);
+        let end: Date = new Date(entry.endDate);
+        let diff: number = end.getTime() - start.getTime();
+        entry.daysPlayed = 1 + (diff / (1000 * 60 * 60 * 24));
+      });
+    }
+
     /*=============================================
      = validation methods
      =============================================*/

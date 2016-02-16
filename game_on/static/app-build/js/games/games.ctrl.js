@@ -33,6 +33,15 @@ var App;
                     finished: this.newEntry.finished
                 };
             };
+            GamesCtrl.prototype.initListView = function () {
+                var self = this;
+                self.entries.forEach(function (entry, idx, array) {
+                    var start = new Date(entry.startDate);
+                    var end = new Date(entry.endDate);
+                    var diff = end.getTime() - start.getTime();
+                    entry.daysPlayed = 1 + (diff / (1000 * 60 * 60 * 24));
+                });
+            };
             GamesCtrl.prototype.preValidate = function () {
                 var self = this;
                 var form = self.$scope.entryForm;
