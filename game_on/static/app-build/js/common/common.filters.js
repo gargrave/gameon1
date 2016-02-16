@@ -20,7 +20,6 @@ var App;
         angular.module('common').filter('daysFilter', DaysFilter);
         function TruncFilter() {
             return function (input, len) {
-                console.log(input.length);
                 var str = input;
                 if (str.length > len) {
                     str = input.substring(0, len) + '...';

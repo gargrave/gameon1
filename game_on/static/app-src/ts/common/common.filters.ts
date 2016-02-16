@@ -31,7 +31,6 @@ module App.Common {
 
   export function TruncFilter() {
     return function(input: string, len: number): string {
-      console.log(input.length);
       let str = input;
       if (str.length > len) {
         // truncate the string
