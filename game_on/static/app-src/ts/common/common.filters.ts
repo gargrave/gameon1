@@ -61,4 +61,14 @@ module App.Common {
     };
   }
   angular.module('common').filter('pluralize', PluralizeFilter);
+
+  /*
+   * Translates true/false values into Yes/No strings.
+   */
+  export function BooleanFilter() {
+    return function(input: string) {
+      return input.toLowerCase() === 'true' ? 'Yes' : 'No';
+    };
+  }
+  angular.module('common').filter('boolean', BooleanFilter);
 }

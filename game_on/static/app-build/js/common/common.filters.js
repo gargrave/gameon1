@@ -40,5 +40,12 @@ var App;
         }
         Common.PluralizeFilter = PluralizeFilter;
         angular.module('common').filter('pluralize', PluralizeFilter);
+        function BooleanFilter() {
+            return function (input) {
+                return input.toLowerCase() === 'true' ? 'Yes' : 'No';
+            };
+        }
+        Common.BooleanFilter = BooleanFilter;
+        angular.module('common').filter('boolean', BooleanFilter);
     })(Common = App.Common || (App.Common = {}));
 })(App || (App = {}));

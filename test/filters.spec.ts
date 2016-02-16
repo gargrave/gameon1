@@ -96,4 +96,26 @@ module App.Tests {
       expect(result).toBe('days');
     });
   });
+
+  /*==============================================
+   = Boolean Filter
+   ==============================================*/
+  describe('truncFilter', function() {
+    let filter;
+
+    beforeEach(angular.mock.module('gameon'));
+    beforeEach(inject(function(_$filter_) {
+      filter = _$filter_('boolean');
+    }));
+
+    it('should return "Yes" for "true" values', function() {
+      expect(filter('True')).toBe('Yes');
+      expect(filter('true')).toBe('Yes');
+    });
+
+    it('should return "No" for "false" values', function() {
+      expect(filter('False')).toBe('No');
+      expect(filter('false')).toBe('No');
+    });
+  });
 }
