@@ -57,7 +57,9 @@
             <!-- end date -->
             <td class="text-center" ng-bind="game.endDate  | date:'shortDate'"></td>
             <!-- length played display -->
-            <td class="text-right" ng-bind="game.startDate | daysFilter:game.endDate"></td>
+            <td class="text-right">
+              <span ng-bind="game.daysPlayed"></span> <span ng-bind="'day' | pluralize: game.daysPlayed"></span>
+            </td>
           </tr>
           </tbody>
         </table>
