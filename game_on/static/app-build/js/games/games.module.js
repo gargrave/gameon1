@@ -11,7 +11,7 @@ var App;
             function ($stateProvider) {
                 $stateProvider
                     .state('games-list', {
-                    url: '/games',
+                    url: '/games?filter',
                     templateUrl: '/static/views/games/list.html',
                     controller: 'GamesCtrl as ctrl'
                 })

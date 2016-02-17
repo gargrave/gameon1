@@ -43,6 +43,7 @@ var App;
                 var self = this;
                 self.error = '';
                 self.working = true;
+                console.log(self.$stateParams);
                 self.dataSvc.query()
                     .then(function (res) {
                     self.entries = res;
@@ -131,6 +132,9 @@ var App;
             };
             GenericController.prototype.initEditView = function () {
                 this.findOne();
+            };
+            GenericController.prototype.clearFilterText = function () {
+                this.filterText = '';
             };
             GenericController.prototype.setSortText = function (text) {
                 if (this.sortText === text) {

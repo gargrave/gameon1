@@ -70,6 +70,8 @@ module App.Common {
       self.error = '';
       self.working = true;
 
+      console.log(self.$stateParams);
+
       self.dataSvc.query()
         .then(function(res) {
           self.entries = res;
@@ -215,6 +217,13 @@ module App.Common {
 
     initEditView(): void {
       this.findOne();
+    }
+
+    /**
+     * Resets the current filterText to an empty stringn.
+     */
+    clearFilterText(): void {
+      this.filterText = '';
     }
 
     /**

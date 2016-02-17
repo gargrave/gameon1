@@ -47,6 +47,8 @@ module App.Games {
         let diff: number = end.getTime() - start.getTime();
         entry.daysPlayed = 1 + (diff / (1000 * 60 * 60 * 24));
       });
+
+      self.filterText = self.$stateParams['filter'] || '';
     }
 
     /*=============================================
