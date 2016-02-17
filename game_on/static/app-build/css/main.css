@@ -1,9 +1,18 @@
+/*=============================================
+ = basic styles
+ =============================================*/
 body {
   margin-top: 40px; }
 
+/*=============================================
+ = ID styles
+ =============================================*/
 #site-jumbotron {
   margin-top: 30px; }
 
+/*=============================================
+ = class styles
+ =============================================*/
 .top-panel {
   margin-top: 80px; }
 
@@ -13,7 +22,9 @@ body {
 .detail-view {
   margin-top: 20px; }
 
-/* Bootstrap overrides */
+/*=============================================
+ = Bootstrap styles
+ =============================================*/
 .alert {
   padding: 8px 12px !important; }
 
@@ -22,5 +33,17 @@ body {
 
 .use-pointer {
   cursor: pointer; }
+
+/*=============================================
+ = NG styles
+ =============================================*/
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important; }
+
+.ng-invalid {
+  border-color: #CE4766; }
+
+.ng-valid {
+  border-color: #36ab51; }
 
 /*# sourceMappingURL=main.css.map */
