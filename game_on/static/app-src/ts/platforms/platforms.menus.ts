@@ -8,7 +8,7 @@ module App.Platforms {
 
     function(menusSvc: App.Menus.IMenusSvc) {
       const menu = 'Platforms';
-      menusSvc.getDropdownParent(menu);
+      menusSvc.getDropdownParent(menu, 1);
       menusSvc.addDropdownChild(menu, new ChildMenuData('List Platforms', 'platforms-list'));
       menusSvc.addDropdownChild(menu, new ChildMenuData('Add a Platform', 'platforms-create'));
     }

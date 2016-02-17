@@ -4,8 +4,9 @@ var App;
     var Menus;
     (function (Menus) {
         var ParentMenu = (function () {
-            function ParentMenu(title) {
+            function ParentMenu(title, order) {
                 this.title = title;
+                this.order = order;
                 this.children = [];
             }
             return ParentMenu;
@@ -23,13 +24,14 @@ var App;
             function MenusSvc() {
                 this.menus = [];
             }
-            MenusSvc.prototype.getDropdownParent = function (title) {
+            MenusSvc.prototype.getDropdownParent = function (title, order) {
+                if (order === void 0) { order = 100; }
                 var self = this;
                 var menu = _.find(self.menus, function (m) {
                     return m.title === title;
                 });
                 if (!menu) {
-                    menu = new ParentMenu(title);
+                    menu = new ParentMenu(title, order);
                     self.menus.push(menu);
                 }
                 return menu;

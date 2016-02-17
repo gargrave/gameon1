@@ -8,7 +8,7 @@ var App;
             'menusSvc',
             function (menusSvc) {
                 var menu = 'Games';
-                menusSvc.getDropdownParent(menu);
+                menusSvc.getDropdownParent(menu, 0);
                 menusSvc.addDropdownChild(menu, new ChildMenuData('List Games', 'games-list'));
                 menusSvc.addDropdownChild(menu, new ChildMenuData('Add a Game', 'games-create'));
             }

@@ -7,7 +7,8 @@ module App.Menus {
   export class ParentMenu implements IParentMenu {
     children: IChildMenuData[];
 
-    constructor(public title: string) {
+    constructor(public title: string,
+                public order: number) {
       this.children = [];
     }
   }
@@ -34,9 +35,13 @@ module App.Menus {
      * exists, a new one is created with the specified title.
      *
      * @param title The title to use for the ParentMenu
+     * @param order {number} The order in which this menu should be placed.
+     *    Lower numbers place the menu further left, starting at zero. Default
+     *    value is 100, which will simply place the menus in the order in which
+     *    they are defined.
      * @returns {IParentMenu} - The ParentMenu with the specified title
      */
-    getDropdownParent(title: string): IParentMenu {
+    getDropdownParent(title: string, order: number = 100): IParentMenu {
       const self = this;
       // see if there is an existing parent menu with this title
       let menu = _.find(self.menus, function(m) {
@@ -44,7 +49,7 @@ module App.Menus {
       });
       // if not, create one with this title
       if (!menu) {
-        menu = new ParentMenu(title);
+        menu = new ParentMenu(title, order);
         self.menus.push(menu);
       }
       return menu;

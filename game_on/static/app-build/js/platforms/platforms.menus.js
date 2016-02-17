@@ -8,7 +8,7 @@ var App;
             'menusSvc',
             function (menusSvc) {
                 var menu = 'Platforms';
-                menusSvc.getDropdownParent(menu);
+                menusSvc.getDropdownParent(menu, 1);
                 menusSvc.addDropdownChild(menu, new ChildMenuData('List Platforms', 'platforms-list'));
                 menusSvc.addDropdownChild(menu, new ChildMenuData('Add a Platform', 'platforms-create'));
             }
