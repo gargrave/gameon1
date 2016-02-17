@@ -50,6 +50,17 @@ module App.Platforms {
       }
       return existing === undefined;
     }
+
+    protected canSaveEdits(): boolean {
+      let canSave: boolean = true;
+      this.error = '';
+
+      if (this.newEntry.name === this.activeEntry.name) {
+        this.error = 'No changes have been made.';
+        canSave = false;
+      }
+      return canSave;
+    }
   }
 
   angular.module('platforms').controller('PlatformsCtrl', [

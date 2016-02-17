@@ -66,6 +66,19 @@ var App;
                 }
                 return true;
             };
+            GamesCtrl.prototype.canSaveEdits = function () {
+                var canSave = true;
+                this.error = '';
+                if (this.newEntry.name === this.activeEntry.name &&
+                    this.newEntry.platform.id === this.activeEntry.platform.id &&
+                    this.newEntry.startDate === this.activeEntry.startDate &&
+                    this.newEntry.endDate === this.activeEntry.endDate &&
+                    this.newEntry.finished === this.activeEntry.finished) {
+                    this.error = 'No changes have been made.';
+                    canSave = false;
+                }
+                return canSave;
+            };
             return GamesCtrl;
         })(App.Common.GenericController);
         Games.GamesCtrl = GamesCtrl;

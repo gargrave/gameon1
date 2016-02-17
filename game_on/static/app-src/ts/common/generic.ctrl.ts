@@ -116,7 +116,7 @@ module App.Common {
       self.error = '';
 
       self.buildSubmissionData();
-      if (self.preValidate()) {
+      if (self.preValidate() && self.canSaveEdits()) {
         self.working = true;
         self.dataSvc.update(self.submissionData)
           .then(function(res) {
@@ -210,6 +210,7 @@ module App.Common {
      * it will not be called.
      */
     initListView(): void {
+      this.find();
     }
 
     initEditView(): void {
@@ -245,6 +246,11 @@ module App.Common {
      */
     protected preValidate(): boolean {
       return true;
+    }
+
+    protected canSaveEdits(): boolean {
+      this.error = 'Error: ctrl.canSaveEdits() not implemented.';
+      return false;
     }
 
     /*=============================================

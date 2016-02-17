@@ -41,6 +41,15 @@ var App;
                 }
                 return existing === undefined;
             };
+            PlatformsCtrl.prototype.canSaveEdits = function () {
+                var canSave = true;
+                this.error = '';
+                if (this.newEntry.name === this.activeEntry.name) {
+                    this.error = 'No changes have been made.';
+                    canSave = false;
+                }
+                return canSave;
+            };
             return PlatformsCtrl;
         })(App.Common.GenericController);
         Platforms.PlatformsCtrl = PlatformsCtrl;

@@ -78,7 +78,7 @@ var App;
                 var id = self.activeEntry.id;
                 self.error = '';
                 self.buildSubmissionData();
-                if (self.preValidate()) {
+                if (self.preValidate() && self.canSaveEdits()) {
                     self.working = true;
                     self.dataSvc.update(self.submissionData)
                         .then(function (res) {
@@ -127,6 +127,7 @@ var App;
                 self.newEntry = self.defaultEntry();
             };
             GenericController.prototype.initListView = function () {
+                this.find();
             };
             GenericController.prototype.initEditView = function () {
                 this.findOne();
@@ -141,6 +142,10 @@ var App;
             };
             GenericController.prototype.preValidate = function () {
                 return true;
+            };
+            GenericController.prototype.canSaveEdits = function () {
+                this.error = 'Error: ctrl.canSaveEdits() not implemented.';
+                return false;
             };
             GenericController.prototype.gotoListView = function () {
                 var self = this;
