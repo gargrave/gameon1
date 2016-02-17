@@ -33,7 +33,7 @@ var App;
                     finished: this.newEntry.finished
                 };
             };
-            GamesCtrl.prototype.initListView = function () {
+            GamesCtrl.prototype.onApiFindSuccess = function () {
                 var self = this;
                 self.entries.forEach(function (entry, idx, array) {
                     var start = new Date(entry.startDate);

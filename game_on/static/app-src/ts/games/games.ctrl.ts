@@ -36,7 +36,10 @@ module App.Games {
       };
     }
 
-    initListView(): void {
+    /*=============================================
+     = API callbacks
+     =============================================*/
+    protected onApiFindSuccess(): void {
       const self = this;
       self.entries.forEach(function(entry, idx, array) {
         let start: Date = new Date(entry.startDate);

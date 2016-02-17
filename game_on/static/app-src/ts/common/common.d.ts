@@ -32,6 +32,7 @@ declare module App.Common {
     remove(): void;
 
     initCreateView(): void;
+    initEditView(): void;
     setSortText(text: string): void;
 
     gotoListView(): void;

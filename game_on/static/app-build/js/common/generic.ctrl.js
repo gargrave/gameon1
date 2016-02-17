@@ -46,7 +46,7 @@ var App;
                 self.dataSvc.query()
                     .then(function (res) {
                     self.entries = res;
-                    self.initListView();
+                    self.onApiFindSuccess();
                 }, function (err) {
                     self.error = err.statusText;
                 })
@@ -64,6 +64,7 @@ var App;
                     .then(function (res) {
                     self.activeEntry = res;
                     self.newEntry = angular.copy(self.activeEntry);
+                    self.onApiFindOneSuccess();
                 }, function (err) {
                     self.error = "The entry with id# " + id + " could not be found.";
                     self.gotoListView();
@@ -111,6 +112,13 @@ var App;
                     });
                 }
             };
+            GenericController.prototype.onApiFindSuccess = function () {
+            };
+            GenericController.prototype.onApiFindOneSuccess = function () {
+            };
+            GenericController.prototype.buildSubmissionData = function () {
+                this.submissionData = angular.copy(this.newEntry);
+            };
             GenericController.prototype.initCreateView = function () {
                 var self = this;
                 if (self.entries.length === 0) {
@@ -120,8 +128,8 @@ var App;
             };
             GenericController.prototype.initListView = function () {
             };
-            GenericController.prototype.buildSubmissionData = function () {
-                this.submissionData = angular.copy(this.newEntry);
+            GenericController.prototype.initEditView = function () {
+                this.findOne();
             };
             GenericController.prototype.setSortText = function (text) {
                 if (this.sortText === text) {

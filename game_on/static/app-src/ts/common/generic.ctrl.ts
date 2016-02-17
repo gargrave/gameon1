@@ -73,7 +73,7 @@ module App.Common {
       self.dataSvc.query()
         .then(function(res) {
           self.entries = res;
-          self.initListView();
+          self.onApiFindSuccess();
         }, function(err) {
           self.error = err.statusText;
         })
@@ -99,6 +99,7 @@ module App.Common {
         .then(function(res) {
           self.activeEntry = res;
           self.newEntry = angular.copy(self.activeEntry);
+          self.onApiFindOneSuccess();
         }, function(err) {
           // TODO use ngmessages to show this upon return to the list view
           self.error = `The entry with id# ${id} could not be found.`;
@@ -161,6 +162,15 @@ module App.Common {
     }
 
     /*=============================================
+     = API callbacks
+     =============================================*/
+    protected onApiFindSuccess(): void {
+    }
+
+    protected onApiFindOneSuccess(): void {
+    }
+
+    /*=============================================
      = initialization methods
      =============================================*/
     /**
@@ -168,6 +178,15 @@ module App.Common {
      * with default values.
      */
     protected abstract defaultEntry(): T;
+
+    /**
+     * Builds the data that will be sent to the server for write requests.
+     * By default, this is simply a copy of 'newEntry', but any sub-class
+     * can override to provide its own specifics.
+     */
+    protected buildSubmissionData(): void {
+      this.submissionData = angular.copy(this.newEntry);
+    }
 
     /**
      * Resets the 'new platform' data to default/empty state
@@ -193,13 +212,8 @@ module App.Common {
     initListView(): void {
     }
 
-    /**
-     * Builds the data that will be sent to the server for write requests.
-     * By default, this is simply a copy of 'newEntry', but any sub-class
-     * can override to provide its own specifics.
-     */
-    protected buildSubmissionData(): void {
-      this.submissionData = angular.copy(this.newEntry);
+    initEditView(): void {
+      this.findOne();
     }
 
     /**
