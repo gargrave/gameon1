@@ -29,8 +29,10 @@
                aria-haspopup="true" aria-expanded="false"><span ng-bind="menu.title"></span> <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
-              <li ng-repeat="child in menu.children">
-                <a ui-sref="{A child.link A}"><span ng-bind="child.title"></span></a>
+              <li ng-repeat="child in menu.children" ui-sref-active="active">
+                <a ui-sref="{A child.link A}">
+                  <span ng-bind="child.title"></span>
+                </a>
               </li>
             </ul>
           </li>
