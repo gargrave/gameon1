@@ -1,4 +1,4 @@
-<div class="list-view" ng-init="ctrl.initListView()">
+<div class="list-view" ng-init="ctrl.find()">
   <div class="row">
     <div class="col-md-8 col-md-offset-2">
 
@@ -19,6 +19,7 @@
             Added on
             <span ng-bind="platform.created | date:'medium'"></span>
           </small>
+          <span class="pull-right"><strong><span ng-bind="platform.gameCount"></span></strong> Games</span>
         </a>
       </div>
 
