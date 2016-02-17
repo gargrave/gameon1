@@ -24,6 +24,7 @@ module App.Platforms {
         `,
 
         link: function($scope, elem) {
+          let dateInitialized = false;
           // set a unique id for each instance
           $scope.uniqueId = 'datepicker_' + counter++;
 
@@ -32,6 +33,16 @@ module App.Platforms {
             format: 'yyyy-mm-dd',
             autoclose: true,
             todayHighlight: true
+          });
+
+          // watch the date model a single time for a change
+          // this will allow us to set the datepicker's internal 'date' variable
+          // when the date has already been set (e.g. when using the 'update game' form)
+          $scope.$watch('dateModel', function() {
+            if ($scope.dateModel && !dateInitialized) {
+              dateInitialized = true;
+              elem.find('input').datepicker('setUTCDate', new Date($scope.dateModel));
+            }
           });
         }
       };
