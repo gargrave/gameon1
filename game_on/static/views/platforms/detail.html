@@ -32,6 +32,12 @@
     <div class="col-md-8 col-md-offset-2">
 
       <p><strong>Name:</strong> <span ng-bind="ctrl.activeEntry.name"></span></p>
+      <p>
+        <strong>Games:</strong> <span ng-bind="ctrl.activeEntry.gameCount"></span>
+        <a href="" ui-sref="games-list({filter: ctrl.activeEntry.name})">
+          <small>(view all)</small>
+        </a>
+      </p>
       <hr>
       <p><strong>Added:</strong> <span ng-bind="ctrl.activeEntry.created | date:'medium'"></span></p>
       <p><strong>Last modified:</strong> <span ng-bind="ctrl.activeEntry.modified | date:'medium'"></span></p>
