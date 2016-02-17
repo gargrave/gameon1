@@ -33,6 +33,11 @@
         <span ng-bind="ctrl.error"></span>
       </div>
 
+      <div class="alert alert-info" ng-show="ctrl.shouldShowResultsAlert()" ng-cloak>
+        Showing <span ng-bind="filteredGames.length"></span> results matching:
+        <em><strong><span ng-bind="ctrl.filterText"></span></strong></em>
+      </div>
+
       <div class="table-responsive" ng-hide="ctrl.working" ng-cloak>
         <table class="table table-hover table-striped">
           <thead>
@@ -55,7 +60,7 @@
           </tr>
           </thead>
           <tbody>
-          <tr ng-repeat="game in ctrl.entries | orderBy: ctrl.sortText | filter: ctrl.filterText"
+          <tr ng-repeat="game in filteredGames = (ctrl.entries | orderBy: ctrl.sortText | filter: ctrl.filterText)"
               class="use-pointer" ui-sref="games-detail({id: game.id})">
             <!-- title -->
             <td ng-bind="game.name"></td>

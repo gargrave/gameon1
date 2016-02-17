@@ -79,6 +79,9 @@ var App;
                 }
                 return canSave;
             };
+            GamesCtrl.prototype.shouldShowResultsAlert = function () {
+                return !this.working && this.filterText !== '';
+            };
             return GamesCtrl;
         })(App.Common.GenericController);
         Games.GamesCtrl = GamesCtrl;

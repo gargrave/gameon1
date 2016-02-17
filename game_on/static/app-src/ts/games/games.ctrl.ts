@@ -97,6 +97,10 @@ module App.Games {
       }
       return canSave;
     }
+
+    shouldShowResultsAlert(): boolean {
+      return !this.working && this.filterText !== '';
+    }
   }
 
   angular.module('games').controller('GamesCtrl', [
