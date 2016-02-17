@@ -18,7 +18,14 @@
         <span class="input-group-addon">
           <span class="glyphicon glyphicon-search"></span>
         </span>
+
         <input type="text" class="form-control" placeholder="Search..." ng-model="ctrl.filterText">
+
+        <span class="input-group-btn">
+          <button class="btn btn-default" type="button" ng-click="ctrl.clearFilterText()">
+            <span class="glyphicon glyphicon-remove"></span>
+          </button>
+        </span>
       </div>
 
     </div>
