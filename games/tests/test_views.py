@@ -218,6 +218,7 @@ class GamesViewsTest(TestCase):
         self.assertEqual(type(res), JsonResponse)
         json_data = json.loads(str(res.content, encoding='utf8'))
         self.assertIn('entries', json_data)
+        self.assertIn('gameCount', json_data['entries'][0])
 
     def test_platform_detail_view_with_bad_data(self):
         # should get a 404 if submitting a missing ID

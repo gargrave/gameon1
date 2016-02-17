@@ -162,7 +162,8 @@ def platform_detail(request, pk):
         'id': platform.pk,
         'name': platform.name,
         'created': platform.created,
-        'modified': platform.modified
+        'modified': platform.modified,
+        'gameCount': platform.game_set.count()
     }]
     return JsonResponse({'entries': platforms})
 
