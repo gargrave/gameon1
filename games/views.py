@@ -179,11 +179,15 @@ def platform_create(request):
     """
     req = load_json_request(request)
     if req:
-        platform = Platform(name=req['name'])
+        platform = Platform(
+            name=req['name'],
+            display_color=req['color']
+        )
         platform.save()
         res_data = [{
             'id': platform.pk,
             'name': platform.name,
+            'color': platform.display_color,
             'created': platform.created,
             'modified': platform.modified
         }]
@@ -213,10 +217,12 @@ def platform_update(request):
     req = load_json_request(request)
     platform = get_object_or_404(Platform, pk=req['id'])
     platform.name = req['name']
+    platform.display_color = req['color']
     platform.save()
     res_data = [{
         'id': platform.pk,
         'name': platform.name,
+        'color': platform.display_color,
         'created': platform.created,
         'modified': platform.modified
     }]

@@ -15,7 +15,10 @@ class GamesViewsTest(TestCase):
         self.reqfactory = RequestFactory()
 
         # dummy platform for testing POST
-        self.test_plat = Platform(name='Test Platform')
+        self.test_plat = Platform(
+            name='Test Platform',
+            display_color='ffffff'
+        )
         self.test_plat.save()
 
         # dummy game for testing POST
@@ -248,7 +251,8 @@ class GamesViewsTest(TestCase):
         # should accept good submission,
         # and return that submission in JSON
         good_post = {
-            'name': 'Good POST data'
+            'name': 'Good POST data',
+            'color': 'ffffff'
         }
         res = self.client.post(url, json.dumps(good_post),
                                content_type='application/json')
@@ -277,7 +281,8 @@ class GamesViewsTest(TestCase):
         url = reverse('api:platform_update')
         post_data = {
             'id': self.test_plat.pk,
-            'name': new_name
+            'name': new_name,
+            'color': 'ffffff'
         }
         res = self.client.post(url, json.dumps(post_data),
                                content_type='application/json')
