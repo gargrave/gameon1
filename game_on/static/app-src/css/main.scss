@@ -1,7 +1,10 @@
-$page-margin-top: 50px;
+$body-page-margin-top: 40px;
+$panel-page-margin-top: 80px;
+$listView-page-margin-top: 10px;
+$detailView-page-margin-top: 20px;
 
 body {
-  margin-top: $page-margin-top;
+  margin-top: $body-page-margin-top;
 }
 
 #site-jumbotron {
@@ -9,7 +12,15 @@ body {
 }
 
 .top-panel {
-  margin-top: $page-margin-top;
+  margin-top: $panel-page-margin-top;
+}
+
+.list-view {
+  margin-top: $listView-page-margin-top;
+}
+
+.detail-view {
+  margin-top: $detailView-page-margin-top;
 }
 
 /* Bootstrap overrides */
@@ -21,3 +32,6 @@ body {
   box-shadow: 0 4px 8px rgb(200, 200, 200);
 }
 
+.use-pointer {
+  cursor: pointer;
+}
