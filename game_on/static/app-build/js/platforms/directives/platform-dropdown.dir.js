@@ -25,6 +25,12 @@ var App;
                                 $scope.working = false;
                                 if ($scope.selected.name === '') {
                                     $scope.selected = $scope.platforms[0];
+                                    var DEFAULT_PLATFORM = 'PC (Win)';
+                                    $scope.platforms.forEach(function (p, idx) {
+                                        if (p.name === DEFAULT_PLATFORM) {
+                                            $scope.selected = $scope.platforms[idx];
+                                        }
+                                    });
                                 }
                             });
                         })();

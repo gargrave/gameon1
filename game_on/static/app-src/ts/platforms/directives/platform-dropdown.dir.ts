@@ -28,6 +28,14 @@ module App.Platforms {
                 // pre-select first option if a value is not already defined
                 if ($scope.selected.name === '') {
                   $scope.selected = $scope.platforms[0];
+
+                  // attempt to set 'PC (Win)' as the default platform
+                  const DEFAULT_PLATFORM = 'PC (Win)';
+                  $scope.platforms.forEach(function(p, idx) {
+                    if (p.name === DEFAULT_PLATFORM) {
+                      $scope.selected = $scope.platforms[idx];
+                    }
+                  });
                 }
               });
           })();
