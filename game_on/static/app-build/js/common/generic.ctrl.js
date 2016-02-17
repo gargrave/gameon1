@@ -14,7 +14,7 @@ var App;
                 this.working = false;
                 this.error = '';
                 this.filterText = '';
-                this.sortText = 'startDate';
+                this.sortText = 'name';
                 var self = this;
                 self.entries = [];
                 self.newEntry = self.defaultEntry();

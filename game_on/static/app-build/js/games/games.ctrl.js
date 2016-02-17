@@ -13,6 +13,7 @@ var App;
             function GamesCtrl($scope, $window, $stateParams, $state, dataSvc, platformsSvc) {
                 _super.call(this, $scope, $window, $stateParams, $state, dataSvc, 'game');
                 this.platformsSvc = platformsSvc;
+                this.sortText = '-startDate';
             }
             GamesCtrl.prototype.defaultEntry = function () {
                 return {

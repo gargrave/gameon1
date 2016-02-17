@@ -10,6 +10,7 @@ module App.Games {
                 dataSvc: App.Games.GamesSvc,
                 protected platformsSvc: App.Platforms.PlatformsSvc) {
       super($scope, $window, $stateParams, $state, dataSvc, 'game');
+      this.sortText = '-startDate';
     }
 
     /*=============================================

@@ -16,7 +16,7 @@ module App.Common {
     // string for filtering entry listings
     filterText: string = '';
     // string for sorting entry listings
-    sortText: string = 'startDate';
+    sortText: string = 'name';
 
     // the data that will actually be sent to the server for write requests
     // this is useful for objects that need to be handled differently on the
