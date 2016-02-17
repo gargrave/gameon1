@@ -13,7 +13,8 @@
 
       <div class="list-group">
         <a class="list-group-item" ng-repeat="platform in ctrl.entries"
-           ui-sref="platforms-detail({id: platform.id})">
+           ui-sref="platforms-detail({id: platform.id})"
+            style="background-color: #{A platform.color A}">
           <strong class="list-group-item-heading" ng-bind="platform.name"></strong>
           <small class="list-group-item-text text-muted">
             Added on
