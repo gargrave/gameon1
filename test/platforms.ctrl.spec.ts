@@ -260,6 +260,7 @@ module App.Tests {
 
       ctrl.activeEntry = angular.copy(entry);
       ctrl.newEntry = angular.copy(ctrl.activeEntry);
+      ctrl.newEntry.name = 'Updated Platform Name';
       ctrl.update();
       expect(ctrl.activeEntry.name).not.toEqual(updatedName);
       expect(ctrl.working).toBeTruthy();
@@ -269,6 +270,17 @@ module App.Tests {
       expect($location.url()).toBe(`/${MODULE}/${id}`);
       expect(ctrl.working).toBeFalsy();
       expect(ctrl.activeEntry.name).toEqual(updatedName);
+    });
+
+    it ('update() should fail if the new entry is identical to its pre-edited state', function() {
+      ctrl.activeEntry = angular.copy(testResponse[1]);
+      ctrl.newEntry = angular.copy(ctrl.activeEntry);
+      ctrl.update();
+      $httpBackend.flush();
+
+      // we should not be working, and should have an error message now
+      expect(ctrl.working).toBeFalsy();
+      expect(ctrl.error.length).toBeGreaterThan(0);
     });
 
     /*=============================================

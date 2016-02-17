@@ -298,6 +298,7 @@ module App.Tests {
 
       ctrl.activeEntry = angular.copy(entry);
       ctrl.newEntry = angular.copy(ctrl.activeEntry);
+      ctrl.newEntry.name = 'Updated Game Name';
       ctrl.update();
       expect(ctrl.activeEntry.name).not.toEqual(updatedName);
       expect(ctrl.working).toBeTruthy();
@@ -334,6 +335,7 @@ module App.Tests {
 
       ctrl.activeEntry = angular.copy(entry);
       ctrl.newEntry = angular.copy(ctrl.activeEntry);
+      ctrl.newEntry.name = 'Updated Game Name';
       ctrl.update();
       expect(ctrl.activeEntry.name).not.toEqual(res.name);
       expect(ctrl.working).toBeTruthy();
@@ -347,6 +349,17 @@ module App.Tests {
       expect(ctrl.activeEntry.startDate).toEqual(res.startDate);
       expect(ctrl.activeEntry.endDate).toEqual(res.endDate);
       expect(ctrl.activeEntry.finished).toEqual(res.finished);
+    });
+
+    it ('update() should fail if the new entry is identical to its pre-edited state', function() {
+      ctrl.activeEntry = angular.copy(testResponse[1]);
+      ctrl.newEntry = angular.copy(ctrl.activeEntry);
+      ctrl.update();
+      $httpBackend.flush();
+
+      // we should not be working, and should have an error message now
+      expect(ctrl.working).toBeFalsy();
+      expect(ctrl.error.length).toBeGreaterThan(0);
     });
 
     /*=============================================

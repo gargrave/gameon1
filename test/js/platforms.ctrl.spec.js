@@ -180,6 +180,7 @@ var App;
                 $httpBackend.when('GET', "/static/views/" + MODULE + "/detail.html").respond(200);
                 ctrl.activeEntry = angular.copy(entry);
                 ctrl.newEntry = angular.copy(ctrl.activeEntry);
+                ctrl.newEntry.name = 'Updated Platform Name';
                 ctrl.update();
                 expect(ctrl.activeEntry.name).not.toEqual(updatedName);
                 expect(ctrl.working).toBeTruthy();
@@ -187,6 +188,14 @@ var App;
                 expect($location.url()).toBe("/" + MODULE + "/" + id);
                 expect(ctrl.working).toBeFalsy();
                 expect(ctrl.activeEntry.name).toEqual(updatedName);
+            });
+            it('update() should fail if the new entry is identical to its pre-edited state', function () {
+                ctrl.activeEntry = angular.copy(testResponse[1]);
+                ctrl.newEntry = angular.copy(ctrl.activeEntry);
+                ctrl.update();
+                $httpBackend.flush();
+                expect(ctrl.working).toBeFalsy();
+                expect(ctrl.error.length).toBeGreaterThan(0);
             });
             it('remove() should successfully delete the currently active entry, ' +
                 'and redirect back to the list view', function () {
