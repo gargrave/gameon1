@@ -40,10 +40,10 @@ body {
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
   display: none !important; }
 
-.ng-invalid {
+form .ng-invalid {
   border-color: #CE4766; }
 
-.ng-valid {
+form .ng-valid {
   border-color: #36ab51; }
 
 /*# sourceMappingURL=main.css.map */

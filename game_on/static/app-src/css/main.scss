@@ -54,10 +54,12 @@ body {
   display: none !important;
 }
 
-.ng-invalid {
-  border-color: #CE4766;
-}
+form {
+  .ng-invalid {
+    border-color: #CE4766;
+  }
 
-.ng-valid {
-  border-color: #36ab51;
+  .ng-valid {
+    border-color: #36ab51;
+  }
 }
