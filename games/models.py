@@ -3,6 +3,7 @@ from django.db import models
 
 class Platform(models.Model):
     name = models.CharField(max_length=100, unique=True)
+    display_color = models.CharField(max_length=6, default='ffffff')
 
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)

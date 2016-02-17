@@ -205,8 +205,16 @@ class GamesViewsTest(TestCase):
         self.assertEqual(res.status_code, 200)
         self.assertEqual(type(res), JsonResponse)
         json_data = json.loads(str(res.content, encoding='utf8'))
+
+        # check the first entry for all required data
         self.assertIn('entries', json_data)
-        self.assertIn('gameCount', json_data['entries'][0])
+        entry = json_data['entries'][0]
+        self.assertIn('id', entry)
+        self.assertIn('name', entry)
+        self.assertIn('color', entry)
+        self.assertIn('created', entry)
+        self.assertIn('modified', entry)
+        self.assertIn('gameCount', entry)
 
     def test_platform_detail_view(self):
         """
@@ -218,8 +226,16 @@ class GamesViewsTest(TestCase):
         self.assertEqual(res.status_code, 200)
         self.assertEqual(type(res), JsonResponse)
         json_data = json.loads(str(res.content, encoding='utf8'))
+
+        # check the first entry for all required data
         self.assertIn('entries', json_data)
-        self.assertIn('gameCount', json_data['entries'][0])
+        entry = json_data['entries'][0]
+        self.assertIn('id', entry)
+        self.assertIn('name', entry)
+        self.assertIn('color', entry)
+        self.assertIn('created', entry)
+        self.assertIn('modified', entry)
+        self.assertIn('gameCount', entry)
 
     def test_platform_detail_view_with_bad_data(self):
         # should get a 404 if submitting a missing ID

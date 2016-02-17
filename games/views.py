@@ -145,6 +145,7 @@ def platforms_list(request):
         platforms.append({
             'id': platform.pk,
             'name': platform.name,
+            'color': platform.display_color,
             'created': platform.created,
             'modified': platform.modified,
             'gameCount': platform.game_set.count()
@@ -162,6 +163,7 @@ def platform_detail(request, pk):
     platforms = [{
         'id': platform.pk,
         'name': platform.name,
+        'color': platform.display_color,
         'created': platform.created,
         'modified': platform.modified,
         'gameCount': platform.game_set.count()
