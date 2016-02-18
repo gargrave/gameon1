@@ -58,7 +58,24 @@ class GamesViewsTest(TestCase):
         self.assertEqual(res.status_code, 200)
         self.assertEqual(type(res), JsonResponse)
         json_data = json.loads(str(res.content, encoding='utf8'))
+
+        # check the first entry for all required data
         self.assertIn('entries', json_data)
+        entry = json_data['entries'][0]
+        self.assertIn('id', entry)
+        self.assertIn('name', entry)
+        self.assertIn('startDate', entry)
+        self.assertIn('endDate', entry)
+        self.assertIn('finished', entry)
+        self.assertIn('created', entry)
+        self.assertIn('modified', entry)
+
+        # check that the response has all necessary platform data
+        self.assertIn('platform', entry)
+        platform = entry['platform']
+        self.assertIn('id', platform)
+        self.assertIn('name', platform)
+        self.assertIn('color', platform)
 
     def test_game_detail_view(self):
         """
@@ -70,7 +87,24 @@ class GamesViewsTest(TestCase):
         self.assertEqual(res.status_code, 200)
         self.assertEqual(type(res), JsonResponse)
         json_data = json.loads(str(res.content, encoding='utf8'))
+
+        # check the first entry for all required data
         self.assertIn('entries', json_data)
+        entry = json_data['entries'][0]
+        self.assertIn('id', entry)
+        self.assertIn('name', entry)
+        self.assertIn('startDate', entry)
+        self.assertIn('endDate', entry)
+        self.assertIn('finished', entry)
+        self.assertIn('created', entry)
+        self.assertIn('modified', entry)
+
+        # check that the response has all necessary platform data
+        self.assertIn('platform', entry)
+        platform = entry['platform']
+        self.assertIn('id', platform)
+        self.assertIn('name', platform)
+        self.assertIn('color', platform)
 
     def test_game_detail_view_with_bad_data(self):
         # should get a 404 if submitting a missing ID

@@ -21,7 +21,11 @@ def games_list(request):
         games.append({
             'id': game.pk,
             'name': game.name,
-            'platform': str(game.platform),
+            'platform': {
+                'id': game.platform.pk,
+                'name': game.platform.name,
+                'color': game.platform.display_color
+            },
             'startDate': game.start_date,
             'endDate': game.end_date,
             'finished': game.finished,
@@ -44,8 +48,7 @@ def game_detail(request, pk):
         'platform': {
             'id': game.platform.pk,
             'name': game.platform.name,
-            'created': game.platform.created,
-            'modified': game.platform.modified,
+            'color': game.platform.display_color
         },
         'startDate': game.start_date,
         'endDate': game.end_date,
