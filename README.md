@@ -4,6 +4,9 @@
 export run="python manage.py runserver --settings=game_on.settings.dev"
 export static="python manage.py collectstatic --settings=game_on.settings.dev"
 export test="python manage.py test --settings=game_on.settings.dev"
+
+python manage.py makemigrations games --settings=game_on.settings.dev
+python manage.py migrate --settings=game_on.settings.dev
 ```
 
 - push master to staging
