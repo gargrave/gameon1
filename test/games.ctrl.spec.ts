@@ -10,11 +10,11 @@ module App.Tests {
 
     const MODULE = 'games';
 
-    const invalidPlatform: IPlatform = {id: -1, name: ''};
+    const invalidPlatform: IPlatform = {id: -1, name: '', color: ''};
 
     const validPlatforms: IPlatform[] = [
-      {id: 1, name: 'Xbox One'},
-      {id: 2, name: 'PS3'}
+      {id: 1, name: 'Xbox One', color: 'ffffff'},
+      {id: 2, name: 'PS3', color: 'eeeeee'}
     ];
 
     const emptyNewEntry: IGame = {
@@ -351,7 +351,7 @@ module App.Tests {
       expect(ctrl.activeEntry.finished).toEqual(res.finished);
     });
 
-    it ('update() should fail if the new entry is identical to its pre-edited state', function() {
+    it('update() should fail if the new entry is identical to its pre-edited state', function() {
       ctrl.activeEntry = angular.copy(testResponse[1]);
       ctrl.newEntry = angular.copy(ctrl.activeEntry);
       ctrl.update();

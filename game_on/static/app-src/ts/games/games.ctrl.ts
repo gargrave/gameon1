@@ -19,7 +19,11 @@ module App.Games {
     protected defaultEntry(): IGame {
       return {
         name: '',
-        platform: {id: -1, name: ''},
+        platform: {
+          id: -1,
+          name: '',
+          color: ''
+        },
         startDate: '',
         endDate: '',
         finished: false

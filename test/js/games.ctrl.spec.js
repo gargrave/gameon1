@@ -6,10 +6,10 @@ var App;
     (function (Tests) {
         describe('GamesCtrl', function () {
             var MODULE = 'games';
-            var invalidPlatform = { id: -1, name: '' };
+            var invalidPlatform = { id: -1, name: '', color: '' };
             var validPlatforms = [
-                { id: 1, name: 'Xbox One' },
-                { id: 2, name: 'PS3' }
+                { id: 1, name: 'Xbox One', color: 'ffffff' },
+                { id: 2, name: 'PS3', color: 'eeeeee' }
             ];
             var emptyNewEntry = {
                 name: '',

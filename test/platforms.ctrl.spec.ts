@@ -9,23 +9,27 @@ module App.Tests {
     const MODULE = 'platforms';
 
     const emptyEntry: IPlatform = {
-      name: ''
+      name: '',
+      color: ''
     };
 
     const testPost: IPlatform = {
-      name: 'Win (PC)'
+      name: 'Win (PC)',
+      color: 'ffffff'
     };
 
     const testResponse: IPlatform[] = [
       {
         id: 1,
         name: 'Xbox One',
+        color: 'ffffff',
         created: '2016-01-28T15:55:16.285Z',
         modified: '2016-01-28T15:55:16.285Z'
       },
       {
         id: 2,
         name: 'PS3',
+        color: 'cccccc',
         created: '2016-01-27T15:55:16.285Z',
         modified: '2016-01-27T15:55:16.285Z'
       }
@@ -104,6 +108,7 @@ module App.Tests {
         entries: [{
           id: id,
           name: testPost.name,
+          color: testPost.color,
           created: '2016-01-28T15:55:16.285Z',
           modified: '2016-01-28T15:55:16.285Z'
         }]

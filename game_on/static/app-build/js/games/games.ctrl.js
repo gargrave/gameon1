@@ -18,7 +18,11 @@ var App;
             GamesCtrl.prototype.defaultEntry = function () {
                 return {
                     name: '',
-                    platform: { id: -1, name: '' },
+                    platform: {
+                        id: -1,
+                        name: '',
+                        color: ''
+                    },
                     startDate: '',
                     endDate: '',
                     finished: false

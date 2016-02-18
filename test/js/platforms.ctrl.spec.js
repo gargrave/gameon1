@@ -7,21 +7,25 @@ var App;
         describe('PlatformsCtrl', function () {
             var MODULE = 'platforms';
             var emptyEntry = {
-                name: ''
+                name: '',
+                color: ''
             };
             var testPost = {
-                name: 'Win (PC)'
+                name: 'Win (PC)',
+                color: 'ffffff'
             };
             var testResponse = [
                 {
                     id: 1,
                     name: 'Xbox One',
+                    color: 'ffffff',
                     created: '2016-01-28T15:55:16.285Z',
                     modified: '2016-01-28T15:55:16.285Z'
                 },
                 {
                     id: 2,
                     name: 'PS3',
+                    color: 'cccccc',
                     created: '2016-01-27T15:55:16.285Z',
                     modified: '2016-01-27T15:55:16.285Z'
                 }
@@ -76,6 +80,7 @@ var App;
                     entries: [{
                             id: id,
                             name: testPost.name,
+                            color: testPost.color,
                             created: '2016-01-28T15:55:16.285Z',
                             modified: '2016-01-28T15:55:16.285Z'
                         }]

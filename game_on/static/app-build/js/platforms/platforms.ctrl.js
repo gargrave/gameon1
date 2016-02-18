@@ -15,13 +15,15 @@ var App;
             }
             PlatformsCtrl.prototype.defaultEntry = function () {
                 return {
-                    name: ''
+                    name: '',
+                    color: ''
                 };
             };
             PlatformsCtrl.prototype.buildSubmissionData = function () {
                 this.submissionData = {
                     id: this.newEntry.id,
-                    name: this.newEntry.name
+                    name: this.newEntry.name,
+                    color: this.newEntry.color
                 };
             };
             PlatformsCtrl.prototype.preValidate = function () {
@@ -44,7 +46,8 @@ var App;
             PlatformsCtrl.prototype.canSaveEdits = function () {
                 var canSave = true;
                 this.error = '';
-                if (this.newEntry.name === this.activeEntry.name) {
+                if (this.newEntry.name === this.activeEntry.name &&
+                    this.newEntry.color === this.activeEntry.color) {
                     this.error = 'No changes have been made.';
                     canSave = false;
                 }

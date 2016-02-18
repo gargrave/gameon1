@@ -15,14 +15,16 @@ module App.Platforms {
      =============================================*/
     protected defaultEntry(): IPlatform {
       return {
-        name: ''
+        name: '',
+        color: ''
       };
     }
 
     protected buildSubmissionData(): void {
       this.submissionData = {
         id: this.newEntry.id,
-        name: this.newEntry.name
+        name: this.newEntry.name,
+        color: this.newEntry.color
       };
     }
 
@@ -55,7 +57,8 @@ module App.Platforms {
       let canSave: boolean = true;
       this.error = '';
 
-      if (this.newEntry.name === this.activeEntry.name) {
+      if (this.newEntry.name === this.activeEntry.name &&
+        this.newEntry.color === this.activeEntry.color) {
         this.error = 'No changes have been made.';
         canSave = false;
       }
