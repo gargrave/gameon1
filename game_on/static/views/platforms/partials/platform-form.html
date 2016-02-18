@@ -16,6 +16,37 @@
   </div>
 </div>
 
+<hr>
+
+<div class="form-group">
+  <!-- platform 'color' input -->
+  <label for="color">Color:</label>
+  <input class="form-control" type="text" id="color" name="color"
+         minlength="3" maxlength="6" placeholder="e.g. FFFFFF"
+         ng-pattern="/^[A-Fa-f\d]{3}([A-Fa-f\d]{3})?$/"
+         ng-model="ctrl.newEntry.color" required>
+
+  <!-- platform 'color' validation messages -->
+  <div ng-messages="entryForm.color.$error" ng-if="entryForm.$submitted">
+    <div class="alert alert-warning" ng-message="required">
+      This is a required field.
+    </div>
+    <div class="alert alert-warning" ng-message="minlength">
+      Must be at least 3 characters long.
+    </div>
+    <div class="alert alert-warning" ng-message="pattern">
+      Must be a 3 or 6-digit hex value (no leading '#').
+    </div>
+  </div>
+</div>
+
+<div class="form-group">
+  <!-- color preview -->
+  <label for="preview">Preview:</label>
+  <span class="form-control" id="preview"
+        style="background-color: #{A ctrl.newEntry.color A};">
+</div>
+
 <!-- error message display -->
 <div class="alert alert-danger" role="alert" ng-show="ctrl.error" ng-cloak>
   <span ng-bind="ctrl.error"></span>
