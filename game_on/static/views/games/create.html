@@ -10,7 +10,11 @@
 
         <div class="panel-body">
           <form method="POST" ng-submit="ctrl.create()" name="entryForm" novalidate>
-            <div ng-include="'static/views/games/partials/game-form.html'"></div>
+            <div>
+              <span ng-include="'static/views/games/partials/game-form.html'"></span>
+              <span class="btn btn-default pull-right" ui-sref="games-list"
+                    ng-disabled="ctrl.working">Cancel</span>
+            </div>
           </form>
         </div>
       </div>

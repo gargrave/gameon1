@@ -12,7 +12,13 @@
 
         <div class="panel-body">
           <form method="POST" ng-submit="ctrl.update()" name="entryForm" novalidate>
-            <div ng-include="'static/views/platforms/partials/platform-form.html'"></div>
+            <div>
+              <span ng-include="'static/views/platforms/partials/platform-form.html'"></span>
+              <span class="btn btn-default pull-right"
+                    ui-sref="platforms-detail({id: ctrl.activeEntry.id})"
+                    ng-disabled="ctrl.working">Cancel
+              </span>
+            </div>
           </form>
         </div>
       </div>
